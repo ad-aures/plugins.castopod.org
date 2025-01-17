@@ -1,0 +1,74 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/php
+{
+  "name": "PHP",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": ["localhost:8080", "localhost:5173"],
+  "portsAttributes": {
+    "8080": {
+      "label": "Application",
+      "requireLocalPort": true
+    },
+    "5173": {
+      "label": "Vite Dev Server",
+      "requireLocalPort": true
+    }
+  },
+  "otherPortsAttributes": { "onAutoForward": "ignore" },
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/opencodeco/devcontainers/install-php-extensions": {
+      "extensions": "intl"
+    },
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "css.customData": [".vscode/tailwind.json"],
+        "sqltools.connections": [
+          {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "plugin-repository",
+            "username": "postgres",
+            "password": "postgres",
+            "database": "plugin_repository"
+          }
+        ],
+        "sqltools.autoConnectTo": "plugin-repository"
+      },
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "breezelin.phpstan",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "mtxr.sqltools-driver-pg",
+        "mtxr.sqltools",
+        "pflannery.vscode-versionlens",
+        "streetsidesoftware.code-spell-checker",
+        "yzhang.markdown-all-in-one"
+      ]
+    }
+  },
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
+  "postCreateCommand": "composer install && pnpm install",
+  "postStartCommand": "php spark serve --host 0.0.0.0"
+
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+}

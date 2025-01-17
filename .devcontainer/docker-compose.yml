@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/php:1-8.3-bullseye
+    volumes:
+      - ../..:/workspaces:cached
+    network_mode: service:db
+    command: sleep infinity
+    environment:
+      CI_ENVIRONMENT: development
+      vite_environment: development
+      VITE_SERVER_HOST: 0.0.0.0
+      VITE_RESOURCES_DIR: app/Resources
+      VITE_ASSETS_DIR: assets
+
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: plugin_repository
+
+volumes:
+  postgres-data:

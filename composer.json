@@ -1,0 +1,78 @@
+{
+  "name": "ad-aures/castopod-plugin-repository",
+  "description": "The Castopod Plugin Repository.",
+  "license": "AGPL-3.0-only",
+  "type": "project",
+  "homepage": "https://plugins.castopod.org",
+  "support": {
+    "forum": "https://forum.codeigniter.com/",
+    "source": "https://github.com/codeigniter4/CodeIgniter4",
+    "slack": "https://codeigniterchat.slack.com"
+  },
+  "require": {
+    "php": "^8.3",
+    "codeigniter4/framework": "v4.5.7",
+    "yassinedoghri/codeigniter-vite": "v1.0.0"
+  },
+  "require-dev": {
+    "fakerphp/faker": "^v1.24.1",
+    "mikey179/vfsstream": "^v1.6.12",
+    "codeigniter/phpstan-codeigniter": "v1.5.1",
+    "phpstan/extension-installer": "^1.4.3",
+    "phpstan/phpstan": "^2.1.1",
+    "rector/rector": "^2.0.6",
+    "symplify/coding-standard": "^12.2.3",
+    "symplify/easy-coding-standard": "^12.5.5",
+    "pestphp/pest": "v3.7.1",
+    "pestphp/pest-plugin-type-coverage": "v3.2.3"
+  },
+  "scripts": {
+    "dev": "php spark serve --host 0.0.0.0",
+    "phpstan": "vendor/bin/phpstan analyse --ansi",
+    "rector": "vendor/bin/rector process --dry-run --ansi",
+    "rector:fix": "vendor/bin/rector process --ansi",
+    "style": "vendor/bin/ecs check --ansi",
+    "style:fix": "vendor/bin/ecs check --fix --ansi",
+    "pest": "./vendor/bin/pest --bail --colors=always",
+    "pest:parallel": "./vendor/bin/pest --colors=always --parallel",
+    "pest:profiling": "./vendor/bin/pest --colors=always --profile",
+    "pest:coverage": "./vendor/bin/pest --colors=always --parallel --coverage",
+    "pest:type-coverage": "./vendor/bin/pest --colors=always --type-coverage --min=95",
+    "test": [
+      "@style",
+      "@phpstan",
+      "@rector",
+      "@pest:type-coverage",
+      "@pest:parallel"
+    ],
+    "core:update": [
+      "composer update --no-interaction --prefer-stable",
+      "composer bump --ansi",
+      "composer validate --strict --ansi",
+      "composer audit --ansi"
+    ]
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Config\\": "app/Config/"
+    },
+    "exclude-from-classmap": [
+      "**/Database/Migrations/**"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Support\\": "tests/_support"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "phpstan/extension-installer": true
+    }
+  }
+}
