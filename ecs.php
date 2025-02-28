@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -13,4 +14,7 @@ return ECSConfig::configure()
         'operators' => [
             '=>' => 'align_single_space_minimal',
         ],
+    ])
+    ->withConfiguredRule(TrailingCommaInMultilineFixer::class, [
+        'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters'],
     ]);

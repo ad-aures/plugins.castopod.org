@@ -45,6 +45,7 @@ class Database extends Config
         'failover'     => [],
         'port'         => 3306,
         'numberNative' => false,
+        'foundRows'    => false,
         'dateFormat'   => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
@@ -66,6 +67,7 @@ class Database extends Config
     //        'failover'    => [],
     //        'foreignKeys' => true,
     //        'busyTimeout' => 1000,
+    //        'synchronous' => null,
     //        'dateFormat'  => [
     //            'date'     => 'Y-m-d',
     //            'datetime' => 'Y-m-d H:i:s',

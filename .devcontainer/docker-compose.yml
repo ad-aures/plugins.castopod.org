@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   devcontainer:
-    image: mcr.microsoft.com/devcontainers/php:1-8.3-bullseye
+    build: .
     volumes:
       - ../..:/workspaces:cached
     network_mode: service:db
@@ -9,9 +9,6 @@ services:
     environment:
       CI_ENVIRONMENT: development
       vite_environment: development
-      VITE_SERVER_HOST: 0.0.0.0
-      VITE_RESOURCES_DIR: app/Resources
-      VITE_ASSETS_DIR: assets
 
   db:
     image: postgres:latest

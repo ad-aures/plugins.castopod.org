@@ -34,7 +34,7 @@ $errorId = uniqid('error', true);
             <p>
                 <?= nl2br(esc($exception->getMessage())) ?>
                 <a href="https://www.duckduckgo.com/?q=<?= urlencode(
-                    $title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', (string) $exception->getMessage())
+                    $title . ' ' . preg_replace('#\'.*\'|".*"#Us', '', (string) $exception->getMessage()),
                 ) ?>"
                    rel="noreferrer" target="_blank">search &rarr;</a>
             </p>
@@ -61,12 +61,12 @@ while ($prevException = $last->getPrevious()) {
     <pre>
     Caused by:
     <?= esc($prevException::class), esc(
-        $prevException->getCode() ? ' #' . $prevException->getCode() : ''
+        $prevException->getCode() ? ' #' . $prevException->getCode() : '',
     ) ?>
 
     <?= nl2br(esc($prevException->getMessage())) ?>
     <a href="https://www.duckduckgo.com/?q=<?= urlencode(
-        $prevException::class . ' ' . preg_replace('#\'.*\'|".*"#Us', '', (string) $prevException->getMessage())
+        $prevException::class . ' ' . preg_replace('#\'.*\'|".*"#Us', '', (string) $prevException->getMessage()),
     ) ?>"
        rel="noreferrer" target="_blank">search &rarr;</a>
     <?= esc(clean_path($prevException->getFile()) . ':' . $prevException->getLine()) ?>
@@ -105,7 +105,7 @@ while ($prevException = $last->getPrevious()) {
                         if (isset($row['function']) && in_array(
                             $row['function'],
                             ['include', 'include_once', 'require', 'require_once'],
-                            true
+                            true,
                         )) {
                             echo esc($row['function'] . ' ' . clean_path($row['file']));
                         } else {
@@ -119,13 +119,13 @@ while ($prevException = $last->getPrevious()) {
                             <!-- Class/Method -->
                             <?php if (isset($row['class'])) : ?>
                                 &nbsp;&nbsp;&mdash;&nbsp;&nbsp;<?= esc(
-                                    $row['class'] . $row['type'] . $row['function']
+                                    $row['class'] . $row['type'] . $row['function'],
                                 ) ?>
                                 <?php if (! empty($row['args'])) : ?>
                                     <?php $argsId = $errorId . 'args' . $index ?>
                                     ( <a href="#" onclick="return toggle('<?= esc(
                                         $argsId,
-                                        'attr'
+                                        'attr',
                                     ) ?>');">arguments</a> )
                                     <div class="args" id="<?= esc($argsId, 'attr') ?>">
                                         <table cellspacing="0">
@@ -135,7 +135,7 @@ while ($prevException = $last->getPrevious()) {
                                     if (! str_ends_with((string) $row['function'], '}')) {
                                         $mirror = isset($row['class']) ? new ReflectionMethod(
                                             $row['class'],
-                                            $row['function']
+                                            $row['function'],
                                         ) : new ReflectionFunction($row['function']);
                                         $params = $mirror->getParameters();
                                     }
@@ -143,7 +143,7 @@ while ($prevException = $last->getPrevious()) {
                                     foreach ($row['args'] as $key => $value) : ?>
                                             <tr>
                                                 <td><code><?= esc(
-                                                    isset($params[$key]) ? '$' . $params[$key]->name : "#{$key}"
+                                                    isset($params[$key]) ? '$' . $params[$key]->name : "#{$key}",
                                                 ) ?></code></td>
                                                 <td><pre><?= esc(print_r($value, true)) ?></pre></td>
                                             </tr>
@@ -248,7 +248,7 @@ while ($prevException = $last->getPrevious()) {
                         <tr>
                             <td style="width: 10em">Path</td>
                             <td><?= esc(
-                                $request->getUri()
+                                $request->getUri(),
                             ) ?></td>
                         </tr>
                         <tr>

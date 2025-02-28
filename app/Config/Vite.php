@@ -11,7 +11,7 @@ class Vite extends ViteConfig
     public array $routesAssets = [
         [
             'routes' => ['*'],
-            'assets' => ['styles/index.css'],
+            'assets' => ['styles/index.css', 'js/index.ts'],
         ],
     ];
 }
