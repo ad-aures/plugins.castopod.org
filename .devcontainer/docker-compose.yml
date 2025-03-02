@@ -4,11 +4,24 @@ services:
     build: .
     volumes:
       - ../..:/workspaces:cached
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     network_mode: service:db
     command: sleep infinity
     environment:
       CI_ENVIRONMENT: development
       vite_environment: development
+      database_default_hostname: db
+      database_default_database: plugin_repository
+      database_default_username: postgres
+      database_default_password: postgres
+      email_fromEmail: hello@castopod.local
+      email_SMTPCrypto: ""
+      email_SMTPHost: mailpit
+      email_SMTPUser: castopod
+      email_SMTPPass: castopod
+      email_SMTPPort: 1025
+    depends_on:
+      - db
 
   db:
     image: postgres:latest
@@ -20,5 +33,20 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: plugin_repository
 
+  mailpit:
+    image: axllent/mailpit
+    restart: always
+    volumes:
+      - mailpit:/data
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
 volumes:
   postgres-data:
+  mailpit:

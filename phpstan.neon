@@ -3,12 +3,18 @@ parameters:
 	paths:
 		- app
 		- tests
-	excludePaths:
-		- app/Views/errors/*
 	bootstrapFiles:
 		- vendor/codeigniter4/framework/system/Test/bootstrap.php
 	scanDirectories:
 		- vendor/codeigniter4/framework/system/Helpers
+	excludePaths:
+		- app/Views/errors/*
+	codeigniter:
+		additionalModelNamespaces:
+			- CodeIgniter\Shield\Models\
+		additionalServices:
+			- CodeIgniter\Settings\Config\Services
+			- CodeIgniter\Shield\Config\Services
 	ignoreErrors:
 		- '#Call to an undefined method Pest\\PendingCalls\\TestCall\:\:expect\(\)#'
 		- identifier: property.readOnlyByPhpDocDefaultValue

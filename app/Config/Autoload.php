@@ -91,5 +91,5 @@ class Autoload extends AutoloadConfig
      *
      * @var list<string>
      */
-    public array $helpers = [];
+    public array $helpers = ['auth', 'setting'];
 }
