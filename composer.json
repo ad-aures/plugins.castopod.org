@@ -19,16 +19,16 @@
     "yassinedoghri/codeigniter-vite": "^v1.1.0"
   },
   "require-dev": {
-    "fakerphp/faker": "^v1.24.1",
-    "mikey179/vfsstream": "^v1.6.12",
     "codeigniter/phpstan-codeigniter": "^v1.5.3",
+    "fakerphp/faker": "^1.24",
+    "mikey179/vfsstream": "^v1.6.12",
+    "pestphp/pest": "^v3.7.4",
+    "pestphp/pest-plugin-type-coverage": "^v3.3.0",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan": "^2.1.6",
     "rector/rector": "^2.0.9",
     "symplify/coding-standard": "^12.2.3",
-    "symplify/easy-coding-standard": "^12.5.8",
-    "pestphp/pest": "^v3.7.4",
-    "pestphp/pest-plugin-type-coverage": "^v3.3.0"
+    "symplify/easy-coding-standard": "^12.5.8"
   },
   "scripts": {
     "dev": "php spark serve --host 0.0.0.0",

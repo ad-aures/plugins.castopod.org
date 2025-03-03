@@ -1,1 +1,1 @@
-@import url("./tailwind.css");
+@import "tailwindcss" source("../../app");

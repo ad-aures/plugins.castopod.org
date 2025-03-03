@@ -27,9 +27,6 @@
     <testsuite name="App">
       <directory>./tests</directory>
     </testsuite>
-    <testsuite name="Arch">
-      <directory>tests/Arch</directory>
-    </testsuite>
   </testsuites>
   <logging>
     <testdoxHtml outputFile="build/logs/testdox.html" />
@@ -43,6 +40,7 @@
     <exclude>
       <directory suffix=".php">./app/Views</directory>
       <file>./app/Config/Routes.php</file>
+      <file>./app/Database/Seeds/FakePluginsSeeder.php</file>
     </exclude>
   </source>
   <php>

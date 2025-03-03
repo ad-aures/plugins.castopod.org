@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import codeigniter from "vite-plugin-codeigniter";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig(() => {
   return {
@@ -8,6 +9,6 @@ export default defineConfig(() => {
       port: 5173,
       strictPort: true,
     },
-    plugins: [codeigniter()],
+    plugins: [codeigniter(), tailwindcss()],
   };
 });

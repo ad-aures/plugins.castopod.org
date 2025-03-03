@@ -1,3 +1,9 @@
+<?php
+use App\Entities\Plugin;
+
+/** @var Plugin[] $plugins */
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +14,14 @@
     <link rel="shortcut icon" type="image/png" href="/favicon.ico">
 </head>
 <body>
-    <h1 class="text-3xl font-bold">Hello, world!</h1>
+    <h1 class="text-3xl font-bold">Castopod Plugins</h1>
+    <div class="grid grid-cols-4">
+        <?php
+        foreach ($plugins as $plugin):
+            echo view('_plugin', [
+                'plugin' => $plugin,
+            ]);
+        endforeach; ?>
+    </div>
 </body>
 </html>
