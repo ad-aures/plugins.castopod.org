@@ -1,1 +1,35 @@
+@import url("./fonts.css");
 @import "tailwindcss" source("../../app");
+
+@plugin "@tailwindcss/forms";
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  --color-brand-50: oklch(97.88% 0.0086 188.12);
+  --color-brand-100: oklch(96.32% 0.0336 141.21);
+  --color-brand-200: oklch(89.15% 0.0389 190.45);
+  --color-brand-300: oklch(82.83% 0.0608 189.48);
+  --color-brand-400: oklch(70.68% 0.0964 186.55);
+  --color-brand-500: oklch(59.86% 0.106454 183.2508);
+  --color-brand-600: oklch(55.41% 0.0982 183.86);
+  --color-brand-700: oklch(47.94% 0.0865 180.83);
+  --color-brand-800: oklch(40.58% 0.07408 179.0897);
+  --color-brand-900: oklch(31.3% 0.0979 145.19);
+  --color-brand-950: oklch(17.36% 0.0543 145.19);
+
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Rubik", sans-serif;
+}
+
+html {
+  @apply h-full;
+}
+
+body {
+  @apply min-h-full;
+}

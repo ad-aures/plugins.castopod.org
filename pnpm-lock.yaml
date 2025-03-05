@@ -17,6 +17,9 @@ importers:
       "@rollup/plugin-multi-entry":
         specifier: ^6.0.1
         version: 6.0.1(rollup@4.30.1)
+      "@tailwindcss/forms":
+        specifier: ^0.5.10
+        version: 0.5.10(tailwindcss@4.0.9)
       "@tailwindcss/vite":
         specifier: ^4.0.9
         version: 4.0.9(vite@6.2.0(@types/node@22.10.7)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.7.0))
@@ -699,6 +702,14 @@ packages:
       }
     cpu: [x64]
     os: [win32]
+
+  "@tailwindcss/forms@0.5.10":
+    resolution:
+      {
+        integrity: sha512-utI1ONF6uf/pPNO68kmN1b8rEwNXv3czukalo8VtJH8ksIkZXr3Q3VYudZLkCsDd4Wku120uF02hYK25XGPorw==,
+      }
+    peerDependencies:
+      tailwindcss: ">=3.0.0 || >= 3.0.0-alpha.1 || >= 4.0.0-alpha.20 || >= 4.0.0-beta.1"
 
   "@tailwindcss/node@4.0.9":
     resolution:
@@ -1837,6 +1848,13 @@ packages:
       }
     engines: { node: ">=6" }
 
+  mini-svg-data-uri@1.4.4:
+    resolution:
+      {
+        integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==,
+      }
+    hasBin: true
+
   minimatch@10.0.1:
     resolution:
       {
@@ -2736,6 +2754,11 @@ snapshots:
   "@rollup/rollup-win32-x64-msvc@4.30.1":
     optional: true
 
+  "@tailwindcss/forms@0.5.10(tailwindcss@4.0.9)":
+    dependencies:
+      mini-svg-data-uri: 1.4.4
+      tailwindcss: 4.0.9
+
   "@tailwindcss/node@4.0.9":
     dependencies:
       enhanced-resolve: 5.18.1
@@ -3412,6 +3435,8 @@ snapshots:
       picomatch: 2.3.1
 
   mimic-fn@2.1.0: {}
+
+  mini-svg-data-uri@1.4.4: {}
 
   minimatch@10.0.1:
     dependencies:

@@ -36,7 +36,9 @@
       "settings": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "css.customData": [".vscode/tailwind.json"],
+        "files.associations": {
+          "*.css": "tailwindcss"
+        },
         "sqltools.connections": [
           {
             "previewLimit": 50,
@@ -55,6 +57,7 @@
         "bmewburn.vscode-intelephense-client",
         "bradlc.vscode-tailwindcss",
         "breezelin.phpstan",
+        "dejmedus.tailwind-sorter",
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
         "mtxr.sqltools-driver-pg",

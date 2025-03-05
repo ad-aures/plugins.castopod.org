@@ -16,7 +16,8 @@
     "codeigniter4/settings": "^2.2",
     "codeigniter4/shield": "^1.1",
     "michalsn/codeigniter-htmx": "^v2.1.0",
-    "yassinedoghri/codeigniter-vite": "^v1.1.0"
+    "yassinedoghri/codeigniter-vite": "^v1.1.0",
+    "yassinedoghri/php-icons": "^1.2"
   },
   "require-dev": {
     "codeigniter/phpstan-codeigniter": "^v1.5.3",
