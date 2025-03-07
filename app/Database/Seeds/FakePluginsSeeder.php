@@ -43,7 +43,8 @@ class FakePluginsSeeder extends Seeder
         $pluginModel = new PluginModel();
         for ($i = 0; $i < 4; $i++) {
             $pluginModel->insert(new Plugin([
-                'name'               => $faker->slug(random_int(1, 2)) . '/' . $faker->slug(random_int(1, 2)),
+                'vendor'             => $faker->slug(random_int(1, 2)),
+                'name'               => $faker->slug(random_int(1, 2)),
                 'description'        => $faker->paragraph(),
                 'repository_url'     => $faker->url(),
                 'repository_folder'  => '',

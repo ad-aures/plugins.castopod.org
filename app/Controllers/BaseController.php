@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
-use CodeIgniter\HTTP\CLIRequest;
-use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Michalsn\CodeIgniterHtmx\HTTP\IncomingRequest;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -24,7 +23,7 @@ abstract class BaseController extends Controller
     /**
      * Instance of the main Request object.
      *
-     * @var CLIRequest|IncomingRequest
+     * @var IncomingRequest
      */
     protected $request;
 

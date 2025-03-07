@@ -59,13 +59,20 @@ class AddPlugins extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
+            'vendor' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '128',
+            ],
             'name' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '256',
+                'constraint' => '128',
             ],
             'description' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',
+            ],
+            'text_searchable' => [
+                'type' => 'TSVECTOR GENERATED ALWAYS AS (to_tsvector(\'simple\', vendor || \' \' || name || \' \' || coalesce(description, \'\'))) STORED',
             ],
             'repository_url' => [
                 'type'       => 'VARCHAR',
@@ -109,9 +116,11 @@ class AddPlugins extends Migration
             ],
         ]);
 
-        $this->forge->addKey('id', true, false, 'pk_plugins');
-        $this->forge->addUniqueKey('name', 'uk_name');
+        $this->forge->addPrimaryKey('id', 'pk_plugins');
+        $this->forge->addUniqueKey(['vendor', 'name'], 'uk_name');
         $this->forge->createTable('plugins');
+
+        $this->db->query('CREATE INDEX idx_textsearch ON plugins USING GIN(text_searchable);');
     }
 
     public function down(): void

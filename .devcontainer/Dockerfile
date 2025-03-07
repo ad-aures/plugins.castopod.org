@@ -15,4 +15,4 @@ RUN curl -sSL https://getcomposer.org/installer | php \
 
 # [Optional] Uncomment this section to install additional packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends openssh-client
+    && apt-get -y install --no-install-recommends openssh-client unzip

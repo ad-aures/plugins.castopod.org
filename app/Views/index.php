@@ -1,6 +1,8 @@
 <?php
 use App\Entities\Plugin;
+use Michalsn\CodeIgniterHtmx\View\View;
 
+/** @var View $this */
 /** @var Plugin[] $plugins */
 ?>
 
@@ -15,7 +17,7 @@ use App\Entities\Plugin;
 </head>
 <body class="flex flex-col bg-brand-800 bg-[length:300px]" style="background-image: url('<?= base_url(
     '/assets/images/castopod-pattern.svg',
-) ?>');">
+); ?>');">
     <header class="text-brand-100">
         <nav class="flex justify-between items-center starting:opacity-0 mx-auto border-b border-brand-950 h-20 transition starting:-translate-y-full duration-500 ease-out container">
             <div class="flex items-center gap-8">
@@ -30,29 +32,35 @@ use App\Entities\Plugin;
             <div class="flex items-center gap-2">
                 <a href="<?= route_to(
                     'register',
-                ) ?>" class="px-4 py-2 font-semibold decoration-2 decoration-brand-500 hover:underline">Sign up</a>
+                ); ?>" class="px-4 py-2 font-semibold decoration-2 decoration-brand-500 hover:underline">Sign up</a>
                 <a href="<?= route_to(
                     'login',
-                ) ?>" class="px-4 py-2 font-semibold decoration-2 decoration-brand-500 hover:underline">Login</a>
+                ); ?>" class="px-4 py-2 font-semibold decoration-2 decoration-brand-500 hover:underline">Login</a>
                 <a href="<?= route_to(
                     'register',
-                ) ?>" class="bg-white px-4 py-2 font-semibold text-black">Submit plugin</a>
+                ); ?>" class="bg-white px-4 py-2 font-semibold text-black">Submit plugin</a>
             </div>
         </nav>
         <div class="starting:opacity-0 mx-auto pt-24 pb-32 transition duration-1000 container">
             <h1 class="font-display font-bold text-5xl">Castopod plugins</h1>
         </div>
     </header>
-    <main class="flex lg:flex-row flex-col flex-1 bg-brand-900 starting:opacity-0 border-t border-brand-950 h-full transition starting:translate-y-full duration-500 ease-out">
+    <main class="flex lg:flex-row flex-col flex-1 items-start bg-brand-900 starting:opacity-0 border-t border-brand-950 h-full transition starting:translate-y-full duration-500 ease-out">
         <aside class="lg:starting:opacity-0 px-4 py-8 lg:border-r border-brand-950 lg:w-80 text-brand-100 transition lg:starting:-translate-x-full duration-700 ease-out">
-            <form action="/search" method="GET">
+            <form action="/search" method="GET" hx-boost="true" hx-target="#plugin-list">
                 <div class="flex items-center bg-brand-950 ring ring-brand-800 focus-within:ring-brand-500 w-full">
                     <div class="place-items-center grid h-10 aspect-square">
                         <?= icon('search-line', [
                             'class' => 'text-2xl text-brand-800',
-                        ]) ?>
+                        ]); ?>
                     </div>
-                    <input type="text" name="q" placeholder="Search for a plugin" class="bg-transparent p-2 border-0 ring-0 w-full">
+                    <input
+                        type="search"
+                        name="q"
+                        placeholder="Search for a plugin"
+                        class="bg-transparent p-2 border-0 ring-0 w-full"
+                        hx-indicator=".htmx-indicator"
+                        value="<?= $q ?>">
                 </div>
                 <h2 class="mt-4 font-display text-2xl">Filter</h2>
                 <details class="flex flex-col">
@@ -67,7 +75,11 @@ use App\Entities\Plugin;
                         'seo',
                     ] as $category): ?>
                         <label>
-                            <input type="checkbox" name="categories" value="<?= $category ?>" class="text-brand-500">
+                            <input type="checkbox" name="categories[]" value="<?= $category ?>" class="text-brand-500" <?= in_array(
+                                $category,
+                                $categories,
+                                true,
+                            ) ? 'checked="checked"' : '' ?>>
                             <?= $category ?>
                         </label>
                     <?php endforeach; ?>
@@ -75,14 +87,16 @@ use App\Entities\Plugin;
                 </details>
             </form>
         </aside>
-        <section class="flex-1 items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] p-8 lg:border-0 border-t border-brand-950">
-            <?php
-            foreach ($plugins as $key => $plugin):
-                echo view('_plugin', [
-                    'key'    => $key,
-                    'plugin' => $plugin,
-                ]);
-            endforeach; ?>
+        <section id="plugin-list" class="flex-1 items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] p-8 lg:border-0 border-t border-brand-950">
+            <?php $this->fragment('plugins'); ?>
+                <?php
+                foreach ($plugins as $key => $plugin):
+                    echo view('_plugin', [
+                        'key'    => $key,
+                        'plugin' => $plugin,
+                    ]);
+                endforeach; ?>
+            <?php $this->endFragment(); ?>
         </section>
     </main>
 </body>

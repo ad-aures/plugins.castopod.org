@@ -15,6 +15,7 @@ class PluginModel extends Model
     protected $returnType = Plugin::class;
 
     protected $allowedFields = [
+        'vendor',
         'name',
         'description',
         'repository_url',

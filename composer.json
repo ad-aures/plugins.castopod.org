@@ -15,6 +15,7 @@
     "codeigniter4/framework": "v4.6.0",
     "codeigniter4/settings": "^2.2",
     "codeigniter4/shield": "^1.1",
+    "czproject/git-php": "^4.3",
     "michalsn/codeigniter-htmx": "^v2.1.0",
     "yassinedoghri/codeigniter-vite": "^v1.1.0",
     "yassinedoghri/php-icons": "^1.2"
