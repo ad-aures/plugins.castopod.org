@@ -16,28 +16,31 @@ class Plugins extends BaseController
         $q = $this->request->getGet('q');
         $categories = $this->request->getGet('categories');
 
+        $db = db_connect();
         $pluginModel = new PluginModel();
 
-        $query = $pluginModel;
         if (! in_array($q, ['', null], true)) {
             /** @var string $escapedQ */
-            $escapedQ = $pluginModel->db->escape($q);
-            $query = $pluginModel
-                ->where("text_searchable @@ to_tsquery({$escapedQ})");
+            $escapedQ = $db->escape($q);
+            $pluginModel->where("text_searchable @@ to_tsquery({$escapedQ})");
         }
 
         if ($categories !== null) {
             /** @var list<string> $escapedCategories */
-            $escapedCategories = $pluginModel->db->escape($categories);
+            $escapedCategories = $db->escape($categories);
             $categoriesString = implode(',', $escapedCategories);
-            $query->where("categories && array[{$categoriesString}]::plugin_category[]", null, false);
+            $pluginModel->where("categories && array[{$categoriesString}]::plugin_category[]", null, false);
         }
 
-        $plugins = $query->findAll();
+        $plugins = $pluginModel->paginate(12);
+        $pager = $pluginModel->pager;
 
         if ($this->request->isHtmx()) {
             return view_fragment('index', 'plugins', [
-                'plugins' => $plugins,
+                'q'          => $q ?? '',
+                'categories' => $categories ?? [],
+                'plugins'    => $plugins,
+                'pager'      => $pager,
             ]);
         }
 
@@ -45,6 +48,7 @@ class Plugins extends BaseController
             'q'          => $q ?? '',
             'categories' => $categories ?? [],
             'plugins'    => $plugins,
+            'pager'      => $pager,
         ]);
     }
 }

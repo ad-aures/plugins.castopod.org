@@ -1,9 +1,13 @@
 <?php
 use App\Entities\Plugin;
+use CodeIgniter\Pager\Pager;
 use Michalsn\CodeIgniterHtmx\View\View;
 
 /** @var View $this */
+/** @var string $q */
+/** @var list<string> $categories */
 /** @var Plugin[] $plugins */
+/** @var Pager $pager */
 ?>
 
 <!DOCTYPE html>
@@ -87,15 +91,20 @@ use Michalsn\CodeIgniterHtmx\View\View;
                 </details>
             </form>
         </aside>
-        <section id="plugin-list" class="flex-1 items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] p-8 lg:border-0 border-t border-brand-950">
+        <section id="plugin-list">
             <?php $this->fragment('plugins'); ?>
-                <?php
-                foreach ($plugins as $key => $plugin):
-                    echo view('_plugin', [
-                        'key'    => $key,
-                        'plugin' => $plugin,
-                    ]);
-                endforeach; ?>
+            <div>
+                <div class="flex-1 items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] p-8 lg:border-0 border-t border-brand-950">
+                    <?php
+                    foreach ($plugins as $key => $plugin):
+                        echo view('_plugin', [
+                            'key'    => $key,
+                            'plugin' => $plugin,
+                        ]);
+                    endforeach; ?>
+                </div>
+                <?= $pager->links() ?>
+            </div>
             <?php $this->endFragment(); ?>
         </section>
     </main>
