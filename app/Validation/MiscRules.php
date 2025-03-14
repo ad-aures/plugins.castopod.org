@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Validation;
+
+class MiscRules
+{
+    /**
+     * Is a boolean (true or false)
+     */
+    public function is_boolean(mixed $str = null): bool
+    {
+        return is_bool($str);
+    }
+
+    /**
+     * Is it an array?
+     */
+    public function is_list(mixed $str = null): bool
+    {
+        return is_array($str);
+    }
+
+    public function is_string_or_list(mixed $str = null): bool
+    {
+        return is_string($str) || is_array($str);
+    }
+}

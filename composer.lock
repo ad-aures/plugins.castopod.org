@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "1fb34ecd24427a7621039fbb300cdd46",
+  "content-hash": "b991fe7ff7da177fba6a92daedd960f4",
   "packages": [
     {
       "name": "adhocore/cli",
@@ -144,6 +144,66 @@
         "source": "https://github.com/codeigniter4/CodeIgniter4"
       },
       "time": "2025-01-19T18:31:34+00:00"
+    },
+    {
+      "name": "codeigniter4/queue",
+      "version": "dev-develop",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/codeigniter4/queue.git",
+        "reference": "3675024af715754dd22482db7a923c3cdd5900b5"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/codeigniter4/queue/zipball/3675024af715754dd22482db7a923c3cdd5900b5",
+        "reference": "3675024af715754dd22482db7a923c3cdd5900b5",
+        "shasum": ""
+      },
+      "require": {
+        "php": "^8.1"
+      },
+      "require-dev": {
+        "codeigniter4/devkit": "^1.0",
+        "codeigniter4/framework": "^4.3",
+        "phpstan/phpstan-strict-rules": "^1.5",
+        "predis/predis": "^2.0"
+      },
+      "suggest": {
+        "ext-redis": "If you want to use RedisHandler",
+        "predis/predis": "If you want to use PredisHandler"
+      },
+      "default-branch": true,
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "CodeIgniter\\Queue\\": "src"
+        },
+        "exclude-from-classmap": ["**/Database/Migrations/**"]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": ["MIT"],
+      "authors": [
+        {
+          "name": "michalsn",
+          "homepage": "https://github.com/michalsn",
+          "role": "Developer"
+        }
+      ],
+      "description": "Queues for CodeIgniter 4 framework",
+      "homepage": "https://github.com/codeigniter4/queue",
+      "keywords": [
+        "codeigniter",
+        "codeigniter4",
+        "database",
+        "predis",
+        "queue",
+        "redis"
+      ],
+      "support": {
+        "issues": "https://github.com/codeigniter4/queue/issues",
+        "source": "https://github.com/codeigniter4/queue/tree/develop"
+      },
+      "time": "2025-02-05T08:26:30+00:00"
     },
     {
       "name": "codeigniter4/settings",
@@ -309,6 +369,49 @@
       "time": "2024-08-05T13:28:31+00:00"
     },
     {
+      "name": "enshrined/svg-sanitize",
+      "version": "0.21.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/darylldoyle/svg-sanitizer.git",
+        "reference": "5e477468fac5c5ce933dce53af3e8e4e58dcccc9"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/darylldoyle/svg-sanitizer/zipball/5e477468fac5c5ce933dce53af3e8e4e58dcccc9",
+        "reference": "5e477468fac5c5ce933dce53af3e8e4e58dcccc9",
+        "shasum": ""
+      },
+      "require": {
+        "ext-dom": "*",
+        "ext-libxml": "*",
+        "php": "^7.1 || ^8.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "^6.5 || ^8.5"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "enshrined\\svgSanitize\\": "src"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": ["GPL-2.0-or-later"],
+      "authors": [
+        {
+          "name": "Daryll Doyle",
+          "email": "daryll@enshrined.co.uk"
+        }
+      ],
+      "description": "An SVG sanitizer for PHP",
+      "support": {
+        "issues": "https://github.com/darylldoyle/svg-sanitizer/issues",
+        "source": "https://github.com/darylldoyle/svg-sanitizer/tree/0.21.0"
+      },
+      "time": "2025-01-13T09:32:25+00:00"
+    },
+    {
       "name": "laminas/laminas-escaper",
       "version": "2.16.0",
       "source": {
@@ -453,6 +556,69 @@
         "source": "https://github.com/php-fig/log/tree/3.0.2"
       },
       "time": "2024-09-11T13:17:53+00:00"
+    },
+    {
+      "name": "tatter/alerts",
+      "version": "v3.1.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/tattersoftware/codeigniter4-alerts.git",
+        "reference": "aa7a57d5aaef3b9d0103f6fe17eca86c147fcf04"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/tattersoftware/codeigniter4-alerts/zipball/aa7a57d5aaef3b9d0103f6fe17eca86c147fcf04",
+        "reference": "aa7a57d5aaef3b9d0103f6fe17eca86c147fcf04",
+        "shasum": ""
+      },
+      "require": {
+        "php": "^7.4 || ^8.0"
+      },
+      "require-dev": {
+        "codeigniter4/framework": "^4.1",
+        "tatter/tools": "^2.0"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Tatter\\Alerts\\": "src"
+        },
+        "exclude-from-classmap": ["**/Database/Migrations/**"]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": ["MIT"],
+      "authors": [
+        {
+          "name": "Matthew Gatner",
+          "email": "mgatner@tattersoftware.com",
+          "homepage": "https://tattersoftware.com",
+          "role": "Developer"
+        }
+      ],
+      "description": "Lightweight user alerts for CodeIgniter 4",
+      "homepage": "https://github.com/tattersoftware/codeigniter4-alerts",
+      "keywords": [
+        "alerts",
+        "codeigniter",
+        "codeigniter4",
+        "dialogs",
+        "messages"
+      ],
+      "support": {
+        "issues": "https://github.com/tattersoftware/codeigniter4-alerts/issues",
+        "source": "https://github.com/tattersoftware/codeigniter4-alerts/tree/v3.1.0"
+      },
+      "funding": [
+        {
+          "url": "https://paypal.me/tatter",
+          "type": "custom"
+        },
+        {
+          "url": "https://github.com/tattersoftware",
+          "type": "github"
+        }
+      ],
+      "time": "2022-11-10T19:00:28+00:00"
     },
     {
       "name": "yassinedoghri/codeigniter-vite",
@@ -6053,7 +6219,9 @@
   ],
   "aliases": [],
   "minimum-stability": "stable",
-  "stability-flags": {},
+  "stability-flags": {
+    "codeigniter4/queue": 20
+  },
   "prefer-stable": false,
   "prefer-lowest": false,
   "platform": {

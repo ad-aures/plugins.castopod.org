@@ -30,7 +30,7 @@ class AddDownloads extends Migration
             ],
         ]);
 
-        $this->forge->addKey('id', true, false, 'pk_downloads');
+        $this->forge->addPrimaryKey('id', 'pk_downloads');
         $this->forge->addForeignKey('version_id', 'versions', 'id', '', 'CASCADE', 'fk_downloads_version_id');
         $this->forge->addUniqueKey(['version_id', 'date'], 'uk_version_id_date');
         $this->forge->createTable('downloads');

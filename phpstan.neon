@@ -15,6 +15,7 @@ parameters:
 		additionalServices:
 			- CodeIgniter\Settings\Config\Services
 			- CodeIgniter\Shield\Config\Services
+			- CodeIgniter\Queue\Config\Services
 	ignoreErrors:
 		- '#Call to an undefined method Pest\\PendingCalls\\TestCall\:\:expect\(\)#'
 		- identifier: property.readOnlyByPhpDocDefaultValue

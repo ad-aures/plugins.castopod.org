@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Database\Seeds;
 
+use App\Entities\Enums\License;
 use App\Entities\Plugin;
+use App\Entities\Version;
 use App\Models\PluginModel;
+use App\Models\VersionModel;
 use CodeIgniter\Database\Seeder;
+use CodeIgniter\I18n\Time;
 
 class FakePluginsSeeder extends Seeder
 {
@@ -14,58 +18,44 @@ class FakePluginsSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        $licenses = [
-            'AGPL-3.0-only',
-            'AGPL-3.0-or-later',
-            'Apache-2.0',
-            'BSL-1.0',
-            'Custom',
-            'GPL-3.0-only',
-            'GPL-3.0-or-later',
-            'LGPL-3.0-only',
-            'LGPL-3.0-or-later',
-            'MIT',
-            'MPL-2.0',
-            'Unlicense',
-            'UNLICENSED',
-        ];
-        $categories = [
-            'accessibility',
-            'analytics',
-            'monetization',
-            'podcasting2',
-            'privacy',
-            'productivity',
-            'seo',
-        ];
-        $hooks = ['rssBeforeChannel', 'rssAfterChannel', 'rssBeforeItem', 'rssAfterItem', 'siteHead'];
-
         $pluginModel = new PluginModel();
-        for ($i = 0; $i < 4; $i++) {
-            $pluginModel->insert(new Plugin([
-                'vendor'             => $faker->slug(random_int(1, 2)),
-                'name'               => $faker->slug(random_int(1, 2)),
-                'description'        => $faker->paragraph(),
-                'repository_url'     => $faker->url(),
-                'repository_folder'  => '',
-                'readme_markdown'    => $faker->text(),
-                'homepage'           => $faker->url(),
-                'license'            => $licenses[array_rand($licenses)],
-                'license_markdown'   => $faker->text(),
-                'categories'         => $this->getRandomValuesFrom($categories),
-                'minCastopodVersion' => '2.0.0',
-                'hooks'              => $this->getRandomValuesFrom($hooks),
+        $versionModel = new VersionModel();
+        for ($i = 0; $i < 10; $i++) {
+            $pluginId = $pluginModel->insert(new Plugin([
+                'vendor'            => $faker->slug(random_int(1, 2)),
+                'name'              => $faker->slug(random_int(1, 2)),
+                'description'       => $faker->paragraph(),
+                'icon_svg'          => '',
+                'repository_url'    => $faker->url(),
+                'repository_folder' => '',
+                'homepage'          => $faker->url(),
+                'categories'        => $this->getRandomValuesFromEnum('Category'),
             ]));
+
+            foreach (['1.0.0', '1.0.1', '1.1.0', '1.2.0'] as $version) {
+                $versionModel->insert(new Version([
+                    'plugin_id'            => $pluginId,
+                    'tag'                  => $version,
+                    'commit'               => hash('sha1', $faker->text()),
+                    'readme_markdown'      => $faker->text(),
+                    'license'              => License::cases()[array_rand(License::cases())]->value,
+                    'license_markdown'     => $faker->text(),
+                    'min_castopod_version' => '2.0.0',
+                    'hooks'                => $this->getRandomValuesFromEnum('Hook'),
+                    'published_at'         => Time::now(),
+                ]));
+            }
         }
     }
 
     /**
-     * @param list<string> $data
      * @return list<string>
      */
-    private function getRandomValuesFrom(array $data): array
+    private function getRandomValuesFromEnum(string $enumName): array
     {
-        $randomKeys = array_rand($data, random_int(1, 3));
+        $enum = sprintf('\App\Entities\Enums\%s', $enumName);
+
+        $randomKeys = array_rand($enum::cases(), random_int(1, 3));
 
         if (! is_array($randomKeys)) {
             $randomKeys = [$randomKeys];
@@ -73,7 +63,7 @@ class FakePluginsSeeder extends Seeder
 
         $randomValues = [];
         foreach ($randomKeys as $key) {
-            $randomValues[] = $data[$key];
+            $randomValues[] = $enum::cases()[$key]->value;
         }
 
         return $randomValues;

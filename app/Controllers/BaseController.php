@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Michalsn\CodeIgniterHtmx\HTTP\IncomingRequest;
@@ -34,7 +35,7 @@ abstract class BaseController extends Controller
      *
      * @var list<string>
      */
-    protected $helpers = [];
+    protected $helpers = ['alerts'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -54,5 +55,30 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = service('session');
+    }
+
+    /**
+     * @param array<string,string>|string $message
+     */
+    protected function alert(string $type, array|string $message, bool $withInput = false): string | RedirectResponse
+    {
+        if (is_string($message)) {
+            $message = [
+                'error' => $message,
+            ];
+        }
+
+        if ($this->request->isHtmx()) {
+            return htmx_alert($type, $message);
+        }
+
+        $response = redirect()
+            ->back()
+            ->with($type, $message);
+        if ($withInput) {
+            $response->withInput();
+        }
+
+        return $response;
     }
 }

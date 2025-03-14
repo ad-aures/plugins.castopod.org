@@ -74,6 +74,9 @@ class AddPlugins extends Migration
             'text_searchable' => [
                 'type' => 'TSVECTOR GENERATED ALWAYS AS (to_tsvector(\'simple\', vendor || \' \' || name || \' \' || coalesce(description, \'\'))) STORED',
             ],
+            'icon_svg' => [
+                'type' => 'TEXT',
+            ],
             'repository_url' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',
@@ -82,31 +85,12 @@ class AddPlugins extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '256',
             ],
-            'readme_markdown' => [
-                'type' => 'TEXT',
-                'null' => true,
-            ],
             'homepage' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',
             ],
-            'license' => [
-                'type'    => 'plugin_license',
-                'default' => 'UNLICENSED',
-            ],
-            'license_markdown' => [
-                'type' => 'TEXT',
-                'null' => true,
-            ],
             'categories' => [
                 'type' => 'plugin_category ARRAY',
-            ],
-            'minCastopodVersion' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '128',
-            ],
-            'hooks' => [
-                'type' => 'plugin_hook ARRAY',
             ],
             'created_at' => [
                 'type' => 'DATETIME',

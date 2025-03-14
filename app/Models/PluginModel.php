@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Entities\Plugin;
-use App\Models\Cast\EnumArrayCast;
-use CodeIgniter\Model;
 
-class PluginModel extends Model
+class PluginModel extends BaseModel
 {
     protected $table = 'plugins';
 
@@ -18,24 +16,15 @@ class PluginModel extends Model
         'vendor',
         'name',
         'description',
+        'icon_svg',
         'repository_url',
         'repository_folder',
-        'readme_markdown',
         'homepage',
-        'license',
-        'license_markdown',
         'categories',
-        'minCastopodVersion',
-        'hooks',
     ];
 
     protected array $casts = [
-        'categories' => 'enum-array',
-        'hooks'      => 'enum-array',
-    ];
-
-    protected array $castHandlers = [
-        'enum-array' => EnumArrayCast::class,
+        'categories' => 'enum-array[Category]',
     ];
 
     // Dates

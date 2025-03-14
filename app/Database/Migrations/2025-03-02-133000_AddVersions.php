@@ -24,16 +24,35 @@ class AddVersions extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '128',
             ],
-            'commit_hash' => [
+            'commit' => [
                 'type'       => 'CHAR',
                 'constraint' => '40',
+            ],
+            'readme_markdown' => [
+                'type' => 'TEXT',
+                'null' => true,
+            ],
+            'license' => [
+                'type'    => 'plugin_license',
+                'default' => 'UNLICENSED',
+            ],
+            'license_markdown' => [
+                'type' => 'TEXT',
+                'null' => true,
+            ],
+            'min_castopod_version' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '128',
+            ],
+            'hooks' => [
+                'type' => 'plugin_hook ARRAY',
             ],
             'published_at' => [
                 'type' => 'DATETIME',
             ],
         ]);
 
-        $this->forge->addKey('id', true, false, 'pk_versions');
+        $this->forge->addPrimaryKey('id', 'pk_versions');
         $this->forge->addForeignKey('plugin_id', 'plugins', 'id', '', 'CASCADE', 'fk_versions_plugin_id');
         $this->forge->addUniqueKey(['plugin_id', 'tag'], 'uk_plugin_id_tag');
         $this->forge->createTable('versions');

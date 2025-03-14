@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Config;
 
+use App\Validation\MiscRules;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
@@ -22,7 +23,13 @@ class Validation extends BaseConfig
      *
      * @var list<string>
      */
-    public array $ruleSets = [Rules::class, FormatRules::class, FileRules::class, CreditCardRules::class];
+    public array $ruleSets = [
+        Rules::class,
+        FormatRules::class,
+        FileRules::class,
+        CreditCardRules::class,
+        MiscRules::class,
+    ];
 
     /**
      * Specifies the views that are used to display the

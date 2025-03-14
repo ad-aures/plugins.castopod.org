@@ -40,7 +40,6 @@
     <exclude>
       <directory suffix=".php">./app/Views</directory>
       <file>./app/Config/Routes.php</file>
-      <file>./app/Database/Seeds/FakePluginsSeeder.php</file>
     </exclude>
   </source>
   <php>

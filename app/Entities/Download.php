@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
-use CodeIgniter\Entity\Entity;
 use CodeIgniter\I18n\Time;
 
 /**
+ * @property int $id
  * @property int $version_id
  * @property Time $date
  * @property int $count
  */
-class Download extends Entity
+class Download extends BaseEntity
 {
     protected $dates = ['date'];
 

@@ -7,7 +7,7 @@ namespace App\Models\Cast;
 use CodeIgniter\DataCaster\Cast\BaseCast;
 use Exception;
 
-class EnumArrayCast extends BaseCast
+class EnumCast extends BaseCast
 {
     #[\Override]
     public static function get(mixed $value, array $params = [], ?object $helper = null): mixed
@@ -22,15 +22,13 @@ class EnumArrayCast extends BaseCast
 
         $enumNS = sprintf('\App\Entities\Enums\%s', $params[0]);
 
-        $values = explode(',', trim($value, '{}'));
-
-        return $enumNS::getFromArray($values);
+        return $enumNS::tryFrom($value);
     }
 
     #[\Override]
     public static function set(mixed $value, array $params = [], ?object $helper = null): string
     {
-        if (! is_array($value)) {
+        if (! is_string($value)) {
             self::invalidTypeValueError($value);
         }
 
@@ -40,9 +38,8 @@ class EnumArrayCast extends BaseCast
 
         $enumNS = sprintf('\App\Entities\Enums\%s', $params[0]);
 
-        // @phpstan-ignore typeCoverage.paramTypeCoverage
-        $values = array_map(fn ($enum) => $enum->value, $enumNS::getFromArray($value));
+        $enum = $enumNS::getFrom($value);
 
-        return sprintf('{%s}', implode(',', $values));
+        return $enum->value;
     }
 }
