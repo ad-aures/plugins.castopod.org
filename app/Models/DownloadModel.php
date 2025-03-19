@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Entities\Download;
+use App\Entities\Install;
 
 class DownloadModel extends BaseModel
 {
-    protected $table = 'downloads';
+    protected $table = 'installs';
 
-    protected $returnType = Download::class;
+    protected $returnType = Install::class;
 
     protected $allowedFields = ['version_id', 'date', 'count'];
 }

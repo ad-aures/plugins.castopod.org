@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Entities\Index;
 use App\Models\IndexModel;
 use App\Models\PluginModel;
+use App\Models\VersionModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Validation\Validation;
@@ -64,8 +65,8 @@ class Plugins extends BaseController
     public function submitAction(): RedirectResponse|string
     {
         $rules = [
-            'repository_url'    => 'required|valid_url_strict[https]',
-            'repository_folder' => 'permit_empty|regex_match[/^\/?[a-zA-Z0-9-_]+(\/[a-zA-Z0-9-_]+)*\/?$/]',
+            'repository_url' => 'required|valid_url_strict[https]',
+            'manifest_root'  => 'permit_empty|regex_match[/^\/?[a-zA-Z0-9-_]+(\/[a-zA-Z0-9-_]+)*\/?$/]',
         ];
 
         /** @var array<string,string> $data */
@@ -86,8 +87,8 @@ class Plugins extends BaseController
 
         $idIndex = new IndexModel()
             ->insert(new Index([
-                'repository_url'    => $validData['repository_url'],
-                'repository_folder' => trim($validData['repository_folder'] ?? '', '/'),
+                'repository_url' => $validData['repository_url'],
+                'manifest_root'  => trim($validData['manifest_root'] ?? '', '/'),
             ]));
 
         service('queue')
@@ -98,5 +99,30 @@ class Plugins extends BaseController
         $db->transComplete();
 
         return $this->alert('success', 'Your plugin has been added!');
+    }
+
+    public function info(string $vendor, string $name, ?string $versionTag = null): string
+    {
+        $plugin = new PluginModel()
+            ->getPluginByName($vendor, $name);
+
+        $currentVersion = $plugin->latest_version;
+        if ($versionTag !== null) {
+            $currentVersion = new VersionModel()
+                ->getPluginVersion($plugin, $versionTag);
+        }
+
+        $tab = $this->request->getGet('tab') ?? 'readme';
+
+        $currentTab = 'readme';
+        if (in_array($tab, ['readme', 'versions'], true)) {
+            $currentTab = $tab;
+        }
+
+        return view('info/' . $currentTab, [
+            'plugin'         => $plugin,
+            'currentVersion' => $currentVersion,
+            'currentTab'     => $currentTab,
+        ]);
     }
 }

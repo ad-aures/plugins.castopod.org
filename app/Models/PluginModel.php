@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Entities\Plugin;
+use App\Exceptions\PluginNotFoundException;
 
 class PluginModel extends BaseModel
 {
@@ -18,13 +19,16 @@ class PluginModel extends BaseModel
         'description',
         'icon_svg',
         'repository_url',
-        'repository_folder',
-        'homepage',
+        'manifest_root',
+        'homepage_url',
         'categories',
+        'authors',
+        'installs_total',
     ];
 
     protected array $casts = [
         'categories' => 'enum-array[Category]',
+        'authors'    => 'json-array-object[Person]',
     ];
 
     // Dates
@@ -38,4 +42,26 @@ class PluginModel extends BaseModel
     protected $skipValidation = false;
 
     protected $cleanValidationRules = true;
+
+    public function getPluginByName(string $vendor, string $name): Plugin
+    {
+        $cacheName = sprintf('plugin_%s_%s', $vendor, $name);
+
+        if (! ($found = cache($cacheName))) {
+            $found = $this->where([
+                'vendor' => $vendor,
+                'name'   => $name,
+            ])->first();
+
+            if (! $found instanceof Plugin) {
+                throw PluginNotFoundException::forPluginNotFound($vendor, $name);
+            }
+
+            cache()
+                ->save($cacheName, $found, DECADE);
+        }
+
+        /** @var Plugin $found */
+        return $found;
+    }
 }

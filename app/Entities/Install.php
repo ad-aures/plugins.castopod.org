@@ -12,7 +12,7 @@ use CodeIgniter\I18n\Time;
  * @property Time $date
  * @property int $count
  */
-class Download extends BaseEntity
+class Install extends BaseEntity
 {
     protected $dates = ['date'];
 

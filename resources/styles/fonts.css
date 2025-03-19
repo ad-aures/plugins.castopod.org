@@ -1,26 +1,37 @@
-/* inter-regular */
-@font-face {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("./fonts/inter-regular.woff2") format("woff2");
-}
+@layer base {
+  /* inter-regular */
+  @font-face {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("./fonts/inter-regular.woff2") format("woff2");
+  }
 
-/* inter-600 semibold */
-@font-face {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("./fonts/inter-600.woff2") format("woff2");
-}
+  /* inter-600 semibold */
+  @font-face {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("./fonts/inter-600.woff2") format("woff2");
+  }
 
-/* rubik-700 bold */
-@font-face {
-  font-family: Rubik;
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("./fonts/rubik-700.woff2") format("woff2");
+  /* rubik-700 bold */
+  @font-face {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("./fonts/rubik-700.woff2") format("woff2");
+  }
+
+  /* noto-sans-mono-regular */
+  @font-face {
+    font-family: "Noto Sans Mono";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("./fonts/noto-sans-mono-regular.woff2") format("woff2");
+  }
 }

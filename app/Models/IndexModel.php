@@ -12,7 +12,7 @@ class IndexModel extends BaseModel
 
     protected $returnType = Index::class;
 
-    protected $allowedFields = ['repository_url', 'repository_folder'];
+    protected $allowedFields = ['repository_url', 'manifest_root', 'submitted_by'];
 
     protected $createdField = 'submitted_at';
 

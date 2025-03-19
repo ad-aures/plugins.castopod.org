@@ -20,6 +20,7 @@
     "@prettier/plugin-xml": "^3.4.1",
     "@rollup/plugin-multi-entry": "^6.0.1",
     "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.14",
     "autoprefixer": "^10.4.21",
     "commitizen": "^4.3.1",
@@ -36,6 +37,7 @@
     }
   },
   "dependencies": {
+    "@github/relative-time-element": "^4.4.5",
     "alpinejs": "^3.14.9",
     "htmx.org": "2.0.4"
   }

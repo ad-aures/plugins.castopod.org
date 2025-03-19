@@ -36,16 +36,25 @@ class AddVersions extends Migration
                 'type'    => 'plugin_license',
                 'default' => 'UNLICENSED',
             ],
-            'license_markdown' => [
-                'type' => 'TEXT',
-                'null' => true,
-            ],
             'min_castopod_version' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '128',
             ],
             'hooks' => [
                 'type' => 'plugin_hook ARRAY',
+            ],
+            'size' => [
+                'type'     => 'INT',
+                'unsigned' => true,
+            ],
+            'file_count' => [
+                'type'     => 'INT',
+                'unsigned' => true,
+            ],
+            'installs_total' => [
+                'type'     => 'INT',
+                'unsigned' => true,
+                'default'  => 0,
             ],
             'published_at' => [
                 'type' => 'DATETIME',

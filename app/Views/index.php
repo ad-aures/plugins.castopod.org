@@ -1,4 +1,6 @@
 <?php
+
+use App\Entities\Enums\Category;
 use App\Entities\Plugin;
 use CodeIgniter\Pager\Pager;
 use Michalsn\CodeIgniterHtmx\View\View;
@@ -12,7 +14,9 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 <?php $this->extend('_layout') ?>
 
-<?php $this->section('title') ?>Castopod plugins<?php $this->endSection() ?>
+<?php $this->section(
+    'headerRight',
+) ?><h1 class="font-display font-bold text-5xl">Castopod plugins</h1><?php $this->endSection() ?>
 
 <?php $this->section('main') ?>
     <div class="flex lg:flex-row flex-col items-start bg-brand-900 grow-1">
@@ -20,7 +24,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
             <form action="<?= route_to(
                 'search',
             ) ?>" method="GET" hx-boost="true" hx-target="#plugin-list" class="top-8 sticky">
-                <div class="flex items-center bg-brand-950 ring ring-brand-800 focus-within:ring-brand-500 focus-within:ring-2 w-full">
+                <div class="flex items-center bg-brand-950 ring ring-brand-800 focus-within:ring-2 focus-within:ring-brand-500 w-full">
                     <div class="place-items-center grid h-10 aspect-square">
                         <?= icon('search-line', [
                                         'class' => 'text-2xl text-brand-800',
@@ -35,17 +39,9 @@ use Michalsn\CodeIgniterHtmx\View\View;
                         value="<?= $q ?>">
                 </div>
                 <h2 class="mt-4 font-display text-2xl">Filter</h2>
-                <details class="flex flex-col">
+                <details class="flex flex-col" <?= $categories !== [] ? 'open' : '' ?>>
                     <summary class="font-semibold">Categories</summary>
-                    <?php foreach ([
-                                    'accessibility',
-                                    'analytics',
-                                    'monetization',
-                                    'podcasting2',
-                                    'privacy',
-                                    'productivity',
-                                    'seo',
-                                ] as $category): ?>
+                    <?php foreach (Category::values() as $category): ?>
                         <label>
                             <input type="checkbox" name="categories[]" value="<?= $category ?>" class="text-brand-500" <?= in_array(
                                 $category,

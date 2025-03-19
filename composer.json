@@ -14,26 +14,26 @@
     "php": "^8.4",
     "codeigniter4/framework": "v4.6.0",
     "codeigniter4/queue": "dev-develop",
-    "codeigniter4/settings": "^2.2",
-    "codeigniter4/shield": "^1.1",
-    "czproject/git-php": "^4.3",
+    "codeigniter4/settings": "^v2.2.0",
+    "codeigniter4/shield": "^v1.1.0",
     "enshrined/svg-sanitize": "^0.21.0",
+    "league/commonmark": "^2.6.1",
     "michalsn/codeigniter-htmx": "^v2.1.0",
-    "tatter/alerts": "^3.1",
+    "tatter/alerts": "^v3.1.0",
     "yassinedoghri/codeigniter-vite": "^v1.1.0",
-    "yassinedoghri/php-icons": "^1.2"
+    "yassinedoghri/php-icons": "^v1.2.0"
   },
   "require-dev": {
     "codeigniter/phpstan-codeigniter": "^v1.5.3",
-    "fakerphp/faker": "^1.24",
+    "fakerphp/faker": "^v1.24.1",
     "mikey179/vfsstream": "^v1.6.12",
     "pestphp/pest": "^v3.7.4",
-    "pestphp/pest-plugin-type-coverage": "^v3.3.0",
+    "pestphp/pest-plugin-type-coverage": "v3.4.0",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^2.1.6",
-    "rector/rector": "^2.0.9",
+    "phpstan/phpstan": "^2.1.8",
+    "rector/rector": "^2.0.10",
     "symplify/coding-standard": "^12.2.3",
-    "symplify/easy-coding-standard": "^12.5.8"
+    "symplify/easy-coding-standard": "^12.5.9"
   },
   "scripts": {
     "dev": "php spark serve --host 0.0.0.0",

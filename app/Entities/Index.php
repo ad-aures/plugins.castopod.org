@@ -10,7 +10,7 @@ use CodeIgniter\I18n\Time;
 /**
  * @property int $id
  * @property URI $repository_url
- * @property string $repository_folder
+ * @property string $manifest_root
  * @property Time $submitted_at
  */
 class Index extends BaseEntity

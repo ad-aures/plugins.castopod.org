@@ -2,6 +2,7 @@
 @import "tailwindcss" source("../../app");
 
 @plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --breakpoint-*: initial;
@@ -22,8 +23,9 @@
   --color-brand-900: oklch(31.3% 0.0979 145.19);
   --color-brand-950: oklch(17.36% 0.0543 145.19);
 
-  --font-sans: "Inter", sans-serif;
-  --font-display: "Rubik", sans-serif;
+  --font-sans: "Inter", "sans-serif";
+  --font-display: "Rubik", "sans-serif";
+  --font-mono: "Noto Sans Mono", "mono";
 }
 
 html {
@@ -32,4 +34,22 @@ html {
 
 body {
   @apply min-h-full;
+}
+
+.versions-list {
+  .tag {
+    @apply flex-1 relative overflow-hidden;
+  }
+
+  .leaders::after {
+    @apply absolute font-mono;
+    content: " . . . . . . . . . . . . . . . . . . . "
+      ". . . . . . . . . . . . . . . . . . . . . . . "
+      ". . . . . . . . . . . . . . . . . . . . . . . "
+      ". . . . . . . . . . . . . . . . . . . . . . . "
+      ". . . . . . . . . . . . . . . . . . . . . . . "
+      ". . . . . . . . . . . . . . . . . . . . . . . "
+      ". . . . . . . . . . . . . . . . . . . . . . . ";
+    text-align: right;
+  }
 }

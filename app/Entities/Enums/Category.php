@@ -9,6 +9,7 @@ enum Category: string
     case Accessibility = 'accessibility';
     case Analytics = 'analytics';
     case Monetization = 'monetization';
+    case Official = 'official';
     case Podcasting2 = 'podcasting2';
     case Privacy = 'privacy';
     case Productivity = 'productivity';
@@ -21,8 +22,8 @@ enum Category: string
     public static function getFromArray(array $value): array
     {
         $enumCases = [];
-        foreach ($value as $stringHook) {
-            $enumCase = self::tryFrom($stringHook);
+        foreach ($value as $stringCategory) {
+            $enumCase = self::tryFrom($stringCategory);
 
             if (! $enumCase instanceof self) {
                 continue;
@@ -32,5 +33,13 @@ enum Category: string
         }
 
         return $enumCases;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function values(): array
+    {
+        return array_map(fn (Category $case) => $case->value, self::cases());
     }
 }

@@ -36,8 +36,9 @@ class OfficialPluginsSeeder extends Seeder
 
             $indexId = new IndexModel()
                 ->insert(new Index([
-                    'repository_url'    => $repositoryUrl,
-                    'repository_folder' => $pluginFolder,
+                    'repository_url' => $repositoryUrl,
+                    'manifest_root'  => $pluginFolder,
+                    'submitted_by'   => 1,
                 ]));
 
             service('queue')

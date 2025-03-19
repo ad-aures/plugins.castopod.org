@@ -25,6 +25,8 @@ class AuthGroups extends ShieldAuthGroups
      */
     public string $defaultGroup = 'user';
 
+    public string $mostPowerfulGroup = 'superadmin';
+
     /**
      * --------------------------------------------------------------------
      * Groups

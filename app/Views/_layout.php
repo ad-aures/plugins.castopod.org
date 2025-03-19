@@ -13,7 +13,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="/favicon.ico">
 </head>
-<body class="flex flex-col bg-brand-800 bg-[length:300px]" style="background-image: url('<?= base_url(
+<body class="flex flex-col bg-[length:300px] bg-brand-800" style="background-image: url('<?= base_url(
     '/assets/images/castopod-pattern.svg',
 ); ?>');">
     <header class="text-brand-100">
@@ -40,7 +40,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
             </div>
         </nav>
         <div class="starting:opacity-0 mx-auto pt-24 pb-32 transition duration-1000 container">
-            <h1 class="font-display font-bold text-5xl"><?= $this->renderSection('title') ?></h1>
+            <?= $this->renderSection('headerRight') ?>
         </div>
     </header>
     <main class="flex flex-col bg-brand-900 starting:opacity-0 border-t border-brand-950 h-full transition starting:translate-y-full duration-500 ease-out grow">

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Entities\Enums\Category;
 use App\Entities\Index;
+use App\Entities\Person;
 use App\Entities\Plugin;
 use App\Entities\Version;
 use App\Models\IndexModel;
@@ -14,18 +16,22 @@ use CodeIgniter\I18n\Time;
 use CodeIgniter\Queue\BaseJob;
 use CodeIgniter\Queue\Interfaces\JobInterface;
 use CodeIgniter\Validation\Validation;
+use Config\App;
 use enshrined\svgSanitize\Sanitizer;
 use Exception;
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class CrawlPlugin extends BaseJob implements JobInterface
 {
     protected string $tempRepoPath = '';
 
+    protected string $pluginFolderPath = '';
+
     protected string $manifestFilePath = '';
 
     protected string $readmeFilePath = '';
-
-    protected string $licenseFilePath = '';
 
     protected string $iconFilePath = '';
 
@@ -55,14 +61,13 @@ class CrawlPlugin extends BaseJob implements JobInterface
 
         $this->tempRepoPath = $tempRepoPath;
 
-        $pluginFolder = implode(
+        $this->pluginFolderPath = implode(
             DIRECTORY_SEPARATOR,
-            [$this->tempRepoPath, $pluginIndex->repository_folder],
+            [$this->tempRepoPath, $pluginIndex->manifest_root],
         ) . DIRECTORY_SEPARATOR;
-        $this->manifestFilePath = $pluginFolder . 'manifest.json';
-        $this->readmeFilePath = $pluginFolder . 'README.md';
-        $this->licenseFilePath = $pluginFolder . 'LICENSE.md';
-        $this->iconFilePath = $pluginFolder . 'icon.svg';
+        $this->manifestFilePath = $this->pluginFolderPath . 'manifest.json';
+        $this->readmeFilePath = $this->pluginFolderPath . 'README.md';
+        $this->iconFilePath = $this->pluginFolderPath . 'icon.svg';
 
         try {
             $db = db_connect();
@@ -74,13 +79,13 @@ class CrawlPlugin extends BaseJob implements JobInterface
             exec(sprintf('cd %s && git remote add -f origin %s', $this->tempRepoPath, $pluginIndex->repository_url));
 
             // do a sparse checkout when plugin is in subfolder
-            if ($pluginIndex->repository_folder !== '') {
+            if ($pluginIndex->manifest_root !== '') {
                 exec(sprintf('cd %s && git config core.sparseCheckout true', $this->tempRepoPath));
                 exec(
                     sprintf(
                         'cd %s && echo "%s" >> .git/info/sparse-checkout',
                         $this->tempRepoPath,
-                        $pluginIndex->repository_folder,
+                        $pluginIndex->manifest_root,
                     ),
                 );
             }
@@ -110,20 +115,32 @@ class CrawlPlugin extends BaseJob implements JobInterface
 
             [$vendor, $name] = explode('/', $manifestData['name']);
 
+            // TODO: check if is official via list of official repositories
+            $isOfficial = $vendor === 'ad-aures'; // official plugins are published by ad-aures
+
             $dirtyIcon = (string) @file_get_contents($this->iconFilePath);
 
             $cleanIcon = (string) new Sanitizer()
                 ->sanitize($dirtyIcon);
 
+            /** @var App $appConfig */
+            $appConfig = config('App');
+
+            // check that the icon does not exceed size limit, discard otherwise
+            if (strlen($cleanIcon) > $appConfig->maxIconSize) {
+                $cleanIcon = '';
+            }
+
             $newPlugin = new Plugin([
-                'vendor'            => $vendor,
-                'name'              => $name,
-                'description'       => $manifestData['description'] ?? '',
-                'icon_svg'          => $cleanIcon,
-                'repository_url'    => $pluginIndex->repository_url,
-                'repository_folder' => $pluginIndex->repository_folder,
-                'homepage'          => $manifestData['homepage'] ?? '',
-                'categories'        => $manifestData['keywords'] ?? [],
+                'vendor'         => $vendor,
+                'name'           => $name,
+                'description'    => $manifestData['description'] ?? null,
+                'icon_svg'       => $cleanIcon === '' ? null : $cleanIcon,
+                'repository_url' => $pluginIndex->repository_url,
+                'manifest_root'  => $pluginIndex->manifest_root,
+                'homepage_url'   => $manifestData['homepage'] ?? null,
+                'categories'     => $this->getCategoriesFromKeywords($manifestData['keywords'] ?? [], $isOfficial),
+                'authors'        => $manifestData['authors'],
             ]);
 
             $newPluginId = new PluginModel()
@@ -237,7 +254,7 @@ class CrawlPlugin extends BaseJob implements JobInterface
     }
 
     /**
-     * @return array{name:string,minCastopodVersion:string,hooks:list<string>,version:string,description?:string,authors?:array{name:string,email?:string,url?:string},homepage?:string,license?:string,private?:bool,submodule?:bool,keywords?:list<string>}
+     * @return array{name:string,minCastopodVersion:string,hooks:list<string>,version:string,description?:string,authors:list<Person>,homepage?:string,license?:string,private?:bool,submodule?:bool,keywords?:list<string>}
      */
     private function parseManifest(): array
     {
@@ -285,8 +302,10 @@ class CrawlPlugin extends BaseJob implements JobInterface
             throw new Exception('manifest.json file has errors: ' . print_r($validation->getErrors(), true));
         }
 
-        /** @var array{name:string,minCastopodVersion:string,hooks:list<string>,version:string,description?:string,authors?:array{name:string,email?:string,url?:string},homepage?:string,license?:string,private?:bool,submodule?:bool,keywords?:list<string>} $validatedData */
+        /** @var array{name:string,minCastopodVersion:string,hooks:list<string>,version:string,description?:string,authors?:list<array{name:string,email?:string,url?:string}|string>,homepage?:string,license?:string,private?:bool,submodule?:bool,keywords?:list<string>} $validatedData */
         $validatedData = $validation->getValidated();
+
+        $validatedData['authors'] = $this->parseAuthors($validatedData['authors'] ?? []);
 
         return $validatedData;
     }
@@ -310,19 +329,44 @@ class CrawlPlugin extends BaseJob implements JobInterface
 
         // get readme and license contents if present
         $readmeMarkdown = (string) @file_get_contents($this->readmeFilePath);
-        $licenseMarkdown = (string) @file_get_contents($this->licenseFilePath);
+
+        [$bytesTotal, $fileCount] = $this->getDirectoryMetadata($this->pluginFolderPath);
 
         return new Version([
             'plugin_id'            => $pluginId,
             'tag'                  => $tag,
             'commit'               => $commit,
-            'readme_markdown'      => $readmeMarkdown,
+            'readme_markdown'      => $readmeMarkdown === '' ? null : $readmeMarkdown,
             'license'              => $manifestData['license'] ?? '',
-            'license_markdown'     => $licenseMarkdown,
             'min_castopod_version' => $manifestData['minCastopodVersion'],
             'hooks'                => $manifestData['hooks'],
+            'size'                 => $bytesTotal,
+            'file_count'           => $fileCount,
             'published_at'         => $publishedAt,
         ]);
+    }
+
+    /**
+     * @param list<string> $keywords
+     * @return list<string>
+     */
+    private function getCategoriesFromKeywords(array $keywords, bool $isOfficial = false): array
+    {
+        $categories = [];
+        $availableCategories = Category::values();
+        foreach ($keywords as $keyword) {
+            $lowerKeyword = strtolower($keyword);
+            $key = array_search($lowerKeyword, $availableCategories, true);
+            if ($key !== false && $lowerKeyword !== Category::Official->value) {
+                $categories[] = $availableCategories[$key];
+            }
+        }
+
+        if ($isOfficial) {
+            $categories[] = Category::Official->value;
+        }
+
+        return $categories;
     }
 
     /**
@@ -384,5 +428,84 @@ class CrawlPlugin extends BaseJob implements JobInterface
         );
 
         return $path;
+    }
+
+    /**
+     * @link from https://stackoverflow.com/a/21409562
+     *
+     * @return array{0:int,1:int}
+     */
+    private function getDirectoryMetadata(string $path): array
+    {
+        $bytesTotal = 0;
+        $fileCount = 0;
+        $path = (string) realpath($path);
+        if ($path !== '' && file_exists($path)) {
+            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
+                $path,
+                FilesystemIterator::SKIP_DOTS,
+            ));
+            /** @var \SplFileObject $object */
+            foreach ($files as $object) {
+                $bytesTotal += $object->getSize();
+                $fileCount++;
+            }
+        }
+
+        return [$bytesTotal, $fileCount];
+    }
+
+    /**
+     * @param array<array{name:string,email?:string,url?:string}|string> $authors
+     * @return list<Person>
+     */
+    private function parseAuthors(array $authors): array
+    {
+        /** @var list<Person> $parsedAuthors */
+        $parsedAuthors = [];
+
+        foreach ($authors as $author) {
+            if (is_string($author)) {
+                $result = preg_match(
+                    '/^(?<name>[^<>()]*)\s*(<(?<email>.*)>)?\s*(\((?<url>.*)\))?$/',
+                    $author,
+                    $matches,
+                );
+
+                if (! $result) {
+                    throw new Exception('Author string is not valid.');
+                }
+
+                $newAuthor = [
+                    'name' => $matches['name'],
+                ];
+
+                if (array_key_exists('email', $matches)) {
+                    $newAuthor['email'] = $matches['email'];
+                }
+
+                if (array_key_exists('url', $matches)) {
+                    $newAuthor['url'] = $matches['url'];
+                }
+
+                $author = $newAuthor;
+            }
+
+            $validation = service('validation');
+            $validation->setRules([
+                'name'  => 'required|max_length[64]',
+                'email' => 'permit_empty|max_length[254]|valid_email',
+                'url'   => 'permit_empty|valid_url_strict',
+            ]);
+
+            if ($validation->run($author)) {
+                /** @var array{name:string,email?:string,url?:string} */
+                $validData = $validation->getValidated();
+
+                $parsedAuthors[] = new Person($validData);
+            }
+        }
+
+        return $parsedAuthors;
     }
 }

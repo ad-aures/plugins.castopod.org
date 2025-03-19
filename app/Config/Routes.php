@@ -6,9 +6,6 @@ use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
 
-$routes->addPlaceholder('vendor', '[a-z0-9]([_.-]?[a-z0-9]+)*');
-$routes->addPlaceholder('name', '[a-z0-9]([_.-]?[a-z0-9]+)*');
-
 service('auth')
     ->routes($routes);
 
@@ -21,4 +18,12 @@ $routes->get('search', 'Plugins::index', [
 $routes->get('submit-plugin', 'Plugins::submit', [
     'as' => 'plugin-submit',
 ]);
-$routes->post('submit-plugin', 'Plugins::submitAction');
+$routes->post('/', 'Plugins::submitAction', [
+    'as' => 'plugin-index',
+]);
+$routes->get('(:segment)/(:segment)', 'Plugins::info/$1/$2', [
+    'as' => 'plugin-info',
+]);
+$routes->get('(:segment)/(:segment)/v/(:segment)', 'Plugins::info/$1/$2/$3', [
+    'as' => 'plugin-version',
+]);

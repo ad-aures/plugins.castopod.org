@@ -6,16 +6,11 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AddDownloads extends Migration
+class AddInstalls extends Migration
 {
     public function up(): void
     {
         $this->forge->addField([
-            'id' => [
-                'type'           => 'INT',
-                'unsigned'       => true,
-                'auto_increment' => true,
-            ],
             'version_id' => [
                 'type'     => 'INT',
                 'unsigned' => true,
@@ -30,14 +25,13 @@ class AddDownloads extends Migration
             ],
         ]);
 
-        $this->forge->addPrimaryKey('id', 'pk_downloads');
-        $this->forge->addForeignKey('version_id', 'versions', 'id', '', 'CASCADE', 'fk_downloads_version_id');
-        $this->forge->addUniqueKey(['version_id', 'date'], 'uk_version_id_date');
-        $this->forge->createTable('downloads');
+        $this->forge->addPrimaryKey(['version_id', 'date'], 'pk_installs');
+        $this->forge->addForeignKey('version_id', 'versions', 'id', '', 'CASCADE', 'fk_installs_version_id');
+        $this->forge->createTable('installs');
     }
 
     public function down(): void
     {
-        $this->forge->dropTable('downloads');
+        $this->forge->dropTable('installs');
     }
 }

@@ -201,4 +201,9 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+
+    /**
+     * Max plugin icon size, restricted so as not to overload the database.
+     */
+    public int $maxIconSize = 200 * 1024; // limit set to 200KiB
 }

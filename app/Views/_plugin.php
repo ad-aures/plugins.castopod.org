@@ -14,17 +14,20 @@ use App\Entities\Plugin;
                 'puzzle-2-fill',
                 [
                     'class' => 'text-4xl',
-
                 ],
             ) ?></div>
         <?php endif; ?>
-        <h2 class="mt-2"><a href="#"><span class="z-10 absolute inset-0"></span><span class="text-sm"><?= $plugin->vendor ?>/</span><span class="-mt-1 font-bold line-clamp-1"><?= $plugin->name ?></span></a></h2>
+        <h2 class="mt-2"><a href="<?= route_to(
+            'plugin-info',
+            $plugin->vendor,
+            $plugin->name,
+        ) ?>"><span class="z-10 absolute inset-0"></span><span class="text-sm"><?= $plugin->vendor ?>/</span><span class="-mt-1 font-bold line-clamp-1"><?= $plugin->name ?></span></a></h2>
     </header>
     <p class="mt-2 text-sm line-clamp-3"><?= $plugin->description ?></p>
     <footer class="flex justify-between items-center mt-auto pt-4">
-        <small>2K downloads</small>
+        <small><?= number_abbr($plugin->installs_total) ?> installs</small>
         <?= icon('arrow-right-long-line', [
-                        'class' => 'text-2xl',
-                    ]) ?>
+                    'class' => 'text-2xl',
+                ]) ?>
     </footer>
 </article>

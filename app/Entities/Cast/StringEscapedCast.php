@@ -6,7 +6,7 @@ namespace App\Entities\Cast;
 
 use CodeIgniter\Entity\Cast\BaseCast;
 
-class StringEscaped extends BaseCast
+class StringEscapedCast extends BaseCast
 {
     /**
      * @param string $value

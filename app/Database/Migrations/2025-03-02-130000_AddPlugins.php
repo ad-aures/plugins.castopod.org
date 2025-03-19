@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use Config\App;
 
 class AddPlugins extends Migration
 {
@@ -34,6 +35,7 @@ class AddPlugins extends Migration
                 'accessibility',
                 'analytics',
                 'monetization',
+                'official',
                 'podcasting2',
                 'privacy',
                 'productivity',
@@ -53,6 +55,9 @@ class AddPlugins extends Migration
         SQL;
         $this->db->query($hookEnumQuery);
 
+        /** @var App $appConfig */
+        $appConfig = config('App');
+
         $this->forge->addField([
             'id' => [
                 'type'           => 'INT',
@@ -70,27 +75,39 @@ class AddPlugins extends Migration
             'description' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',
+                'null'       => true,
             ],
             'text_searchable' => [
                 'type' => 'TSVECTOR GENERATED ALWAYS AS (to_tsvector(\'simple\', vendor || \' \' || name || \' \' || coalesce(description, \'\'))) STORED',
             ],
             'icon_svg' => [
-                'type' => 'TEXT',
+                'type'       => 'VARCHAR',
+                'constraint' => $appConfig->maxIconSize,
+                'null'       => true,
             ],
             'repository_url' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',
             ],
-            'repository_folder' => [
+            'manifest_root' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '256',
             ],
-            'homepage' => [
+            'homepage_url' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',
+                'null'       => true,
             ],
             'categories' => [
                 'type' => 'plugin_category ARRAY',
+            ],
+            'authors' => [
+                'type' => 'JSONB',
+            ],
+            'installs_total' => [
+                'type'     => 'INT',
+                'unsigned' => true,
+                'default'  => 0,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
