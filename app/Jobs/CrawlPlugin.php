@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Entities\Enums\Category;
+use App\Entities\Enums\License;
 use App\Entities\Index;
 use App\Entities\Person;
 use App\Entities\Plugin;
@@ -132,8 +133,7 @@ class CrawlPlugin extends BaseJob implements JobInterface
             }
 
             $newPlugin = new Plugin([
-                'vendor'         => $vendor,
-                'name'           => $name,
+                'key'            => $manifestData['name'],
                 'description'    => $manifestData['description'] ?? null,
                 'icon_svg'       => $cleanIcon === '' ? null : $cleanIcon,
                 'repository_url' => $pluginIndex->repository_url,
@@ -143,10 +143,9 @@ class CrawlPlugin extends BaseJob implements JobInterface
                 'authors'        => $manifestData['authors'],
             ]);
 
-            $newPluginId = new PluginModel()
-                ->insert($newPlugin);
-
-            assert(is_int($newPluginId));
+            if (! new PluginModel()->insert($newPlugin, false)) {
+                throw new Exception('Error when inserting plugin ' . $newPlugin->key);
+            }
 
             /**
              * CRAWL VERSIONS
@@ -158,11 +157,11 @@ class CrawlPlugin extends BaseJob implements JobInterface
                 throw new Exception('Could not get last commit info.');
             }
 
-            [$commit, $publicationDate] = explode("\t", trim($lastCommitInfo));
+            [$commitHash, $publicationDate] = explode("\t", trim($lastCommitInfo));
             $devVersion = $this->getVersionData(
-                $newPluginId,
+                $newPlugin->key,
                 sprintf('dev-%s', $defaultBranch),
-                $commit,
+                $commitHash,
                 Time::createFromFormat(DATE_ATOM, $publicationDate),
                 isDev: true,
             );
@@ -218,7 +217,7 @@ class CrawlPlugin extends BaseJob implements JobInterface
                 exec(sprintf('cd %s && git switch --detach %s', $this->tempRepoPath, $refname));
 
                 $newVersion = $this->getVersionData(
-                    $newPluginId,
+                    $newPlugin->key,
                     $tag,
                     $objectName,
                     Time::createFromFormat(DATE_ATOM, $creatorDate),
@@ -314,9 +313,9 @@ class CrawlPlugin extends BaseJob implements JobInterface
      * @return Version|false new version or false on failure
      */
     private function getVersionData(
-        int $pluginId,
+        string $pluginKey,
         string $tag,
-        string $commit,
+        string $commitHash,
         Time $publishedAt,
         bool $isDev = false,
     ): Version|false {
@@ -333,11 +332,11 @@ class CrawlPlugin extends BaseJob implements JobInterface
         [$bytesTotal, $fileCount] = $this->getDirectoryMetadata($this->pluginFolderPath);
 
         return new Version([
-            'plugin_id'            => $pluginId,
+            'plugin_key'           => $pluginKey,
             'tag'                  => $tag,
-            'commit'               => $commit,
+            'commit_hash'          => $commitHash,
             'readme_markdown'      => $readmeMarkdown === '' ? null : $readmeMarkdown,
-            'license'              => $manifestData['license'] ?? '',
+            'license'              => $this->getLicense($manifestData['license'] ?? ''),
             'min_castopod_version' => $manifestData['minCastopodVersion'],
             'hooks'                => $manifestData['hooks'],
             'size'                 => $bytesTotal,
@@ -367,6 +366,22 @@ class CrawlPlugin extends BaseJob implements JobInterface
         }
 
         return $categories;
+    }
+
+    private function getLicense(string $license): string
+    {
+        if ($license === '') {
+            return License::UNLICENSED->value;
+        }
+
+        $availableLicenses = License::values();
+        $key = array_search(strtolower($license), array_map('strtolower', $availableLicenses), true);
+
+        if (! $key) {
+            return License::Custom->value;
+        }
+
+        return $availableLicenses[$key];
     }
 
     /**

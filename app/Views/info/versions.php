@@ -1,11 +1,9 @@
 <?php
 use App\Entities\Plugin;
-use App\Entities\Version;
 use Michalsn\CodeIgniterHtmx\View\View;
 
 /** @var View $this */
 /** @var Plugin $plugin */
-/** @var Version $currentVersion */
 ?>
 
 <?php $this->extend('info/_layout') ?>
@@ -16,8 +14,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
             <li>
                 <a class="group flex justify-between" href="<?= route_to(
                     'plugin-version',
-                    $plugin->vendor,
-                    $plugin->name,
+                    $plugin->key,
                     $version->tag,
                 ) ?>">
                     <span class="tag">
@@ -27,7 +24,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                     </span>
                     <span class="date"><?= relative_time($version->published_at) ?></span>
                     <span class="inline-flex justify-end items-center gap-x-1 ml-4 w-[6ch] font-mono"><?= number_abbr(
-                        $version->installs_total,
+                        $version->downloads_total,
                     ) . icon(
                         'arrow-down-line',
                         [

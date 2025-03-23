@@ -1,0 +1,304 @@
+openapi: 3.1.1
+info:
+  title: Castopod Plugin Registry API
+  version: 1.0.0
+  description: API for retrieving and managing plugins in the Castopod Plugin Registry.
+paths:
+  /{vendor}/{name}:
+    get:
+      summary: Get the plugin info
+      description: Retrieves plugin details given a vendor and plugin name.
+      parameters:
+        - name: vendor
+          in: path
+          required: true
+          description: The vendor or organization that provides the plugin.
+          schema:
+            type: string
+          example: "acme"
+        - name: name
+          in: path
+          required: true
+          description: The unique name of the plugin.
+          schema:
+            type: string
+          example: "hello-world"
+      responses:
+        "200":
+          description: Plugin details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Plugin"
+  /{vendor}/{name}/versions:
+    get:
+      summary: Get all available version tags of a plugin
+      description: Returns a list of all available versions and the latest version tag.
+      parameters:
+        - name: vendor
+          in: path
+          required: true
+          description: The vendor or organization that provides the plugin.
+          schema:
+            type: string
+          example: "acme"
+        - name: name
+          in: path
+          required: true
+          description: The unique name of the plugin.
+          schema:
+            type: string
+          example: "hello-world"
+      responses:
+        "200":
+          description: List of available versions with the latest version tag.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  latest:
+                    type: string
+                    description: The latest version tag.
+                    example: "2.0.0"
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                    description: List of all available version tags.
+                    example: ["2.0.0", "1.0.1", "1.0.0"]
+  /{vendor}/{name}/v/latest:
+    get:
+      summary: Get the latest version of a plugin
+      description: Retrieves the latest available version details of a plugin.
+      parameters:
+        - name: vendor
+          in: path
+          required: true
+          description: The vendor or organization that provides the plugin.
+          schema:
+            type: string
+          example: "acme"
+        - name: name
+          in: path
+          required: true
+          description: The unique name of the plugin.
+          schema:
+            type: string
+          example: "hello-world"
+      responses:
+        "200":
+          description: Plugin version details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Version"
+  /{vendor}/{name}/v/{version}:
+    get:
+      summary: Get specific version info of a plugin
+      description: Retrieves details of a specific plugin version.
+      parameters:
+        - name: vendor
+          in: path
+          required: true
+          description: The vendor or organization that provides the plugin.
+          schema:
+            type: string
+          example: "acme"
+        - name: name
+          in: path
+          required: true
+          description: The unique name of the plugin.
+          schema:
+            type: string
+          example: "hello-world"
+        - name: version
+          in: path
+          required: true
+          description: The specific version tag of the plugin to retrieve.
+          schema:
+            type: string
+          example: "1.0.0"
+      responses:
+        "200":
+          description: Plugin version details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Version"
+    patch:
+      summary: Increment download count
+      description: Increments the download count for a specific version of a plugin.
+      parameters:
+        - name: vendor
+          in: path
+          required: true
+          description: The vendor or organization that provides the plugin.
+          schema:
+            type: string
+          example: "acme"
+        - name: name
+          in: path
+          required: true
+          description: The unique name of the plugin.
+          schema:
+            type: string
+          example: "hello-world"
+        - name: version
+          in: path
+          required: true
+          description: The specific version tag of the plugin.
+          schema:
+            type: string
+          example: "1.0.0"
+      responses:
+        "204":
+          description: Download count incremented successfully
+components:
+  schemas:
+    Plugin:
+      type: object
+      properties:
+        vendor:
+          type: string
+          description: The vendor or organization that provides the plugin.
+          example: "acme"
+        name:
+          type: string
+          description: The unique name of the plugin.
+          example: "hello-world"
+        description:
+          type: string
+          description: A short description of the plugin.
+          example: "A simple plugin to say hello to the world."
+          nullable: true
+        repository_url:
+          type: string
+          format: uri
+          description: URL to the plugin's source code repository.
+          example: "https://github.com/acme/hello-world.git"
+        manifest_root:
+          type: string
+          description: The directory containing the plugin’s manifest.json file.
+          example: ""
+        homepage_url:
+          type: string
+          description: URL to the plugin's homepage, if available.
+          example: "https://example.com/plugin-homepage"
+          nullable: true
+        categories:
+          type: array
+          description: List of categories that describe the plugin.
+          items:
+            type: string
+            enum:
+              [
+                "accessibility",
+                "analytics",
+                "monetization",
+                "official",
+                "podcasting2",
+                "privacy",
+                "productivity",
+                "seo",
+              ]
+          example: ["accessibility", "official", "seo"]
+        authors:
+          type: array
+          description: List of authors who created the plugin.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the author.
+                example: "John Doe"
+              url:
+                type: string
+                format: uri
+                description: URL to the author's profile or website.
+                example: "https://johndoe.com/"
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the plugin was first registered.
+          example: "2025-03-20T12:00:00+00:00"
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of the last update to the plugin.
+          example: "2025-03-20T12:00:00+00:00"
+    Version:
+      type: object
+      properties:
+        vendor:
+          type: string
+          description: The vendor or organization that provides the plugin.
+          example: "acme"
+        name:
+          type: string
+          description: The unique name of the plugin.
+          example: "hello-world"
+        tag:
+          type: string
+          description: The version tag of the plugin.
+          example: "1.0.0"
+        commit_hash:
+          type: string
+          description: The commit SHA of the plugin version.
+          example: "2ef7bde608ce5404e97d5f042f95f89f1c232871"
+        readme:
+          type: string
+          description: The README contents describing the plugin.
+          example: "# Hello World Plugin\n\nA simple plugin to say hello to the world."
+        license:
+          type: string
+          description: The license under which the plugin is distributed.
+          enum:
+            [
+              "AGPL-3.0-only",
+              "AGPL-3.0-or-later",
+              "Apache-2.0",
+              "BSL-1.0",
+              "Custom",
+              "GPL-3.0-only",
+              "GPL-3.0-or-later",
+              "LGPL-3.0-only",
+              "LGPL-3.0-or-later",
+              "MIT",
+              "MPL-2.0",
+              "Unlicense",
+              "UNLICENSED",
+            ]
+          example: "MIT"
+        min_castopod_version:
+          type: string
+          description: The minimum required Castopod version.
+          example: "2.0.0"
+        hooks:
+          type: array
+          description: List of hooks used by the plugin.
+          items:
+            type: string
+            enum:
+              [
+                "rssBeforeChannel",
+                "rssAfterChannel",
+                "rssBeforeItem",
+                "rssAfterItem",
+                "siteHead",
+              ]
+          example: ["rssAfterChannel", "rssAfterItem"]
+        size:
+          type: integer
+          description: Size of the plugin in bytes.
+          example: 37721
+        file_count:
+          type: integer
+          description: Number of files in the plugin.
+          example: 4
+        published_at:
+          type: string
+          format: date-time
+          description: Timestamp when the version was published.
+          example: "2025-03-14T13:00:00+00:00"

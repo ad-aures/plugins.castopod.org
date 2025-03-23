@@ -1,9 +1,7 @@
 <?php
 use App\Entities\Plugin;
-use App\Entities\Version;
 
 /** @var Plugin $plugin */
-/** @var Version $currentVersion */
 ?>
 <div class="flex flex-col">
     <h2 class="font-bold text-brand-200 text-xs uppercase tracking-wider">Install</h2>
@@ -13,8 +11,8 @@ use App\Entities\Version;
             'class' => 'text-xl shrink-0',
 
         ],
-    ) ?><span class="font-mono text-sm whitespace-nowrap">castopod add <?= $plugin->key ?><?= $currentVersion->tag !== $plugin->latest_version->tag ? '@' . $currentVersion->tag : '' ?></span></code>
-    <p class="mt-1 text-brand-200 text-sm">Compatible with <strong>Castopod v<?= $currentVersion->min_castopod_version ?> and up</strong></p>
+    ) ?><span class="font-mono text-sm whitespace-nowrap">castopod add <?= $plugin->key ?><?= $plugin->selected_version->tag !== $plugin->latest_version->tag ? '@' . $plugin->selected_version->tag : '' ?></span></code>
+    <p class="mt-1 text-brand-200 text-sm">Compatible with <strong>Castopod v<?= $plugin->selected_version->min_castopod_version ?> and up</strong></p>
 </div>
 
 <div class="flex flex-col mt-6">
@@ -36,11 +34,11 @@ use App\Entities\Version;
 <dl class="gap-y-6 grid grid-cols-2">
     <div>
         <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">Version</dt>
-        <dd class="font-mono font-bold text-lg"><?= $currentVersion->tag ?></dd>
+        <dd class="font-mono font-bold text-lg"><?= $plugin->selected_version->tag ?></dd>
     </div>
     <div>
         <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">License</dt>
-        <dd class="font-bold text-lg"><?= $currentVersion->license->value ?></dd>
+        <dd class="font-bold text-lg"><?= $plugin->selected_version->license->value ?></dd>
     </div>
     <div class="col-span-2">
         <dt class="inline-flex items-center gap-x-1 font-bold text-brand-200 text-xs uppercase tracking-wider"><?= icon(
@@ -50,7 +48,7 @@ use App\Entities\Version;
             ],
         ) ?>Hooks</dt>
         <dd class="flex flex-wrap gap-2">
-        <?php foreach ($currentVersion->hooks as $hook): ?>
+        <?php foreach ($plugin->selected_version->hooks as $hook): ?>
             <span class="bg-brand-200 px-2 font-bold text-brand-950 text-sm"><?= $hook->value ?></span>
         <?php endforeach; ?>
         </dd>
@@ -61,22 +59,22 @@ use App\Entities\Version;
             [
                 'class' => 'text-sm',
             ],
-        ) ?>Total installs</dt>
+        ) ?>Total downloads</dt>
         <dd class="flex items-center gap-x-2 font-bold text-lg"><?= number_format(
-            $plugin->installs_total,
+            $plugin->downloads_total,
         ) ?></dd>
     </div>
     <div class="col-span-2">
         <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">Last publication</dt>
-        <dd class="font-bold text-lg"><?= relative_time($currentVersion->published_at) ?></dd>
+        <dd class="font-bold text-lg"><?= relative_time($plugin->selected_version->published_at) ?></dd>
     </div>
     <div>
         <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">Size</dt>
-        <dd class="font-bold text-lg"><?= format_bytes($currentVersion->size, true) ?></dd>
+        <dd class="font-bold text-lg"><?= format_bytes($plugin->selected_version->size, true) ?></dd>
     </div>
     <div>
         <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">Total files</dt>
-        <dd class="font-bold text-lg"><?= $currentVersion->file_count ?></dd>
+        <dd class="font-bold text-lg"><?= $plugin->selected_version->file_count ?></dd>
     </div>
     <div class="col-span-2">
         <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">Authors</dt>

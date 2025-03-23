@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models\Cast;
 
-use App\Entities\Arrayable;
 use CodeIgniter\DataCaster\Cast\BaseCast;
 use CodeIgniter\DataCaster\Exceptions\CastException;
 use Exception;
@@ -40,16 +39,9 @@ class JsonArrayObjectCast extends BaseCast
         return $output;
     }
 
-    /**
-     * @param array<Arrayable> $value
-     */
     #[\Override]
     public static function set(mixed $value, array $params = [], ?object $helper = null): string
     {
-        foreach ($value as $key => $element) {
-            $value[$key] = $element->toArray();
-        }
-
         try {
             $output = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {

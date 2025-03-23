@@ -6,14 +6,18 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AddInstalls extends Migration
+class AddDownloads extends Migration
 {
     public function up(): void
     {
         $this->forge->addField([
-            'version_id' => [
-                'type'     => 'INT',
-                'unsigned' => true,
+            'plugin_key' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '257',
+            ],
+            'version_tag' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 128,
             ],
             'date' => [
                 'type' => 'DATE',
@@ -25,13 +29,16 @@ class AddInstalls extends Migration
             ],
         ]);
 
-        $this->forge->addPrimaryKey(['version_id', 'date'], 'pk_installs');
-        $this->forge->addForeignKey('version_id', 'versions', 'id', '', 'CASCADE', 'fk_installs_version_id');
-        $this->forge->createTable('installs');
+        $this->forge->addPrimaryKey(['plugin_key', 'version_tag', 'date'], 'pk_downloads');
+        $this->forge->createTable('downloads');
+
+        $this->db->query('ALTER TABLE downloads
+                            ADD CONSTRAINT fk_downloads_plugin_key_version_tag
+                                FOREIGN KEY (plugin_key, version_tag) REFERENCES versions(plugin_key, tag);');
     }
 
     public function down(): void
     {
-        $this->forge->dropTable('installs');
+        $this->forge->dropTable('downloads');
     }
 }

@@ -11,6 +11,7 @@ use CodeIgniter\I18n\Time;
  * @property int $id
  * @property URI $repository_url
  * @property string $manifest_root
+ * @property int $submitted_by
  * @property Time $submitted_at
  */
 class Index extends BaseEntity

@@ -16,15 +16,15 @@ class AddVersions extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'plugin_id' => [
-                'type'     => 'INT',
-                'unsigned' => true,
+            'plugin_key' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 257,
             ],
             'tag' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '128',
             ],
-            'commit' => [
+            'commit_hash' => [
                 'type'       => 'CHAR',
                 'constraint' => '40',
             ],
@@ -51,7 +51,7 @@ class AddVersions extends Migration
                 'type'     => 'INT',
                 'unsigned' => true,
             ],
-            'installs_total' => [
+            'downloads_total' => [
                 'type'     => 'INT',
                 'unsigned' => true,
                 'default'  => 0,
@@ -62,8 +62,8 @@ class AddVersions extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id', 'pk_versions');
-        $this->forge->addForeignKey('plugin_id', 'plugins', 'id', '', 'CASCADE', 'fk_versions_plugin_id');
-        $this->forge->addUniqueKey(['plugin_id', 'tag'], 'uk_plugin_id_tag');
+        $this->forge->addUniqueKey(['plugin_key', 'tag'], 'uk_versions_plugin_key_tag');
+        $this->forge->addForeignKey('plugin_key', 'plugins', 'key', '', 'CASCADE', 'fk_versions_plugin_key');
         $this->forge->createTable('versions');
     }
 

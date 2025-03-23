@@ -7,15 +7,11 @@ namespace App\Controllers;
 use App\Entities\Index;
 use App\Models\IndexModel;
 use App\Models\PluginModel;
-use App\Models\VersionModel;
-use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Validation\Validation;
 
 class Plugins extends BaseController
 {
-    use ResponseTrait;
-
     public function index(): string
     {
         $q = $this->request->getGet('q');
@@ -85,11 +81,18 @@ class Plugins extends BaseController
         $db = db_connect();
         $db->transStart();
 
-        $idIndex = new IndexModel()
+        $indexModel = new IndexModel();
+        $idIndex = $indexModel
             ->insert(new Index([
                 'repository_url' => $validData['repository_url'],
                 'manifest_root'  => trim($validData['manifest_root'] ?? '', '/'),
+                'submitted_by'   => user_id(),
             ]));
+
+        if (! $idIndex) {
+            $db->transRollback();
+            return $this->alert('error', $indexModel->errors());
+        }
 
         service('queue')
             ->push('crawls', 'crawl-plugin', [
@@ -101,16 +104,12 @@ class Plugins extends BaseController
         return $this->alert('success', 'Your plugin has been added!');
     }
 
-    public function info(string $vendor, string $name, ?string $versionTag = null): string
+    public function info(string $key, ?string $versionTag = null): string
     {
         $plugin = new PluginModel()
-            ->getPluginByName($vendor, $name);
+            ->getPluginByKey($key);
 
-        $currentVersion = $plugin->latest_version;
-        if ($versionTag !== null) {
-            $currentVersion = new VersionModel()
-                ->getPluginVersion($plugin, $versionTag);
-        }
+        $plugin->selected_version_tag = $versionTag;
 
         $tab = $this->request->getGet('tab') ?? 'readme';
 
@@ -120,9 +119,8 @@ class Plugins extends BaseController
         }
 
         return view('info/' . $currentTab, [
-            'plugin'         => $plugin,
-            'currentVersion' => $currentVersion,
-            'currentTab'     => $currentTab,
+            'plugin'     => $plugin,
+            'currentTab' => $currentTab,
         ]);
     }
 }

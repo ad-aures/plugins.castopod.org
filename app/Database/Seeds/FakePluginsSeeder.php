@@ -49,7 +49,7 @@ class FakePluginsSeeder extends Seeder
                 $versionModel->insert(new Version([
                     'plugin_id'            => $pluginId,
                     'tag'                  => $version,
-                    'commit'               => hash('sha1', $faker->text()),
+                    'commit_hash'          => hash('sha1', $faker->text()),
                     'readme_markdown'      => $faker->text(),
                     'license'              => License::cases()[array_rand(License::cases())]->value,
                     'min_castopod_version' => '2.0.0',

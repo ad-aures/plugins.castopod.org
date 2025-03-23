@@ -10,10 +10,9 @@ use CodeIgniter\HTTP\URI;
 use CodeIgniter\I18n\Time;
 
 /**
- * @property int $id
+ * @property string $key
  * @property string $vendor
  * @property string $name
- * @property string $key
  * @property ?string $description
  * @property ?string $icon_svg
  * @property URI $repository_url
@@ -21,16 +20,24 @@ use CodeIgniter\I18n\Time;
  * @property ?URI $homepage_url
  * @property Category[] $categories
  * @property Person[] $authors
- * @property int $installs_total
+ * @property int $downloads_total
  *
  * @property Version[] $versions
+ *
  * @property Version $latest_version
+ *
+ * @property ?string $selected_version_tag
+ * @property Version $selected_version
  *
  * @property Time $created_at
  * @property Time $updated_at
  */
 class Plugin extends BaseEntity
 {
+    public string $vendor;
+
+    public string $name;
+
     protected $dates = ['created_at', 'updated_at'];
 
     protected $casts = [
@@ -45,11 +52,28 @@ class Plugin extends BaseEntity
      */
     protected ?array $versions = null;
 
+    protected ?string $selected_version_tag = null;
+
+    protected ?Version $selected_version = null;
+
     protected ?Version $latest_version = null;
 
-    public function getKey(): string
+    /**
+     * @param array<string, string> $data
+     */
+    #[\Override]
+    public function injectRawData(array $data): self
     {
-        return $this->vendor . '/' . $this->name;
+        parent::injectRawData($data);
+
+        assert(is_string($this->attributes['key']));
+
+        [$vendor, $name] = explode('/', $this->attributes['key']);
+
+        $this->vendor = $vendor;
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -59,7 +83,7 @@ class Plugin extends BaseEntity
     {
         if ($this->versions === null) {
             $this->versions = new VersionModel()
-                ->getAllPluginVersions($this->id);
+                ->getAllPluginVersions($this->key);
         }
 
         return $this->versions;
@@ -69,9 +93,47 @@ class Plugin extends BaseEntity
     {
         if ($this->latest_version === null) {
             $this->latest_version = new VersionModel()
-                ->getLatestPluginVersion($this);
+                ->getLatestPluginVersion($this->key);
         }
 
         return $this->latest_version;
+    }
+
+    public function setSelectedVersionTag(?string $tag = null): self
+    {
+        $this->selected_version_tag = $tag;
+        $this->selected_version = null; // @phpstan-ignore assign.propertyType
+
+        return $this;
+    }
+
+    public function getSelectedVersion(): Version
+    {
+        if ($this->selected_version === null) {
+            $this->selected_version = $this->selected_version_tag === null ? $this->getLatestVersion() : new VersionModel()
+                ->getPluginVersion($this->key, $this->selected_version_tag);
+        }
+
+        return $this->selected_version;
+    }
+
+    /**
+     * @return array{vendor:string,name:string,description:?string,repository_url:string,manifest_root:string,homepage_url:?string,categories:Category[],authors:Person[],created_at:string,updated_at:string}
+     */
+    #[\Override]
+    public function jsonSerialize(): array
+    {
+        return [
+            'vendor'         => $this->vendor,
+            'name'           => $this->name,
+            'description'    => $this->description ? html_entity_decode($this->description) : null,
+            'repository_url' => (string) $this->repository_url,
+            'manifest_root'  => $this->manifest_root,
+            'homepage_url'   => $this->homepage_url === null ? null : (string) $this->homepage_url,
+            'categories'     => $this->categories,
+            'authors'        => $this->authors,
+            'created_at'     => $this->created_at->format(DATE_ATOM),
+            'updated_at'     => $this->updated_at->format(DATE_ATOM),
+        ];
     }
 }

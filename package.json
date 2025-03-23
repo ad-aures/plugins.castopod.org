@@ -1,7 +1,7 @@
 {
-  "name": "castopod-plugin-repository",
+  "name": "plugins.castopod.org",
   "version": "0.1.0",
-  "description": "The Castopod Plugin Repository.",
+  "description": "The Castopod Plugin Hub is the place to discover, install, and manage plugins for Castopod.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -21,14 +21,14 @@
     "@rollup/plugin-multi-entry": "^6.0.1",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
-    "@tailwindcss/vite": "^4.0.14",
+    "@tailwindcss/vite": "^4.0.15",
     "autoprefixer": "^10.4.21",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
-    "tailwindcss": "^4.0.14",
-    "vite": "^6.2.1",
+    "tailwindcss": "^4.0.15",
+    "vite": "^6.2.2",
     "vite-plugin-codeigniter": "^1.0.1"
   },
   "config": {

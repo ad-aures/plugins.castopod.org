@@ -22,11 +22,10 @@ class PluginNotFoundException extends RuntimeException implements HTTPExceptionI
     /**
      * @return static
      */
-    public static function forPluginNotFound(string $vendor, string $name): self
+    public static function forPluginNotFound(string $pluginKey): self
     {
         return new static(self::lang('Plugin.exceptions.pluginNotFound', [
-            'vendor' => $vendor,
-            'name'   => $name,
+            'pluginKey' => $pluginKey,
         ]));
     }
 

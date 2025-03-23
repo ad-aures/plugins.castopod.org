@@ -111,7 +111,7 @@ class Routing extends BaseRouting
      *
      * Default: false
      */
-    public bool $multipleSegmentsOneParam = false;
+    public bool $multipleSegmentsOneParam = true;
 
     /**
      * For Auto Routing (Improved).

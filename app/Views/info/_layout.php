@@ -1,11 +1,9 @@
 <?php
 use App\Entities\Plugin;
-use App\Entities\Version;
 use Michalsn\CodeIgniterHtmx\View\View;
 
 /** @var View $this */
 /** @var Plugin $plugin */
-/** @var Version $currentVersion */
 ?>
 
 <?php $this->extend('_layout') ?>
@@ -13,9 +11,9 @@ use Michalsn\CodeIgniterHtmx\View\View;
 <?php $this->section('headerRight') ?>
     <h1 class="flex flex-col font-bold"><span><?= $plugin->vendor ?>/</span><span class="-mt-2 font-display text-4xl"><?= $plugin->name ?></span></h1>
     <div class="flex items-center text-brand-200 text-sm">
-        <span class="font-mono"><?= $currentVersion->tag ?></span>
+        <span class="font-mono"><?= $plugin->selected_version->tag ?></span>
         <span class="mx-2">•</span>
-        <span class="">Published <?= relative_time($currentVersion->published_at) ?></span>
+        <span class="">Published <?= relative_time($plugin->selected_version->published_at) ?></span>
     </div>
     <ul class="flex flex-wrap gap-2 mt-4"><?php foreach ($plugin->categories as $category): ?>
         <li class="bg-brand-200 px-2 py-0.5 font-bold text-brand-950 text-sm"><a href="<?= route_to(
@@ -34,7 +32,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
             <?= $this->renderSection('content') ?>
         </div>
     </section>
-    <aside class="flex flex-col mt-4 lg:mt-8 px-4 lg:px-6 lg:w-[26rem]">
+    <aside class="flex flex-col starting:opacity-0 mt-4 lg:mt-8 px-4 lg:px-6 lg:w-[26rem]">
         <?= $this->include('info/_metadata') ?>
     </aside>
 </div>

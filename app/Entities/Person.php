@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Entities;
 
 use CodeIgniter\HTTP\URI;
+use JsonSerializable;
 
-class Person implements Arrayable
+class Person implements JsonSerializable
 {
     public private(set) string $name;
     public private(set) ?string $email = null;
@@ -25,10 +26,7 @@ class Person implements Arrayable
         }
     }
 
-    /**
-     * @return array{name:string,email?:string,url?:string}
-     */
-    public function toArray(): array
+    public function jsonSerialize(): mixed
     {
         $data = [
             'name' => $this->name,

@@ -14,8 +14,7 @@ class PluginModel extends BaseModel
     protected $returnType = Plugin::class;
 
     protected $allowedFields = [
-        'vendor',
-        'name',
+        'key',
         'description',
         'icon_svg',
         'repository_url',
@@ -23,7 +22,7 @@ class PluginModel extends BaseModel
         'homepage_url',
         'categories',
         'authors',
-        'installs_total',
+        'downloads_total',
     ];
 
     protected array $casts = [
@@ -43,18 +42,17 @@ class PluginModel extends BaseModel
 
     protected $cleanValidationRules = true;
 
-    public function getPluginByName(string $vendor, string $name): Plugin
+    public function getPluginByKey(string $pluginKey): Plugin
     {
-        $cacheName = sprintf('plugin_%s_%s', $vendor, $name);
+        $cacheName = sprintf('plugin#%s', str_replace('/', '_', $pluginKey));
 
         if (! ($found = cache($cacheName))) {
             $found = $this->where([
-                'vendor' => $vendor,
-                'name'   => $name,
+                'key' => $pluginKey,
             ])->first();
 
             if (! $found instanceof Plugin) {
-                throw PluginNotFoundException::forPluginNotFound($vendor, $name);
+                throw PluginNotFoundException::forPluginNotFound($pluginKey);
             }
 
             cache()

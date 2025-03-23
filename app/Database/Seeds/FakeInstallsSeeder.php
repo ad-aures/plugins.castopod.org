@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Database\Seeds;
 
-use App\Entities\Install;
+use App\Entities\Download;
 use App\Entities\Plugin;
 use App\Models\DownloadModel;
 use App\Models\PluginModel;
@@ -13,7 +13,7 @@ use CodeIgniter\Database\Seeder;
 use CodeIgniter\I18n\Time;
 use Exception;
 
-class FakeInstallsSeeder extends Seeder
+class FakeDownloadsSeeder extends Seeder
 {
     public function run(): void
     {
@@ -35,7 +35,7 @@ class FakeInstallsSeeder extends Seeder
                 $versionDownloadsTotal = 0;
                 for ($i = 0; $i < 300; $i++) {
                     $count = random_int(0, 50);
-                    $data[] = new Install([
+                    $data[] = new Download([
                         'version_id' => $version->id,
                         'date'       => Time::now()->subDays($i),
                         'count'      => $count,
@@ -44,11 +44,11 @@ class FakeInstallsSeeder extends Seeder
                     $versionDownloadsTotal += $count;
                 }
 
-                $version->installs_total = $versionDownloadsTotal;
+                $version->downloads_total = $versionDownloadsTotal;
                 $versionModel->save($version);
             }
 
-            $plugin->installs_total = $pluginDownloadsTotal;
+            $plugin->downloads_total = $pluginDownloadsTotal;
             $pluginModel->save($plugin);
 
             $downloadModel->insertBatch($data);

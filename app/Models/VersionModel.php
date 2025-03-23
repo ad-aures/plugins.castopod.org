@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Entities\Plugin;
 use App\Entities\Version;
 use App\Exceptions\PluginNotFoundException;
 use CodeIgniter\Database\BaseBuilder;
@@ -17,16 +16,16 @@ class VersionModel extends BaseModel
     protected $returnType = Version::class;
 
     protected $allowedFields = [
-        'plugin_id',
+        'plugin_key',
         'tag',
-        'commit',
+        'commit_hash',
         'readme_markdown',
         'license',
         'min_castopod_version',
         'hooks',
         'size',
         'file_count',
-        'installs_total',
+        'downloads_total',
         'published_at',
     ];
 
@@ -38,13 +37,13 @@ class VersionModel extends BaseModel
     /**
      * @return Version[]
      */
-    public function getAllPluginVersions(int $pluginId): array
+    public function getAllPluginVersions(string $pluginKey): array
     {
-        $cacheName = sprintf('plugin#%d-versions', $pluginId);
+        $cacheName = sprintf('plugin#%s-versions', str_replace('/', '_', $pluginKey));
 
         if (! ($found = cache($cacheName))) {
             $found = $this->where([
-                'plugin_id' => $pluginId,
+                'plugin_key' => $pluginKey,
             ])->orderBy('published_at', 'DESC')
                 ->findAll();
 
@@ -56,9 +55,9 @@ class VersionModel extends BaseModel
         return $found;
     }
 
-    public function getLatestPluginVersion(Plugin $plugin): Version
+    public function getLatestPluginVersion(string $pluginKey): Version
     {
-        $cacheName = sprintf('plugin#%d-latest_version', $plugin->id);
+        $cacheName = sprintf('plugin#%s-latest_version', str_replace('/', '_', $pluginKey));
 
         if (! ($found = cache($cacheName))) {
             // SELECT *
@@ -71,18 +70,18 @@ class VersionModel extends BaseModel
             //     )
             // )
             $found = $this->where([
-                'plugin_id' => $plugin->id,
-            ])->where('published_at', static function (BaseBuilder $builder) use ($plugin) {
+                'plugin_key' => $pluginKey,
+            ])->where('published_at', static function (BaseBuilder $builder) use ($pluginKey) {
                 $db = db_connect();
                 $subquery = $db->table('versions')
                     ->selectMax('published_at')
                     ->where([
-                        'plugin_id'    => $plugin->id,
+                        'plugin_key'   => $pluginKey,
                         'tag NOT LIKE' => 'dev-%',
                     ]);
                 $subquery2 = $db->table('versions')
                     ->selectMax('published_at')
-                    ->where('plugin_id', $plugin->id);
+                    ->where('plugin_key', $pluginKey);
                 $rawQuery = sprintf(
                     'COALESCE((%s), (%s))',
                     $subquery->getCompiledSelect(),
@@ -92,7 +91,7 @@ class VersionModel extends BaseModel
             })->first();
 
             if (! $found instanceof Version) {
-                throw PluginNotFoundException::forVersionNotFound($plugin->key, 'latest');
+                throw PluginNotFoundException::forVersionNotFound($pluginKey, 'latest');
             }
 
             cache()
@@ -103,18 +102,18 @@ class VersionModel extends BaseModel
         return $found;
     }
 
-    public function getPluginVersion(Plugin $plugin, string $tag): Version
+    public function getPluginVersion(string $pluginKey, string $tag): Version
     {
-        $cacheName = sprintf('plugin#%d-version#%s', $plugin->id, $tag);
+        $cacheName = sprintf('plugin#%s-version#%s', str_replace('/', '_', $pluginKey), $tag);
 
         if (! ($found = cache($cacheName))) {
             $found = $this->where([
-                'plugin_id' => $plugin->id,
-                'tag'       => $tag,
+                'plugin_key' => $pluginKey,
+                'tag'        => $tag,
             ])->first();
 
             if (! $found instanceof Version) {
-                throw PluginNotFoundException::forVersionNotFound($plugin->key, $tag);
+                throw PluginNotFoundException::forVersionNotFound($pluginKey, $tag);
             }
 
             cache()

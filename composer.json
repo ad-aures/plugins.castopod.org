@@ -1,6 +1,6 @@
 {
-  "name": "ad-aures/castopod-plugin-repository",
-  "description": "The Castopod Plugin Repository.",
+  "name": "ad-aures/plugins.castopod.org",
+  "description": "The Castopod Plugin Hub is the place to discover, install, and manage plugins for Castopod.",
   "license": "AGPL-3.0-only",
   "type": "project",
   "homepage": "https://plugins.castopod.org",
@@ -21,7 +21,7 @@
     "michalsn/codeigniter-htmx": "^v2.1.0",
     "tatter/alerts": "^v3.1.0",
     "yassinedoghri/codeigniter-vite": "^v1.1.0",
-    "yassinedoghri/php-icons": "^v1.2.0"
+    "yassinedoghri/php-icons": "^v1.3.0"
   },
   "require-dev": {
     "codeigniter/phpstan-codeigniter": "^v1.5.3",
@@ -30,7 +30,7 @@
     "pestphp/pest": "^v3.7.4",
     "pestphp/pest-plugin-type-coverage": "v3.4.0",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^2.1.8",
+    "phpstan/phpstan": "^2.1.10",
     "rector/rector": "^2.0.10",
     "symplify/coding-standard": "^12.2.3",
     "symplify/easy-coding-standard": "^12.5.9"
