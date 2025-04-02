@@ -17,4 +17,15 @@ use CodeIgniter\Shield\Config\Auth as ShieldAuth;
 
 class Auth extends ShieldAuth
 {
+    /**
+     * @var array<string,string>
+     */
+    public array $redirects = [
+        'register'          => '/',
+        'login'             => '/',
+        'logout'            => '/',
+        'force_reset'       => '/',
+        'permission_denied' => '/',
+        'group_denied'      => '/',
+    ];
 }

@@ -34,7 +34,8 @@ class AddDownloads extends Migration
 
         $this->db->query('ALTER TABLE downloads
                             ADD CONSTRAINT fk_downloads_plugin_key_version_tag
-                                FOREIGN KEY (plugin_key, version_tag) REFERENCES versions(plugin_key, tag);');
+                                FOREIGN KEY (plugin_key, version_tag) REFERENCES versions(plugin_key, tag)
+                                ON DELETE CASCADE;');
     }
 
     public function down(): void

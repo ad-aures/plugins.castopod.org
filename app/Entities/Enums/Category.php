@@ -16,14 +16,20 @@ enum Category: string
     case SEO = 'seo';
 
     /**
-     * @param list<string> $value
+     * @param list<string|self> $value
      * @return self[]
      */
     public static function getFromArray(array $value): array
     {
         $enumCases = [];
-        foreach ($value as $stringCategory) {
-            $enumCase = self::tryFrom($stringCategory);
+        foreach ($value as $categoryValue) {
+            if ($categoryValue instanceof self) {
+                $enumCases[] = $categoryValue;
+
+                continue;
+            }
+
+            $enumCase = self::tryFrom(strtolower($categoryValue));
 
             if (! $enumCase instanceof self) {
                 continue;

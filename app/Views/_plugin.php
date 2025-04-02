@@ -26,7 +26,7 @@ use App\Entities\Plugin;
     <footer class="flex justify-between items-center mt-auto pt-4">
         <small><?= number_abbr($plugin->downloads_total) ?> downloads</small>
         <?= icon('arrow-right-long-line', [
-                    'class' => 'text-2xl',
-                ]) ?>
+            'class' => 'text-2xl',
+        ]) ?>
     </footer>
 </article>

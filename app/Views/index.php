@@ -27,8 +27,8 @@ use Michalsn\CodeIgniterHtmx\View\View;
                 <div class="flex items-center bg-brand-950 ring ring-brand-800 focus-within:ring-2 focus-within:ring-brand-500 w-full">
                     <div class="place-items-center grid h-10 aspect-square">
                         <?= icon('search-line', [
-                                        'class' => 'text-2xl text-brand-800',
-                                    ]); ?>
+                            'class' => 'text-2xl text-brand-800',
+                        ]); ?>
                     </div>
                     <input
                         type="search"

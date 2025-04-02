@@ -27,13 +27,13 @@
     "codeigniter/phpstan-codeigniter": "^v1.5.3",
     "fakerphp/faker": "^v1.24.1",
     "mikey179/vfsstream": "^v1.6.12",
-    "pestphp/pest": "^v3.7.4",
-    "pestphp/pest-plugin-type-coverage": "v3.4.0",
+    "pestphp/pest": "v3.8.0",
+    "pestphp/pest-plugin-type-coverage": "v3.5.0",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^2.1.10",
-    "rector/rector": "^2.0.10",
-    "symplify/coding-standard": "^12.2.3",
-    "symplify/easy-coding-standard": "^12.5.9"
+    "phpstan/phpstan": "^2.1.11",
+    "rector/rector": "^2.0.11",
+    "symplify/coding-standard": "^12.3.2",
+    "symplify/easy-coding-standard": "^12.5.11"
   },
   "scripts": {
     "dev": "php spark serve --host 0.0.0.0",

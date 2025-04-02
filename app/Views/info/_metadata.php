@@ -18,6 +18,12 @@ use App\Entities\Plugin;
 <div class="flex flex-col mt-6">
     <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">Repository</dt>
     <dd class="truncate"><a href="<?= $plugin->repository_url ?>" class="font-bold decoration-2 decoration-brand-500 underline hover:no-underline"><?= $plugin->repository_url ?></a></dd>
+    <a class="inline-flex items-center self-start gap-x-2 hover:bg-brand-800 mt-2 px-4 py-2 border-2" href="<?= route_to(
+        'plugin-edit',
+        $plugin->key,
+    ) ?>" class="px-y"><?= icon(
+        'edit-fill',
+    ) ?>Edit repository</a>
 </div>
 
 <?php if ($plugin->homepage_url): ?>
@@ -97,7 +103,6 @@ use App\Entities\Plugin;
             </ul>
         </dd>
     </div>
-    
 </dl>
 
 <button class="inline-flex justify-center items-center gap-x-2 bg-red-800 mt-8 px-4 py-2 w-full"><?= icon(

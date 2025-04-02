@@ -23,6 +23,8 @@ class PluginModel extends BaseModel
         'categories',
         'authors',
         'downloads_total',
+        'is_updating',
+        'owner_id',
     ];
 
     protected array $casts = [
@@ -41,6 +43,11 @@ class PluginModel extends BaseModel
     protected $skipValidation = false;
 
     protected $cleanValidationRules = true;
+
+    /**
+     * @var list<string>
+     */
+    protected $afterUpdate = ['clearCache'];
 
     public function getPluginByKey(string $pluginKey): Plugin
     {
@@ -61,5 +68,64 @@ class PluginModel extends BaseModel
 
         /** @var Plugin $found */
         return $found;
+    }
+
+    /**
+     * @return Plugin[]
+     */
+    public function getUserPlugins(int $userId): array
+    {
+        $cacheName = sprintf('user#%d_plugins', $userId);
+
+        if (! ($found = cache($cacheName))) {
+            $found = $this->where([
+                'owner_id' => $userId,
+            ])->findAll();
+
+            cache()
+                ->save($cacheName, $found, DECADE);
+        }
+
+        /** @var Plugin[] $found */
+        return $found;
+    }
+
+    public function setUpdating(int $pluginId, bool $isUpdating): bool
+    {
+        // prevent concurrent updates by ensuring that is_updating is getting changed
+        return $this->set('is_updating', $isUpdating)
+            ->where('is_updating', ! $isUpdating)
+            ->update($pluginId);
+    }
+
+    /**
+     * @param mixed[] $data
+     *
+     * @return mixed[]
+     */
+    public function clearCache(array $data): array
+    {
+        /** @var int|null $pluginId */
+        $pluginId = is_array($data['id']) ? $data['id'][0] : $data['id'];
+
+        if ($pluginId === null) {
+            // Multiple plugins have been updated, do nothing
+            return $data;
+        }
+
+        /** @var ?Plugin $plugin */
+        $plugin = new self()
+            ->find($pluginId);
+
+        if (! $plugin instanceof Plugin) {
+            return $data;
+        }
+
+        cache()
+            ->deleteMatching(sprintf('plugin#%s*', str_replace('/', '_', $plugin->key)));
+        cache()
+            ->delete(sprintf('user#%d_plugins', $plugin->owner_id));
+
+        return $data;
     }
 }

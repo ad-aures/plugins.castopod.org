@@ -26,13 +26,14 @@ enum License: string
             return self::UNLICENSED;
         }
 
-        $enumCase = self::tryFrom($value);
+        $availableLicenses = License::values();
+        $key = array_search(strtolower($value), array_map('strtolower', $availableLicenses), true);
 
-        if ($enumCase instanceof self) {
-            return $enumCase;
+        if (! $key) {
+            return self::Custom;
         }
 
-        return self::Custom;
+        return self::tryFrom($availableLicenses[$key]);
     }
 
     /**

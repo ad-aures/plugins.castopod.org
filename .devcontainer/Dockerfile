@@ -16,3 +16,11 @@ RUN curl -sSL https://getcomposer.org/installer | php \
 # [Optional] Uncomment this section to install additional packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends openssh-client unzip
+
+# install supervisor for consuming queues
+RUN apt-get update \
+    && apt-get install -y supervisor
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

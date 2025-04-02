@@ -23,7 +23,13 @@ return ECSConfig::configure()
     ])
     // TODO: remove when PHPCSFixer gets 8.4 support
     ->withSkip([
-        ClassAttributesSeparationFixer::class => ['app/Entities/Person.php'],
-        VisibilityRequiredFixer::class        => ['app/Entities/Person.php'],
-        StatementIndentationFixer:: class     => ['app/Entities/Person.php'],
+        ClassAttributesSeparationFixer::class => [
+            'app/Entities/Person.php',
+            'app/Libraries/PluginRepositoryCrawler.php',
+        ],
+        VisibilityRequiredFixer::class    => ['app/Entities/Person.php', 'app/Libraries/PluginRepositoryCrawler.php'],
+        StatementIndentationFixer:: class => [
+            'app/Entities/Person.php',
+            'app/Libraries/PluginRepositoryCrawler.php',
+        ],
     ]);

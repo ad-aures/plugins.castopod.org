@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Michalsn\CodeIgniterHtmx\HTTP\IncomingRequest;
+use Michalsn\CodeIgniterHtmx\HTTP\Response;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -27,6 +28,13 @@ abstract class BaseController extends Controller
      * @var IncomingRequest
      */
     protected $request;
+
+    /**
+     * Instance of the main response object.
+     *
+     * @var Response
+     */
+    protected $response;
 
     /**
      * An array of helpers to be loaded automatically upon
@@ -60,8 +68,11 @@ abstract class BaseController extends Controller
     /**
      * @param array<string,string>|string $message
      */
-    protected function alert(string $type, array|string $message, bool $withInput = false): string | RedirectResponse
-    {
+    protected function alert(
+        string $type,
+        array|string $message,
+        bool $withInput = false,
+    ): string | RedirectResponse {
         if (is_string($message)) {
             $message = [
                 'error' => $message,

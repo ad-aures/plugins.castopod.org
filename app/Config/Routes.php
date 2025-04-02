@@ -17,7 +17,7 @@ $routes->get('/', 'Plugins::index', [
 $routes->get('search', 'Plugins::index', [
     'as' => 'search',
 ]);
-$routes->get('submit-plugin', 'Plugins::submit', [
+$routes->get('submit', 'Plugins::submit', [
     'as' => 'plugin-submit',
 ]);
 $routes->post('/', 'Plugins::submitAction', [
@@ -28,6 +28,15 @@ $routes->get('@(:pluginKey)', 'Plugins::info/$1', [
 ]);
 $routes->get('@(:any)/v/(:segment)', 'Plugins::info/$1/$2', [
     'as' => 'plugin-version',
+]);
+$routes->get('my-plugins', 'Plugins::myPlugins', [
+    'as' => 'my-plugins',
+]);
+$routes->post('@(:pluginKey)', 'Plugins::action/$1', [
+    'as' => 'plugin-action',
+]);
+$routes->get('@(:any)/edit', 'Plugins::edit/$1', [
+    'as' => 'plugin-edit',
 ]);
 
 $routes->group('api', static function (RouteCollection $routes) {

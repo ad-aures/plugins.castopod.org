@@ -42,7 +42,7 @@ class OfficialPluginsSeeder extends Seeder
                 ]));
 
             service('queue')
-                ->push('crawls', 'crawl-plugin', [
+                ->push('crawls', 'plugin-crawl', [
                     'index_id' => $indexId,
                 ],);
 

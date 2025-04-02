@@ -18,5 +18,7 @@ parameters:
 			- CodeIgniter\Queue\Config\Services
 	ignoreErrors:
 		- '#Call to an undefined method Pest\\PendingCalls\\TestCall\:\:expect\(\)#'
+		- '#^Call to an undefined method CodeIgniter\\Cache\\CacheInterface\:\:deleteMatching\(\)#'
+		- identifier: missingType.generics
 		- identifier: property.readOnlyByPhpDocDefaultValue
 		- identifier: echo.nonString

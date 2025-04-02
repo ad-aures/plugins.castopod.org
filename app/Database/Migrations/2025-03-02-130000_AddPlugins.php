@@ -105,6 +105,14 @@ class AddPlugins extends Migration
                 'unsigned' => true,
                 'default'  => 0,
             ],
+            'is_updating' => [
+                'type'    => 'BOOLEAN',
+                'default' => false,
+            ],
+            'owner_id' => [
+                'type'     => 'INT',
+                'unsigned' => true,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
             ],
@@ -115,9 +123,19 @@ class AddPlugins extends Migration
 
         $this->forge->addPrimaryKey('id', 'pk_plugins');
         $this->forge->addUniqueKey('key', 'uk_plugins_key');
+
+        $this->forge->addUniqueKey(['repository_url', 'manifest_root'], 'uk_plugins_repository_url_manifest_root');
+
+        $this->forge->addForeignKey('owner_id', 'users', 'id', '', 'CASCADE', 'fk_plugins_owner_id');
+
         $this->forge->createTable('plugins');
 
         $this->db->query('CREATE INDEX idx_textsearch ON plugins USING GIN(text_searchable);');
+        $this->db->query('ALTER TABLE plugins
+                            ADD CONSTRAINT fk_plugins_repository_url_manifest_root
+                                FOREIGN KEY (repository_url, manifest_root) REFERENCES index(repository_url, manifest_root)
+                                ON UPDATE CASCADE
+                                ON DELETE CASCADE;');
     }
 
     public function down(): void

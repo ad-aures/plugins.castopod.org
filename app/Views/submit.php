@@ -11,7 +11,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 ) ?><h1 class="font-display font-bold text-5xl">Submit a plugin</h1><?php $this->endSection() ?>
 
 <?php $this->section('main') ?>
-    <div class="mx-auto py-6 container">
+    <div class="py-6 container">
         <form method="POST" action="<?= route_to(
             'plugin-index',
         ) ?>" class="flex flex-col gap-4 max-w-xl" hx-swap="none" hx-boost="true">

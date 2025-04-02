@@ -10,6 +10,7 @@ use CodeIgniter\HTTP\URI;
 use CodeIgniter\I18n\Time;
 
 /**
+ * @property int $id
  * @property string $key
  * @property string $vendor
  * @property string $name
@@ -21,6 +22,8 @@ use CodeIgniter\I18n\Time;
  * @property Category[] $categories
  * @property Person[] $authors
  * @property int $downloads_total
+ * @property bool $is_updating
+ * @property int $owner_id
  *
  * @property Version[] $versions
  *
@@ -45,6 +48,7 @@ class Plugin extends BaseEntity
         'description'    => '?string-escaped',
         'repository_url' => 'uri',
         'homepage_url'   => '?uri',
+        'is_updating'    => 'boolean',
     ];
 
     /**
