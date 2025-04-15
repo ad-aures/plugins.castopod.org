@@ -21,14 +21,14 @@
     "@rollup/plugin-multi-entry": "^6.0.1",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
-    "@tailwindcss/vite": "^4.1.1",
+    "@tailwindcss/vite": "^4.1.4",
     "autoprefixer": "^10.4.21",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
-    "tailwindcss": "^4.1.1",
-    "vite": "^6.2.4",
+    "tailwindcss": "^4.1.4",
+    "vite": "^6.2.6",
     "vite-plugin-codeigniter": "^1.0.1"
   },
   "config": {
@@ -37,6 +37,7 @@
     }
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.6.13",
     "@github/relative-time-element": "^4.4.5",
     "alpinejs": "^3.14.9",
     "htmx.org": "2.0.4"

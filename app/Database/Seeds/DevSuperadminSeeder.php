@@ -35,6 +35,9 @@ class DevSuperadminSeeder extends Seeder
             'email'    => 'admin@castopod.local',
             'password' => 'castopod',
         ]);
+
+        $user->avatar_path = save_gravatar($user);
+
         $users->save($user);
 
         // To get the complete user object with ID, we need to get from the database

@@ -4,6 +4,8 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 /** @var View $this */
 /** @var Plugin $plugin */
+/** @var bool $canUpdate */
+/** @var bool $canDelete */
 ?>
 
 <?php $this->extend('_layout') ?>
@@ -24,22 +26,24 @@ use Michalsn\CodeIgniterHtmx\View\View;
 </div>
 <?php $this->endSection() ?>
 
+<?php if ($canUpdate): ?>
 <?php $this->section('headerLeft') ?>
-    <?php if ($plugin->is_updating): ?>
-        <div class="inline-flex items-center gap-x-2 bg-orange-800 px-4 py-2"><?= icon(
-            'loop-left-fill',
-            [
-                'class' => 'animate-spin',
-            ],
-        ) ?>Updating…</div>
-    <?php else: ?>
-        <form action="<?= route_to('plugin-action', $plugin->key) ?>" method="POST">
-            <button class="inline-flex justify-center items-center gap-x-2 bg-orange-700 px-4 py-2 cursor-pointer shrink-0" name="action" value="update" type="submit"><?= icon(
+        <?php if ($plugin->is_updating): ?>
+            <div class="inline-flex items-center gap-x-2 bg-orange-800 px-4 py-2"><?= icon(
                 'loop-left-fill',
-            ) ?>Update plugin</button>
-        </form>
-    <?php endif; ?>
+                [
+                    'class' => 'animate-spin',
+                ],
+            ) ?>Updating…</div>
+        <?php else: ?>
+            <form action="<?= route_to('plugin-action', $plugin->key) ?>" method="POST">
+                <button class="inline-flex justify-center items-center gap-x-2 bg-orange-700 px-4 py-2 cursor-pointer shrink-0" name="action" value="update" type="submit"><?= icon(
+                    'loop-left-fill',
+                ) ?>Update plugin</button>
+            </form>
+        <?php endif; ?>
 <?php $this->endSection(); ?>
+<?php endif; ?>
 
 <?php $this->section('main') ?>
 <div class="flex lg:flex-row flex-col text-white grow-1 container">
@@ -51,11 +55,13 @@ use Michalsn\CodeIgniterHtmx\View\View;
             <?= $this->renderSection('content') ?>
         </div>
     </section>
-    <aside class="flex flex-col starting:opacity-0 mt-4 lg:mt-8 px-4 lg:px-6 lg:w-[26rem]">
+    <aside class="flex flex-col starting:opacity-0 px-4 lg:px-6 py-4 lg:py-8 lg:w-[26rem]">
         <?= $this->include('info/_metadata') ?>
     </aside>
 </div>
-<div class="mt-8 pb-6 container">
+<?php if ($canDelete): ?>
+<hr class="my-8 container">
+<div class="pb-6 container">
     <h2 class="font-display text-white text-2xl">⚠️ Danger zone</h2>
     <form action="<?= route_to('plugin-action', $plugin->key) ?>" method="POST">
         <button class="inline-flex justify-center items-center gap-x-2 bg-red-800 mt-4 px-4 py-2 text-white cursor-pointer" name="action" value="delete" type="submit" title="delete plugin"><?= icon(
@@ -63,4 +69,5 @@ use Michalsn\CodeIgniterHtmx\View\View;
         ) ?>Delete plugin</button>
     </form>
 </div>
+<?php endif; ?>
 <?php $this->endSection() ?>

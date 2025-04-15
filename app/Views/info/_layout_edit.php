@@ -1,0 +1,25 @@
+<?php
+
+use App\Entities\Plugin;
+use Michalsn\CodeIgniterHtmx\View\View;
+
+/** @var View $this */
+/** @var Plugin $plugin */
+?>
+
+<?php $this->extend('_layout') ?>
+
+<?php $this->section(
+    'headerRight',
+) ?><h1 class="font-display font-bold text-4xl">Edit <?= $plugin->key ?></h1><?php $this->endSection() ?>
+
+<?php $this->section('main') ?>
+    <div class="container">
+        <nav class="flex items-center bg-brand-950 -mt-10 border-x border-t border-brand-950 divide-x divide-brand-900 w-fit" hx-boost="true">
+            <?= $this->include('info/_tabs_edit') ?>
+        </nav>
+        <div class="py-6">
+            <?= $this->renderSection('content') ?>
+        </div>
+    </div>
+<?php $this->endSection() ?>

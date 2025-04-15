@@ -9,7 +9,12 @@ use CodeIgniter\Router\RouteCollection;
 $routes->addPlaceholder('pluginKey', '[a-z0-9]([_.-]?[a-z0-9]+)*\/[a-z0-9]([_.-]?[a-z0-9]+)*');
 
 service('auth')
-    ->routes($routes);
+    ->routes($routes, [
+        'except' => ['register'],
+    ]);
+
+$routes->get('register', '\App\Controllers\RegisterController::registerView');
+$routes->post('register', '\App\Controllers\RegisterController::registerAction');
 
 $routes->get('/', 'Plugins::index', [
     'as' => 'index',
@@ -33,10 +38,12 @@ $routes->get('my-plugins', 'Plugins::myPlugins', [
     'as' => 'my-plugins',
 ]);
 $routes->post('@(:pluginKey)', 'Plugins::action/$1', [
-    'as' => 'plugin-action',
+    'as'     => 'plugin-action',
+    'filter' => ['permission:plugins.manage,plugins$1.manage'],
 ]);
 $routes->get('@(:any)/edit', 'Plugins::edit/$1', [
-    'as' => 'plugin-edit',
+    'as'     => 'plugin-edit',
+    'filter' => ['permission:plugins.manage,plugins$1.manage'],
 ]);
 
 $routes->group('api', static function (RouteCollection $routes) {

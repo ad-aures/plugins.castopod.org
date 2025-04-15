@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 if (! function_exists('tempdir')) {
-/**
+    /**
      * Creates a random unique temporary directory, with specified parameters,
      * that does not already exist (like tempnam(), but for dirs).
      *
@@ -66,10 +66,11 @@ if (! function_exists('tempdir')) {
 }
 
 if (! function_exists('delete_folder')) {
-    function delete_directory(string $folderPath): bool {
+    function delete_directory(string $folderPath): bool
+    {
         $deleteFiles = delete_files($folderPath, true, false, true);
 
-        if (!$deleteFiles) {
+        if (! $deleteFiles) {
             return false;
         }
 

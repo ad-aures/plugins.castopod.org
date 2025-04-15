@@ -1,7 +1,14 @@
 <?php
+
+use App\Entities\User;
 use Michalsn\CodeIgniterHtmx\View\View;
 
 /** @var View $this */
+
+$currentUser = auth()
+    ->user();
+
+assert($currentUser instanceof User);
 ?>
 
 <!DOCTYPE html>
@@ -32,12 +39,42 @@ use Michalsn\CodeIgniterHtmx\View\View;
                     'plugin-submit',
                 ); ?>" class="bg-white px-4 py-2 font-semibold text-black">Submit plugin</a>
                 <?php if (auth()->loggedIn()) : ?>
-                    <a href="<?= route_to(
-                        'my-plugins',
-                    ); ?>" class="px-4 py-2 font-semibold decoration-2 decoration-brand-500 hover:underline">My plugins</a>
-                    <a href="<?= route_to(
-                        'logout',
-                    ); ?>" class="px-4 py-2 font-semibold decoration-2 decoration-brand-500 hover:underline">Logout</a>
+                    <button
+                    type="button"
+                    class="inline-flex items-center gap-x-2 px-4 py-2 h-full font-semibold text-sm"
+                    id="my-account-dropdown"
+                    data-dropdown="button"
+                    data-dropdown-target="my-account-dropdown-menu"
+                    aria-haspopup="true"
+                    aria-expanded="false"><img src="<?= $currentUser->getAvatarUrl(
+                        'tiny',
+                    ) ?>"><span class="hidden sm:block"><?= $currentUser
+                    ->username ?></span><?= icon('arrow-drop-down-fill', [
+                        'class' => 'ml-auto text-2xl',
+                    ]) ?></button>
+                    <nav id="my-account-dropdown-menu"
+                        class="flex flex-col bg-brand-900 shadow-2xl py-2 border border-brand-950 rounded-lg min-w-48 text-skin-base text-white whitespace-nowrap"
+                        aria-labelledby="my-account-dropdown" data-dropdown="menu" data-dropdown-placement="bottom-end">
+                        <a href="<?= route_to(
+                            'my-plugins',
+                        ); ?>" class="inline-flex items-center gap-x-2 hover:bg-brand-800 px-4 py-2 font-bold"><?= icon(
+                            'puzzle-fill',
+                            [
+                                'class' => 'text-brand-200',
+
+                            ],
+                        ) ?>My plugins</a>                        
+                        <hr class="my-2 text-brand-950">
+                        <a href="<?= route_to(
+                            'logout',
+                        ); ?>" class="inline-flex items-center gap-x-2 hover:bg-brand-800 px-4 py-2 font-bold"><?= icon(
+                            'logout-box-fill',
+                            [
+                                'class' => 'text-brand-200',
+
+                            ],
+                        ) ?>Logout</a>
+                    </nav>
                 <?php else: ?>
                     <a href="<?= route_to(
                         'register',

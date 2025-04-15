@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Entities\Index;
+use App\Entities\Plugin;
+use App\Entities\User;
 use App\Models\IndexModel;
+use App\Models\PluginMaintainerModel;
 use App\Models\PluginModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -131,9 +134,24 @@ class Plugins extends BaseController
             $currentTab = $tab;
         }
 
+        $permissions = [
+            'canUpdate' => false,
+            'canDelete' => false,
+            'canEdit'   => false,
+        ];
+
+        if (user_id() === $plugin->owner_id) {
+            $permissions['canUpdate'] = true;
+            $permissions['canEdit'] = true;
+            $permissions['canDelete'] = true;
+        } elseif (is_user_maintainer_of($key)) {
+            $permissions['canUpdate'] = true;
+        }
+
         return view('info/' . $currentTab, [
             'plugin'     => $plugin,
             'currentTab' => $currentTab,
+            ...$permissions,
         ]);
     }
 
@@ -155,7 +173,7 @@ class Plugins extends BaseController
     public function action(string $pluginKey): RedirectResponse|string
     {
         $rules = [
-            'action' => 'required|string|in_list[update,delete,edit]',
+            'action' => 'required|string|in_list[update,delete,edit-repository,add-maintainer,remove-maintainer]',
         ];
 
         /** @var array<string,string> $data */
@@ -169,13 +187,18 @@ class Plugins extends BaseController
             return $this->alert('error', $this->validator->getErrors());
         }
 
-        /** @var array{action:'update'|'delete'|'edit'} */
+        /** @var array{action:'update'|'delete'|'edit-repository'|'add-maintainer'|'remove-maintainer'} */
         $validData = $this->validator->getValidated();
 
+        $plugin = new PluginModel()
+            ->getPluginByKey($pluginKey);
+
         return match ($validData['action']) {
-            'update' => $this->update($pluginKey),
-            'delete' => $this->delete($pluginKey),
-            'edit'   => $this->editAction($pluginKey),
+            'update'            => $this->update($plugin),
+            'delete'            => $this->delete($plugin),
+            'edit-repository'   => $this->editRepository($plugin),
+            'add-maintainer'    => $this->addMaintainer($plugin),
+            'remove-maintainer' => $this->removeMaintainer($plugin),
         };
     }
 
@@ -184,16 +207,109 @@ class Plugins extends BaseController
         $plugin = new PluginModel()
             ->getPluginByKey($pluginKey);
 
-        return view('info/edit', [
-            'plugin' => $plugin,
+        /** @var string $tab */
+        $tab = $this->request->getGet('tab') ?? 'repository';
+
+        $currentTab = 'repository';
+        if (in_array($tab, ['repository', 'maintainers'], true)) {
+            $currentTab = $tab;
+        }
+
+        return view('info/edit_' . $tab, [
+            'plugin'     => $plugin,
+            'currentTab' => $currentTab,
         ]);
     }
 
-    private function editAction(string $pluginKey): RedirectResponse|string
+    private function addMaintainer(Plugin $plugin): RedirectResponse|string
     {
-        $plugin = new PluginModel()
-            ->getPluginByKey($pluginKey);
+        $rules = [
+            'maintainer_username_or_email' => 'required',
+        ];
 
+        /** @var array<string,string> $data */
+        $data = $this->request->getPost(array_keys($rules));
+
+        $isValid = $this->validateData($data, $rules);
+
+        assert($this->validator instanceof Validation);
+
+        if (! $isValid) {
+            return $this->alert('error', $this->validator->getErrors(), withInput: true);
+        }
+
+        $validData = $this->validator->getValidated();
+
+        $users = auth()
+            ->getProvider();
+        if (str_contains((string) $validData['maintainer_username_or_email'], '@')) {
+            $user = $users->findByCredentials([
+                'email' => $validData['maintainer_username_or_email'],
+            ]);
+        } else {
+            $user = $users->findByCredentials([
+                'username' => $validData['maintainer_username_or_email'],
+            ]);
+        }
+
+        if (! $user instanceof User) {
+            return $this->alert('error', sprintf('User "%s" not found.', $validData['maintainer_username_or_email']));
+        }
+
+        new PluginMaintainerModel()
+            ->addMaintainer($plugin->key, (int) $user->id);
+
+        new PluginModel()
+            ->clearCache([
+                'id' => $plugin->id,
+            ]);
+
+        return $this->alert('success', sprintf('User "%s" was added as a maintainer!', $user->username));
+    }
+
+    private function removeMaintainer(Plugin $plugin): RedirectResponse|string
+    {
+        $rules = [
+            'username' => 'required',
+        ];
+
+        /** @var array<string,string> $data */
+        $data = $this->request->getPost(array_keys($rules));
+
+        $isValid = $this->validateData($data, $rules);
+
+        assert($this->validator instanceof Validation);
+
+        if (! $isValid) {
+            return $this->alert('error', $this->validator->getErrors(), withInput: true);
+        }
+
+        $validData = $this->validator->getValidated();
+
+        $users = auth()
+            ->getProvider();
+        $user = $users->findByCredentials([
+            'username' => $validData['username'],
+        ]);
+
+        if (! $user instanceof User) {
+            return $this->alert('error', sprintf('User "%s" not found.', $validData['username']));
+        }
+
+        if (! new PluginMaintainerModel()->removeMaintainer($plugin->key, (int) $user->id)) {
+            return $this->alert('error', 'Could not remove maintainer.');
+        }
+
+        new PluginModel()
+            ->clearCache([
+                'id' => $plugin->id,
+            ]);
+
+        return $this->alert('success', sprintf('%s was removed from maintainers!', $user->username));
+    }
+
+    private function editRepository(Plugin $plugin): RedirectResponse|string
+    {
         $rules = [
             'repository_url' => 'required|valid_url_strict[https]',
             'manifest_root'  => 'permit_empty|regex_match[/^\/?[a-zA-Z0-9-_]+(\/[a-zA-Z0-9-_]+)*\/?$/]',
@@ -250,11 +366,8 @@ class Plugins extends BaseController
         return $this->alert('success', 'Your plugin repository settings have been updated!');
     }
 
-    private function update(string $pluginKey): RedirectResponse|string
+    private function update(Plugin $plugin): RedirectResponse|string
     {
-        $plugin = new PluginModel()
-            ->getPluginByKey($pluginKey);
-
         if ($plugin->is_updating) {
             return $this->alert('error', 'The plugin is already updating.');
         }
@@ -271,7 +384,7 @@ class Plugins extends BaseController
         }
 
         if (! service('queue')->push('updates', 'plugin-update', [
-            'plugin_key' => $pluginKey,
+            'plugin_key' => $plugin->key,
         ])) {
             $db->transRollback();
             return $this->alert('error', 'Could not push the update to the queue.');
@@ -282,13 +395,14 @@ class Plugins extends BaseController
         return $this->alert('success', 'Your plugin has been added to the update queue!');
     }
 
-    private function delete(string $pluginKey): RedirectResponse|string
+    private function delete(Plugin $plugin): RedirectResponse|string
     {
-        $plugin = new PluginModel()
-            ->getPluginByKey($pluginKey);
+        if (user_id() !== $plugin->owner_id) {
+            return $this->alert('error', 'Only the owner can delete the plugin.');
+        }
 
         if (! new IndexModel()->deletePluginFromIndex($plugin)) {
-            return $this->alert('error', 'Could not delete plugin ' . $pluginKey);
+            return $this->alert('error', 'Could not delete plugin ' . $plugin->key);
         }
 
         return $this->alert('success', 'Your plugin has been deleted!');

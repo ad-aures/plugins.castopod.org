@@ -17,6 +17,8 @@ use CodeIgniter\Shield\Config\Auth as ShieldAuth;
 
 class Auth extends ShieldAuth
 {
+    public string $userProvider = \App\Models\UserModel::class;
+
     /**
      * @var array<string,string>
      */

@@ -34,7 +34,7 @@ class UpdatePlugin extends BaseJob implements JobInterface
         if (! $tempRepoPath) {
             throw new Exception('Could not create temporary repository folder.');
         }
-            
+
         try {
             $prc = new PluginRepositoryCrawler((string) $plugin->repository_url, $plugin->manifest_root, $tempRepoPath);
         } catch (Exception $e) {

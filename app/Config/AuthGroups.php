@@ -51,6 +51,10 @@ class AuthGroups extends ShieldAuthGroups
             'title'       => 'User',
             'description' => 'General users of the site.',
         ],
+        'maintainer' => [
+            'title'       => 'Maintainer',
+            'description' => 'Maintainer of a specific plugin',
+        ],
     ];
 
     /**
@@ -67,6 +71,7 @@ class AuthGroups extends ShieldAuthGroups
         'admin.access'   => 'Can access the sites admin area',
         'admin.settings' => 'Can access the main site settings',
         'users.manage'   => 'Can manage users',
+        'plugins.manage' => 'Can manage plugins',
     ];
 
     /**
@@ -80,7 +85,7 @@ class AuthGroups extends ShieldAuthGroups
      * @var array<string,list<string>>
      */
     public array $matrix = [
-        'superadmin' => ['admin.*', 'users.*'],
+        'superadmin' => ['admin.*', 'users.*', 'plugins.*'],
         'user'       => [],
     ];
 }

@@ -2,6 +2,7 @@
 use App\Entities\Plugin;
 
 /** @var Plugin $plugin */
+/** @var bool $canEdit */
 ?>
 <div class="flex flex-col">
     <h2 class="font-bold text-brand-200 text-xs uppercase tracking-wider">Install</h2>
@@ -18,12 +19,14 @@ use App\Entities\Plugin;
 <div class="flex flex-col mt-6">
     <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">Repository</dt>
     <dd class="truncate"><a href="<?= $plugin->repository_url ?>" class="font-bold decoration-2 decoration-brand-500 underline hover:no-underline"><?= $plugin->repository_url ?></a></dd>
+    <?php if ($canEdit): ?>
     <a class="inline-flex items-center self-start gap-x-2 hover:bg-brand-800 mt-2 px-4 py-2 border-2" href="<?= route_to(
         'plugin-edit',
         $plugin->key,
-    ) ?>" class="px-y"><?= icon(
+    ) . '?tab=repository' ?>" class="px-y"><?= icon(
         'edit-fill',
     ) ?>Edit repository</a>
+    <?php endif; ?>
 </div>
 
 <?php if ($plugin->homepage_url): ?>
@@ -101,6 +104,25 @@ use App\Entities\Plugin;
                     </li>
                 <?php endforeach; ?>
             </ul>
+        </dd>
+    </div>
+    <div class="col-span-2">
+        <dt class="font-bold text-brand-200 text-xs uppercase tracking-wider">Maintainers</dt>
+        <dd>
+            <ul class="flex gap-2 pt-2">
+                <li><img class="h-12" src="<?= $plugin->owner->avatar_url ?>" alt="<?= $plugin->owner->username ?>" title="<?= $plugin->owner->username ?>" data-tooltip="bottom"></li>    
+                <?php foreach ($plugin->maintainers as $maintainer): ?>
+                    <li><img class="h-12" src="<?= $maintainer->avatar_url ?>" alt="<?= $maintainer->username ?>" title="<?= $maintainer->username ?>" data-tooltip="bottom"></li>    
+                <?php endforeach; ?>
+            </ul>
+            <?php if ($canEdit): ?>
+            <a class="inline-flex items-center self-start gap-x-2 hover:bg-brand-800 mt-2 px-4 py-2 border-2" href="<?= route_to(
+                'plugin-edit',
+                $plugin->key,
+            ) . '?tab=maintainers' ?>" class="px-y"><?= icon(
+                'edit-fill',
+            ) ?>Edit maintainers</a>
+            <?php endif; ?>
         </dd>
     </div>
 </dl>

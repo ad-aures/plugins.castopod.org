@@ -131,3 +131,5 @@ node_modules/
 # assets build
 public/.vite
 public/assets
+public/avatars/*
+!public/avatars/index.html

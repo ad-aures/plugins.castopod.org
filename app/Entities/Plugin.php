@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entities;
 
 use App\Entities\Enums\Category;
+use App\Models\UserModel;
 use App\Models\VersionModel;
 use CodeIgniter\HTTP\URI;
 use CodeIgniter\I18n\Time;
@@ -24,6 +25,7 @@ use CodeIgniter\I18n\Time;
  * @property int $downloads_total
  * @property bool $is_updating
  * @property int $owner_id
+ * @property User $owner
  *
  * @property Version[] $versions
  *
@@ -31,6 +33,8 @@ use CodeIgniter\I18n\Time;
  *
  * @property ?string $selected_version_tag
  * @property Version $selected_version
+ *
+ * @property User[] $maintainers
  *
  * @property Time $created_at
  * @property Time $updated_at
@@ -49,6 +53,7 @@ class Plugin extends BaseEntity
         'repository_url' => 'uri',
         'homepage_url'   => '?uri',
         'is_updating'    => 'boolean',
+        'owner_id'       => 'int',
     ];
 
     /**
@@ -61,6 +66,13 @@ class Plugin extends BaseEntity
     protected ?Version $selected_version = null;
 
     protected ?Version $latest_version = null;
+
+    protected ?User $owner = null;
+
+    /**
+     * @var User[]
+     */
+    protected ?array $maintainers = null;
 
     /**
      * @param array<string, string> $data
@@ -119,6 +131,29 @@ class Plugin extends BaseEntity
         }
 
         return $this->selected_version;
+    }
+
+    public function getOwner(): User
+    {
+        if ($this->owner === null) {
+            $this->owner = new UserModel()
+                ->getPluginOwner($this->key);
+        }
+
+        return $this->owner;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getMaintainers(): array
+    {
+        if ($this->maintainers === null) {
+            $this->maintainers = new UserModel()
+                ->getPluginMaintainers($this->key);
+        }
+
+        return $this->maintainers;
     }
 
     /**

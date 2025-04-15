@@ -206,4 +206,8 @@ class App extends BaseConfig
      * Max plugin icon size, restricted so as not to overload the database.
      */
     public int $maxIconSize = 200 * 1024; // limit set to 200KiB
+
+    public string $mediaRootPath = ROOTPATH . 'public' . DIRECTORY_SEPARATOR;
+
+    public string $avatarsFolder = 'avatars';
 }

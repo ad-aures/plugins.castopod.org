@@ -43,7 +43,11 @@ class CrawlPlugin extends BaseJob implements JobInterface
         }
 
         try {
-            $prc = new PluginRepositoryCrawler((string) $pluginIndex->repository_url, $pluginIndex->manifest_root, $tempRepoPath);
+            $prc = new PluginRepositoryCrawler(
+                (string) $pluginIndex->repository_url,
+                $pluginIndex->manifest_root,
+                $tempRepoPath,
+            );
         } catch (Exception $e) {
             delete_directory($tempRepoPath);
 

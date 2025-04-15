@@ -58,3 +58,11 @@ body {
     text-align: right;
   }
 }
+
+[data-dropdown="menu"] {
+  @apply absolute z-50;
+}
+
+[data-dropdown="menu"]:not([data-show]) {
+  @apply hidden;
+}

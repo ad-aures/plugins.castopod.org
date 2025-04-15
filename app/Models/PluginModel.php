@@ -78,9 +78,13 @@ class PluginModel extends BaseModel
         $cacheName = sprintf('user#%d_plugins', $userId);
 
         if (! ($found = cache($cacheName))) {
-            $found = $this->where([
-                'owner_id' => $userId,
-            ])->findAll();
+            $found = $this->select('plugins.*')
+                ->join('plugins_maintainers', 'plugins_maintainers.plugin_key = plugins.key', 'left')
+                ->where([
+                    'owner_id' => $userId,
+                ])->orWhere('user_id', $userId)
+                ->groupBy('plugins.id')
+                ->findAll();
 
             cache()
                 ->save($cacheName, $found, DECADE);
