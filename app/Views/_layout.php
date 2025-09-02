@@ -7,8 +7,6 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 $currentUser = auth()
     ->user();
-
-assert($currentUser instanceof User);
 ?>
 
 <!DOCTYPE html>
@@ -20,10 +18,10 @@ assert($currentUser instanceof User);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="/favicon.ico">
 </head>
-<body class="flex flex-col bg-[length:300px] bg-brand-800" style="background-image: url('<?= base_url(
+<body class="flex flex-col bg-surface-base">
+    <header class="bg-brand-800 text-brand-100" style="background-image: url('<?= base_url(
     '/assets/images/castopod-pattern.svg',
 ); ?>');">
-    <header class="text-brand-100">
         <nav class="flex justify-between items-center starting:opacity-0 border-b border-brand-950 h-20 transition starting:-translate-y-full duration-500 ease-out container">
             <div class="flex items-center gap-8">
                 <a href="<?= route_to('index') ?>">
@@ -37,11 +35,13 @@ assert($currentUser instanceof User);
             <div class="flex items-center gap-2">
                 <a href="<?= route_to(
                     'plugin-submit',
-                ); ?>" class="bg-white px-4 py-2 font-semibold text-black">Submit plugin</a>
-                <?php if (auth()->loggedIn()) : ?>
+                ); ?>" class="bg-brand-50 px-4 py-2 font-semibold text-brand-950">Submit plugin</a>
+                <?php if (auth()->loggedIn()) :
+                    assert($currentUser instanceof User);
+                    ?>
                     <button
                     type="button"
-                    class="inline-flex items-center gap-x-2 px-4 py-2 h-full font-semibold text-sm"
+                    class="inline-flex items-center gap-x-2 px-4 py-2 h-full text-sm"
                     id="my-account-dropdown"
                     data-dropdown="button"
                     data-dropdown-target="my-account-dropdown-menu"
@@ -53,8 +53,8 @@ assert($currentUser instanceof User);
                         'class' => 'ml-auto text-2xl',
                     ]) ?></button>
                     <nav id="my-account-dropdown-menu"
-                        class="flex flex-col bg-brand-900 shadow-2xl py-2 border border-brand-950 rounded-lg min-w-48 text-skin-base text-white whitespace-nowrap"
-                        aria-labelledby="my-account-dropdown" data-dropdown="menu" data-dropdown-placement="bottom-end">
+                        class="flex flex-col bg-brand-900 py-2 border-2 border-brand-950 min-w-48 text-skin-base whitespace-nowrap"
+                        aria-labelledby="my-account-dropdown" data-dropdown="menu" data-dropdown-placement="bottom-end" data-dropdown-offset-y="18">
                         <a href="<?= route_to(
                             'my-plugins',
                         ); ?>" class="inline-flex items-center gap-x-2 hover:bg-brand-800 px-4 py-2 font-bold"><?= icon(
@@ -90,7 +90,7 @@ assert($currentUser instanceof User);
             <?= $this->renderSection('headerLeft') ?>
         </div>
     </header>
-    <main class="flex flex-col bg-brand-900 starting:opacity-0 border-t border-brand-950 h-full transition starting:translate-y-full duration-500 ease-out grow">
+    <main class="flex flex-col starting:opacity-0 border-contrast border-y-2 h-full grow">
         <?= $this->renderSection('main') ?>
     </main>
     <?= $this->include('_footer') ?>

@@ -20,13 +20,13 @@ const Tooltip = (): void => {
     tooltip.setAttribute("id", "tooltip" + i);
     tooltip.setAttribute(
       "class",
-      "absolute px-2 py-1 text-sm bg-gray-900 text-white rounded max-w-xs z-50"
+      "absolute px-2 py-1 text-sm bg-gray-950 text-white max-w-xs z-50 font-bold"
     );
     tooltip.innerHTML = tooltipContent;
     const arrowElement = document.createElement("div");
     arrowElement.setAttribute(
       "class",
-      "absolute bg-gray-900 w-2 h-2 rotate-45"
+      "absolute bg-gray-950 w-2 h-2 rotate-45"
     );
     arrowElement.setAttribute("id", "arrow" + i);
     tooltip.appendChild(arrowElement);

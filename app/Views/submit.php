@@ -16,14 +16,14 @@ use Michalsn\CodeIgniterHtmx\View\View;
             'plugin-index',
         ) ?>" class="flex flex-col gap-4 max-w-xl" hx-swap="none" hx-boost="true">
             <div class="flex flex-col">
-                <label for="repository_url" class="font-semibold text-brand-100">Repository URL</label>
-                <input type="url" id="repository_url" name="repository_url" placeholder="https://github.com/acme/foo.git" class="bg-brand-950 border-0 ring ring-brand-800 focus:ring-2 focus:ring-brand-500 w-full text-white">
+                <label for="repository_url" class="font-semibold">Repository URL</label>
+                <input type="url" id="repository_url" name="repository_url" placeholder="https://github.com/acme/foo.git" class="border-0 ring-2 ring-contrast focus:ring-4 w-full transition">
             </div>
             <div class="flex flex-col">
-                <label for="manifest_root" class="font-semibold text-brand-100">Folder</label>
-                <input type="text" id="manifest_root" name="manifest_root" placeholder="/" class="bg-brand-950 border-0 ring ring-brand-800 focus:ring-2 focus:ring-brand-500 w-full text-white">
+                <label for="manifest_root" class="font-semibold">Folder</label>
+                <input type="text" id="manifest_root" name="manifest_root" placeholder="/" class="border-0 ring-2 ring-contrast focus:ring-4 w-full transition">
             </div>
-            <button class="self-start bg-white mt-2 px-4 py-2">Submit plugin!</button>
+            <button class="self-start mt-2 px-4 py-2 btn-primary">Submit plugin!</button>
         </form>
     </div>
 <?php $this->endSection() ?>

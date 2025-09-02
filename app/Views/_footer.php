@@ -93,7 +93,7 @@ $sections = [
 ];
 ?>
 
-<footer class="bg-brand-800 py-12 border-t border-brand-950 text-white">
+<footer class="bg-brand-800 py-12 text-brand-100">
     <div class="flex lg:flex-row-reverse flex-col justify-between gap-8 container">
         <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 px-4 w-full max-w-3xl sm:text-left text-center">
             <?php foreach ($sections as $section): ?>

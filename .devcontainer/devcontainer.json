@@ -39,6 +39,7 @@
         "files.associations": {
           "*.css": "tailwindcss"
         },
+        "color-highlight.markerType": "dot-before",
         "sqltools.connections": [
           {
             "previewLimit": 50,
@@ -63,6 +64,7 @@
         "Gruntfuggly.todo-tree",
         "mtxr.sqltools-driver-pg",
         "mtxr.sqltools",
+        "naumovs.color-highlight",
         "pflannery.vscode-versionlens",
         "streetsidesoftware.code-spell-checker",
         "yzhang.markdown-all-in-one"

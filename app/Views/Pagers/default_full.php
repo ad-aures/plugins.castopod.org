@@ -6,7 +6,7 @@ use CodeIgniter\Pager\PagerRenderer;
 $pager->setSurroundCount(2);
 ?>
 
-<nav aria-label="<?= lang('Pager.pageNavigation') ?>" class="flex px-2 py-4 text-white text-center">
+<nav aria-label="<?= lang('Pager.pageNavigation') ?>" class="flex px-2 py-4 text-center">
     <?php if ($pager->hasPrevious()) : ?>
         <div class="flex items-center gap-2">
             <a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>" class="px-4 py-2">
@@ -20,7 +20,7 @@ $pager->setSurroundCount(2);
 
     <div class="flex gap-4 mx-auto">
     <?php foreach ($pager->links() as $link): ?>
-            <a href="<?= $link['uri'] ?>" class="grid place-items-center font-semibold size-12 <?= $link['active'] ? ' bg-brand-500' : '' ?>">
+            <a href="<?= $link['uri'] ?>" class="grid place-items-center font-semibold size-12 <?= $link['active'] ? ' btn-primary' : '' ?>">
                 <?= $link['title'] ?>
             </a>
             <?php endforeach ?>

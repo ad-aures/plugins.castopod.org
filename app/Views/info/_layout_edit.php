@@ -15,7 +15,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 <?php $this->section('main') ?>
     <div class="container">
-        <nav class="flex items-center bg-brand-950 -mt-10 border-x border-t border-brand-950 divide-x divide-brand-900 w-fit" hx-boost="true">
+        <nav class="flex -mt-11 border-2 divide-border-contrast divide-x-2 w-fit" hx-boost="true">
             <?= $this->include('info/_tabs_edit') ?>
         </nav>
         <div class="py-6">

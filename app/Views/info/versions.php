@@ -18,7 +18,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                     $version->tag,
                 ) ?>">
                     <span class="tag">
-                        <span class="font-mono font-bold decoration-2 decoration-brand-500 underline group-hover:no-underline"><?= $version->tag ?></span>
+                        <span class="font-mono font-bold decoration-2 decoration-bg-accent underline group-hover:no-underline"><?= $version->tag ?></span>
                         <?= $version->tag === $plugin->latest_version->tag ? ' (latest)' : '' ?>
                         <span class="leaders" aria-hidden="true"></span>
                     </span>
@@ -28,7 +28,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                     ) . icon(
                         'arrow-down-line',
                         [
-                            'class' => 'text-brand-200',
+                            'class' => 'text-skin-muted',
                         ],
                     ) ?></span>
                 </a>

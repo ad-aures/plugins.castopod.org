@@ -1,5 +1,8 @@
 @import url("./fonts.css");
-@import "tailwindcss" source("../../app");
+@import "tailwindcss" source(none);
+
+@source "../../app";
+@source "../js";
 
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
@@ -10,6 +13,8 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
+
+  /* --color-*: initial; */
 
   --color-brand-50: oklch(97.88% 0.0086 188.12);
   --color-brand-100: oklch(96.32% 0.0336 141.21);
@@ -23,6 +28,62 @@
   --color-brand-900: oklch(31.3% 0.0979 145.19);
   --color-brand-950: oklch(17.36% 0.0543 145.19);
 
+  --color-nimbus-50: oklch(0.98 0.003 205.1);
+  --color-nimbus-100: oklch(96.8% 0.007 205.24);
+  --color-nimbus-200: oklch(0.93 0.013 211.51);
+  --color-nimbus-300: oklch(0.87 0.022 210.45);
+  --color-nimbus-400: oklch(0.7 0.04 215.79);
+  --color-nimbus-500: oklch(0.55 0.046 215.79);
+  --color-nimbus-600: oklch(44.6% 0.043 215.79);
+  --color-nimbus-700: oklch(37.2% 0.044 215.85);
+  --color-nimbus-800: oklch(27.9% 0.041 220.031);
+  --color-nimbus-900: oklch(20.8% 0.042 225.755);
+  --color-nimbus-950: oklch(12.9% 0.042 224.695);
+
+  --color-primary: var(--color-brand-500);
+
+  --background-color-surface-dim: var(--color-nimbus-200);
+  --background-color-surface-base: var(--color-nimbus-100);
+  --background-color-surface-bright: var(--color-brand-50);
+
+  --background-color-primary: var(--color-brand-700);
+  --background-color-secondary: var(--color-brand-950);
+  --background-color-success: var(--color-green-600);
+  --background-color-warning: var(--color-orange-600);
+  --background-color-error: var(--color-red-700);
+
+  --text-color-skin: var(--color-nimbus-950);
+  --text-color-skin-muted: var(--color-nimbus-500);
+
+  --text-color-primary: var(--color-brand-700);
+  --text-color-on-primary: var(--color-brand-50);
+
+  --text-color-secondary: var(--color-brand-950);
+  --text-color-on-secondary: var(--color-brand-50);
+
+  --text-color-success: var(--color-green-700);
+  --text-color-on-success: var(--color-green-50);
+
+  --text-color-warning: var(--color-orange-700);
+  --text-color-on-warning: var(--color-orange-50);
+
+  --text-color-error: var(--color-red-700);
+  --text-color-on-error: var(--color-red-50);
+
+  --border-color-subtle: var(--color-nimbus-300);
+  --border-color-contrast: var(--color-brand-950);
+
+  --border-color-success: var(--color-green-500);
+  --border-color-warning: var(--color-orange-500);
+  --border-color-error: var(--color-red-500);
+
+  --ring-color-subtle: var(--color-nimbus-300);
+  --ring-color-contrast: var(--color-brand-950);
+
+  --ring-color-success: var(--color-green-500);
+  --ring-color-warning: var(--color-orange-500);
+  --ring-color-error: var(--color-red-500);
+
   --font-sans: "Inter", "sans-serif";
   --font-display: "Rubik", "sans-serif";
   --font-mono: "Noto Sans Mono", "mono";
@@ -33,12 +94,54 @@
   padding-inline: 2rem;
 }
 
-html {
-  @apply h-full;
+@layer base {
+  html {
+    @apply h-full;
+    color-scheme: light;
+  }
+
+  body {
+    @apply min-h-full;
+  }
+
+  button,
+  [role="button"] {
+    @apply cursor-pointer;
+  }
+  button:disabled,
+  [role="button"]:disabled {
+    @apply cursor-default;
+  }
 }
 
-body {
-  @apply min-h-full;
+.btn-primary {
+  @apply px-4 py-2 ps-3 inline-flex justify-center items-center text-on-primary bg-primary font-bold;
+
+  &:hover {
+    background-color: oklch(
+      from var(--background-color-primary) calc(l * 0.75) c h
+    );
+  }
+}
+
+.btn-secondary {
+  @apply px-4 py-2 ps-3 gap-x-3 inline-flex justify-center items-center text-on-secondary bg-secondary font-bold;
+
+  &:hover {
+    background-color: oklch(
+      from var(--background-color-secondary) calc(l * 2) c h
+    );
+  }
+}
+
+.btn-danger {
+  @apply px-4 py-2 ps-3 gap-x-3 inline-flex justify-center items-center bg-error text-on-error font-bold;
+
+  &:hover {
+    background-color: oklch(
+      from var(--background-color-error) calc(l * 0.75) c h
+    );
+  }
 }
 
 .versions-list {

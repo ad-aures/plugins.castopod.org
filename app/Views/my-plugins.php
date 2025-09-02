@@ -14,7 +14,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 ) ?><h1 class="font-display font-bold text-5xl">My plugins</h1><?php $this->endSection() ?>
 
 <?php $this->section('main') ?>
-    <div class="items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] py-8 lg:border-0 border-t border-brand-950 container grow">
+    <div class="items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] -mt-28 py-8 container grow">
         <?php
         foreach ($plugins as $key => $plugin):
             echo view('_plugin', [

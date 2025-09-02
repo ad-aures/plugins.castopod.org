@@ -15,8 +15,6 @@ namespace Config;
  *
  * When working with mime types, please make sure you have the ´fileinfo´
  * extension enabled to reliably detect the media types.
- *
- * @immutable
  */
 class Mimes
 {
@@ -286,7 +284,8 @@ class Mimes
         'srt' => ['text/srt', 'text/plain'],
         'vtt' => ['text/vtt', 'text/plain'],
         'ico' => ['image/x-icon', 'image/x-ico', 'image/vnd.microsoft.icon'],
-        'stl' => ['application/sla', 'application/vnd.ms-pki.stl', 'application/x-navistyle'],
+        'stl' => ['application/sla', 'application/vnd.ms-pki.stl', 'application/x-navistyle','model/stl',
+            'application/octet-stream',],
     ];
 
     /**

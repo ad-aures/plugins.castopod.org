@@ -19,9 +19,6 @@ const Dropdown = (): void => {
       );
 
       if (menu) {
-        // place the menu at then end of the body to prevent any overflow cuts
-        document.body.appendChild(menu);
-
         const update = () => {
           const offsetX = menu.dataset.dropdownOffsetX
             ? parseInt(menu.dataset.dropdownOffsetX)
