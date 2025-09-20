@@ -19,6 +19,9 @@ parameters:
 	ignoreErrors:
 		- '#Call to an undefined method Pest\\PendingCalls\\TestCall\:\:expect\(\)#'
 		- '#^Call to an undefined method CodeIgniter\\Cache\\CacheInterface\:\:deleteMatching\(\)#'
+		- '#\$callback of static method CodeIgniter\\Events\\Events\:\:on\(\) expects callable\(mixed\)\: mixed#'
 		- identifier: missingType.generics
-		- identifier: property.readOnlyByPhpDocDefaultValue
 		- identifier: echo.nonString
+		-
+			identifier: method.void
+			path: app/Views/*

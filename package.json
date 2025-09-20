@@ -3,6 +3,17 @@
   "version": "0.1.0",
   "description": "The Castopod Plugin Hub is the place to discover, install, and manage plugins for Castopod.",
   "type": "module",
+  "license": "AGPL-3.0-only",
+  "keywords": [
+    "castopod",
+    "podcasting",
+    "podcast",
+    "plugins"
+  ],
+  "author": {
+    "name": "Yassine Doghri",
+    "url": "https://yassinedoghri.com/"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,36 +21,30 @@
     "format": "prettier --write .",
     "commit": "cz"
   },
-  "keywords": [],
-  "author": {
-    "name": "Yassine Doghri",
-    "url": "https://yassinedoghri.com/"
+  "dependencies": {
+    "@floating-ui/dom": "^1.7.4",
+    "@github/relative-time-element": "^4.4.8",
+    "alpinejs": "^3.15.0",
+    "htmx.org": "2.0.7"
   },
-  "license": "AGPL-3.0-only",
   "devDependencies": {
     "@prettier/plugin-xml": "^3.4.2",
     "@rollup/plugin-multi-entry": "^6.0.1",
     "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/typography": "^0.5.16",
-    "@tailwindcss/vite": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.18",
+    "@tailwindcss/vite": "^4.1.13",
     "autoprefixer": "^10.4.21",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
-    "tailwindcss": "^4.1.12",
-    "vite": "^7.1.3",
+    "tailwindcss": "^4.1.13",
+    "vite": "^7.1.6",
     "vite-plugin-codeigniter": "^2.0.0"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "dependencies": {
-    "@floating-ui/dom": "^1.7.4",
-    "@github/relative-time-element": "^4.4.8",
-    "alpinejs": "^3.14.9",
-    "htmx.org": "2.0.6"
   }
 }

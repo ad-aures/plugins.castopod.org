@@ -10,7 +10,9 @@ use JsonSerializable;
 class Person implements JsonSerializable
 {
     public private(set) string $name;
+
     public private(set) ?string $email = null;
+
     public private(set) ?URI $url = null;
 
     /**

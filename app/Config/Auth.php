@@ -23,6 +23,8 @@ class Auth extends ShieldAuth
      * --------------------------------------------------------------------
      * View files
      * --------------------------------------------------------------------
+     *
+     * @var array<string,string>
      */
     public array $views = [
         'login'                       => '\App\Views\auth\login',

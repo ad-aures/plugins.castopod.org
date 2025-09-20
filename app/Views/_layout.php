@@ -20,8 +20,8 @@ $currentUser = auth()
 </head>
 <body class="flex flex-col bg-surface-base">
     <header class="bg-brand-800 text-brand-100" style="background-image: url('<?= base_url(
-    '/assets/images/castopod-pattern.svg',
-); ?>');">
+        '/assets/images/castopod-pattern.svg',
+    ); ?>');">
         <nav class="flex justify-between items-center starting:opacity-0 border-b border-brand-950 h-20 transition starting:-translate-y-full duration-500 ease-out container">
             <div class="flex items-center gap-8">
                 <a href="<?= route_to('index') ?>">
@@ -49,9 +49,9 @@ $currentUser = auth()
                     aria-expanded="false"><img src="<?= $currentUser->getAvatarUrl(
                         'tiny',
                     ) ?>"><span class="hidden sm:block"><?= $currentUser
-                    ->username ?></span><?= icon('arrow-drop-down-fill', [
-                        'class' => 'ml-auto text-2xl',
-                    ]) ?></button>
+                        ->username ?></span><?= icon('arrow-drop-down-fill', [
+                            'class' => 'ml-auto text-2xl',
+                        ]) ?></button>
                     <nav id="my-account-dropdown-menu"
                         class="flex flex-col bg-brand-900 py-2 border-2 border-brand-950 min-w-48 text-skin-base whitespace-nowrap"
                         aria-labelledby="my-account-dropdown" data-dropdown="menu" data-dropdown-placement="bottom-end" data-dropdown-offset-y="18">

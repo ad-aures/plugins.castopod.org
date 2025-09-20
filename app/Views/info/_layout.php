@@ -65,7 +65,10 @@ use Michalsn\CodeIgniterHtmx\View\View;
     <h2 class="font-display text-2xl">⚠️ Danger zone</h2>
     <form action="<?= route_to('plugin-action', $plugin->key) ?>" method="POST">
         <button class="mt-4 px-4 py-2 btn-danger" name="action" value="delete" type="submit" title="delete plugin"><?= icon(
-            'delete-bin-fill', ['class' => 'text-on-error/75']
+            'delete-bin-fill',
+            [
+                'class' => 'text-on-error/75',
+            ],
         ) ?>Delete plugin</button>
     </form>
 </div>

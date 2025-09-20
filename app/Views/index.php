@@ -32,7 +32,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                 aria-haspopup="true"
                 aria-expanded="false">Categories<?= icon('arrow-down-s-line', [
                     'class' => 'text-2xl',
-            ]) ?></button>
+                ]) ?></button>
             <div id="categories-dropdown-menu"
                     class="flex flex-col bg-surface-bright px-6 pb-4 border-2 whitespace-nowrap"
                     aria-labelledby="categories-dropdown" data-dropdown="menu" data-dropdown-placement="bottom-start">
@@ -42,7 +42,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                             $category,
                             $categories,
                             true,
-                            ) ? 'checked="checked"' : '' ?>>
+                        ) ? 'checked="checked"' : '' ?>>
                     <?= $category ?>
                 </label>
                 <?php endforeach; ?>

@@ -9,11 +9,25 @@ use App\Models\DownloadModel;
 use App\Models\PluginModel;
 use App\Models\VersionModel;
 use CodeIgniter\API\ResponseTrait;
+use CodeIgniter\Database\Exceptions\DatabaseException;
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\ResponseInterface;
 
+/** @property IncomingRequest $request */
 class API extends BaseController
 {
     use ResponseTrait;
+
+    public function health(): ResponseInterface
+    {
+        try {
+            db_connect();
+        } catch (DatabaseException) {
+            return $this->failServerError();
+        }
+
+        return $this->respondNoContent();
+    }
 
     public function pluginInfo(string $pluginKey): ResponseInterface
     {
@@ -36,14 +50,16 @@ class API extends BaseController
             return $this->failNotFound($e->getMessage());
         }
 
-        $tags = [];
-        foreach ($plugin->versions as $version) {
-            $tags[] = $version->tag;
-        }
+        $expand = $this->request->getGet('expand') ?? [];
 
         return $this->respond([
-            'latest' => $plugin->latest_version->tag,
-            'tags'   => $tags,
+            'plugin' => is_array($expand) && in_array(
+                'plugin',
+                $expand,
+                true,
+            ) ? $plugin->jsonSerialize() : $pluginKey,
+            'latest'   => $plugin->latest_version->tag,
+            'all_tags' => $plugin->all_tags,
         ]);
     }
 
@@ -59,8 +75,16 @@ class API extends BaseController
             return $this->failNotFound($e->getMessage());
         }
 
+        $plugin = $pluginKey;
+        $expand = $this->request->getGet('expand') ?? [];
+        if (is_array($expand) && in_array('plugin', $expand, true)) {
+            $plugin = new PluginModel()
+                ->getPluginByKey($pluginKey)
+                ->jsonSerialize();
+        }
+
         return $this->respond([
-            'name' => $pluginKey,
+            'plugin' => $plugin,
             ...$version->jsonSerialize(),
         ]);
     }

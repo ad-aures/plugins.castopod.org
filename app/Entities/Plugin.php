@@ -28,6 +28,7 @@ use CodeIgniter\I18n\Time;
  * @property User $owner
  *
  * @property Version[] $versions
+ * @property list<string> $all_tags
  *
  * @property Version $latest_version
  *
@@ -60,6 +61,11 @@ class Plugin extends BaseEntity
      * @var Version[]|null
      */
     protected ?array $versions = null;
+
+    /**
+     * @var list<string>
+     */
+    protected ?array $all_tags = null;
 
     protected ?string $selected_version_tag = null;
 
@@ -103,6 +109,21 @@ class Plugin extends BaseEntity
         }
 
         return $this->versions;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getAllTags(): array
+    {
+        if ($this->all_tags === null) {
+            $this->all_tags = [];
+            foreach ($this->getVersions() as $version) {
+                $this->all_tags[] = $version->tag;
+            }
+        }
+
+        return $this->all_tags;
     }
 
     public function getLatestVersion(): Version
@@ -163,6 +184,7 @@ class Plugin extends BaseEntity
     public function jsonSerialize(): array
     {
         return [
+            'key'            => $this->vendor . '/' . $this->name,
             'vendor'         => $this->vendor,
             'name'           => $this->name,
             'description'    => $this->description ? html_entity_decode($this->description) : null,

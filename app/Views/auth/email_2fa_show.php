@@ -1,7 +1,14 @@
 <?php
-/** 
- * @var CodeIgniter\Shield\Entities\User $user
- */ ?>
+
+use CodeIgniter\Shield\Entities\User;
+use CodeIgniter\View\View;
+
+/**
+ * @var User $user
+ * @var View $this
+ */
+
+?>
 
 <?= $this->extend(config('Auth')->views['layout']) ?>
 
@@ -13,7 +20,12 @@
     <?= csrf_field() ?>
 
     <!-- Email -->
-    <input type="email" class="mb-2" name="email" inputmode="email" autocomplete="email" placeholder="<?= lang('Auth.email') ?>" value="<?= old('email', $user->email) ?>" required>
+    <input type="email" class="mb-2" name="email" inputmode="email" autocomplete="email" placeholder="<?= lang(
+        'Auth.email',
+    ) ?>" value="<?= old(
+        'email',
+        $user->email,
+    ) ?>" required>
 
     <button type="submit" class="mt-4 px-4 py-2 w-full btn-primary"><?= lang('Auth.send') ?></button>
 </form>

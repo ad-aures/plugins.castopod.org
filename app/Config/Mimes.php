@@ -284,8 +284,8 @@ class Mimes
         'srt' => ['text/srt', 'text/plain'],
         'vtt' => ['text/vtt', 'text/plain'],
         'ico' => ['image/x-icon', 'image/x-ico', 'image/vnd.microsoft.icon'],
-        'stl' => ['application/sla', 'application/vnd.ms-pki.stl', 'application/x-navistyle','model/stl',
-            'application/octet-stream',],
+        'stl' => ['application/sla', 'application/vnd.ms-pki.stl', 'application/x-navistyle', 'model/stl',
+            'application/octet-stream', ],
     ];
 
     /**

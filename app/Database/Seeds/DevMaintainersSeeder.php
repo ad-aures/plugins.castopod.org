@@ -23,7 +23,7 @@ class DevMaintainersSeeder extends Seeder
                 ->insert([
                     'plugin_key' => $plugin->key,
                     'user_id'    => random_int(2, 3),
-                    'created_at' => Time::now(),
+                    'added_at'   => Time::now(),
                 ]);
         }
     }

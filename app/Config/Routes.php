@@ -46,7 +46,14 @@ $routes->get('@(:any)/edit', 'Plugins::edit/$1', [
     'filter' => ['permission:plugins.manage,plugins$1.manage'],
 ]);
 
-$routes->group('api', static function (RouteCollection $routes) {
+/**
+ * API v1 ROUTES
+ */
+$routes->group('api/v1', static function (RouteCollection $routes) {
+    $routes->get('health', 'API::health', [
+        'as' => 'api-health',
+    ]);
+
     $routes->get('(:pluginKey)', 'API::pluginInfo/$1', [
         'as' => 'api-plugin-info',
     ]);
