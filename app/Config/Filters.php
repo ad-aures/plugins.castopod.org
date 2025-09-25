@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Config;
 
 use App\Filters\PermissionFilter;
+use App\Filters\Throttle;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -37,6 +38,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'throttle'      => Throttle::class,
     ];
 
     /**
@@ -99,7 +101,9 @@ class Filters extends BaseFilters
      *
      * @var array<string, list<string>>
      */
-    public array $methods = [];
+    public array $methods = [
+        'POST' => ['throttle'],
+    ];
 
     /**
      * List of filter aliases that should run on any

@@ -39,7 +39,7 @@ class Version extends BaseEntity
     ];
 
     /**
-     * @return array{tag:string,commit_hash:string,readme:?string,license:value-of<License>,min_castopod_version:string,hooks:Hook[],size:int,file_count:int,archive:array{url:string,checksum:string},published_at:string}
+     * @return array{tag:string,commit_hash:string,readme:?string,license:value-of<License>,min_castopod_version:string,hooks:Hook[],size:int,file_count:int,archive_url:string,archive_checksum:string,published_at:string}
      */
     #[\Override]
     public function jsonSerialize(): array
@@ -53,11 +53,9 @@ class Version extends BaseEntity
             'hooks'                => $this->hooks,
             'size'                 => $this->size,
             'file_count'           => $this->file_count,
-            'archive'              => [
-                'url'      => (string) $this->archive_url,
-                'checksum' => $this->archive_checksum,
-            ],
-            'published_at' => $this->published_at->format(DATE_ATOM),
+            'archive_url'          => (string) $this->archive_url,
+            'archive_checksum'     => $this->archive_checksum,
+            'published_at'         => $this->published_at->format(DATE_ATOM),
         ];
     }
 

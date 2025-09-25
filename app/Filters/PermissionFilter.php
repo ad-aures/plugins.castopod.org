@@ -31,7 +31,7 @@ class PermissionFilter extends ShieldPermissionFilter
     protected function isAuthorized(array $arguments): bool
     {
         foreach ($arguments as $permission) {
-            // is permission specific to a podcast?
+            // is permission specific to a plugin?
             if (str_contains($permission, '$')) {
                 $router = service('router');
                 $routerParams = $router->params();

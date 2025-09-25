@@ -361,13 +361,16 @@ class PluginRepositoryCrawler
         $fileCount = 0;
         /** @var \SplFileObject $file */
         foreach ($files as $file) {
-            $filePath = $file->getPathname();
-            $filename = preg_replace('/^' . preg_quote($path, '/') . '/', '', $filePath);
+            if ($file->isFile()) {
+                $filePath = $file->getPathname();
+                $filename = preg_replace('/^' . preg_quote($path, '/') . '/', '', $filePath);
 
-            $fileList[] = $filename . ':' . hash_file('sha256', $filePath);
+                $fileList[] = $filename . ':' . hash_file('sha256', $filePath);
 
-            $bytesTotal += $file->getSize();
-            $fileCount++;
+                $bytesTotal += $file->getSize();
+                $fileCount++;
+            }
+
         }
 
         // Ensure file list order is always the same
