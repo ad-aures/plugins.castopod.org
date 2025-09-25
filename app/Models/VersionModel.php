@@ -25,6 +25,8 @@ class VersionModel extends BaseModel
         'hooks',
         'size',
         'file_count',
+        'archive_path',
+        'archive_checksum',
         'downloads_total',
         'published_at',
     ];

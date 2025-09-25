@@ -29,6 +29,17 @@ class PluginNotFoundException extends RuntimeException implements HTTPExceptionI
         ]));
     }
 
+    /**
+     * @return static
+     */
+    public static function forPluginByRepositoryNotFound(string $repositoryUrl, string $manifestRoot): self
+    {
+        return new static(self::lang('Plugin.exceptions.pluginByRepositoryNotFound', [
+            'repositoryUrl' => $repositoryUrl,
+            'manifestRoot'  => $manifestRoot,
+        ]));
+    }
+
     public static function forVersionNotFound(string $pluginKey, string $tag): self
     {
         return new static(self::lang('Plugin.exceptions.versionNotFound', [

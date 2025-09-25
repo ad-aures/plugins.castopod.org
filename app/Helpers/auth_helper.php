@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use CodeIgniter\Shield\Entities\User;
-use Config\App;
 
 if (! function_exists('is_user_maintainer_of')) {
     function is_user_maintainer_of(string $pluginKey): bool
@@ -74,18 +73,13 @@ if (! function_exists('save_gravatar')) {
             [substr($fileHash, 0, 2), substr($fileHash, 2, 2), substr($fileHash, 4, 2), $fileHash],
         );
 
-        /** @var App $appConfig */
-        $appConfig = config('App');
-        $avatarRelativePath = implode(
-            DIRECTORY_SEPARATOR,
-            [rtrim($appConfig->mediaRootPath, '/'), trim($appConfig->avatarsFolder, '/'), $avatarPath],
-        );
+        $avatarFullPath = media_path('avatars', $avatarPath);
 
-        if (! is_dir(dirname($avatarRelativePath)) && ! @mkdir(dirname($avatarRelativePath), 0755, true)) {
+        if (! is_dir(dirname($avatarFullPath)) && ! @mkdir(dirname($avatarFullPath), 0755, true)) {
             return false;
         }
 
-        $path = sprintf('%s.%s', $avatarRelativePath, $extension);
+        $path = sprintf('%s.%s', $avatarFullPath, $extension);
         if (! file_put_contents($path, $baseGravatar)) {
             return false;
         }
@@ -104,7 +98,7 @@ if (! function_exists('save_gravatar')) {
                 ),
             );
 
-            $path = sprintf('%s-%s.%s', $avatarRelativePath, $name, $extension);
+            $path = sprintf('%s-%s.%s', $avatarFullPath, $name, $extension);
             if (! file_put_contents($path, $gravatar)) {
                 return false;
             }

@@ -86,8 +86,8 @@ $currentUser = auth()
             </div>
         </nav>
         <div class="flex flex-wrap justify-between items-center gap-x-4 gap-y-6 starting:opacity-0 pt-24 pb-32 transition duration-1000 container">
-            <?= $this->renderSection('headerRight') ?>
             <?= $this->renderSection('headerLeft') ?>
+            <?= $this->renderSection('headerRight') ?>
         </div>
     </header>
     <main class="flex flex-col starting:opacity-0 border-contrast border-y-2 h-full grow">

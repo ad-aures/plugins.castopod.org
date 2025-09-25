@@ -22,6 +22,25 @@ class IndexModel extends BaseModel
 
     protected $useTimestamps = true;
 
+    public function getIndexRecord(string $repositoryUrl, string $manifestRoot): ?Index
+    {
+        // FIXME: collision issue
+        $cacheName = sprintf('index#%s', hash('md5', $repositoryUrl . $manifestRoot));
+
+        if (! ($found = cache($cacheName))) {
+            $found = $this->where([
+                'repository_url' => $repositoryUrl,
+                'manifest_root'  => $manifestRoot,
+            ])->first();
+
+            cache()
+                ->save($cacheName, $found, DECADE);
+        }
+
+        /** @var ?Index $found */
+        return $found;
+    }
+
     public function deletePluginFromIndex(Plugin $plugin): BaseResult|bool
     {
         // clear all plugin cache before removing it from index

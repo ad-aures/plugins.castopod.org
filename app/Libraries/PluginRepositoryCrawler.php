@@ -11,19 +11,20 @@ use CodeIgniter\Validation\Validation;
 use Config\App;
 use enshrined\svgSanitize\Sanitizer;
 use Exception;
-use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use SplFileInfo;
+use ZipArchive;
 
 class PluginRepositoryCrawler
 {
     /**
-     * @var array{key:string,vendor:string,name:string,version:string,minCastopodVersion:string,hooks:list<string>,description:?string,homepage:?string,authors:list<Person>,license:string,keywords:list<string>,size:int,fileCount:int,icon:string,private:bool,submodule:bool,readme:string}
+     * @var array{key:string,vendor:string,name:string,version:string,minCastopodVersion:string,hooks:list<string>,description:?string,homepage:?string,authors:list<Person>,license:string,keywords:list<string>,size:int,fileCount:int,checksum:string,icon:string,private:bool,submodule:bool,readme:string}
      */
     public private(set) array $pluginMetadata;
 
     /**
-     * @var array<string,array{refname:string,commitHash:string,publishedAt:Time,isDev:boolean}>
+     * @var array{tag:string,refname:string,commitHash:string,publishedAt:Time,isDev:boolean}[]
      */
     public private(set) array $versions = [];
 
@@ -34,8 +35,6 @@ class PluginRepositoryCrawler
     protected string $readmeFilePath;
 
     protected string $iconFilePath;
-
-    protected string $pluginKey;
 
     public function __construct(
         protected string $url,
@@ -82,7 +81,8 @@ class PluginRepositoryCrawler
         }
 
         [$commitHash, $publicationDate] = explode("\t", trim($lastCommitInfo));
-        $this->versions[sprintf('dev-%s', $defaultBranch)] = [
+        $this->versions[] = [
+            'tag'         => sprintf('dev-%s', $defaultBranch),
             'refname'     => $defaultBranch,
             'commitHash'  => $commitHash,
             'publishedAt' => Time::createFromFormat(DATE_ATOM, $publicationDate),
@@ -127,7 +127,8 @@ class PluginRepositoryCrawler
                 continue;
             }
 
-            $this->versions[$tag] = [
+            $this->versions[] = [
+                'tag'         => $tag,
                 'refname'     => $refname,
                 'commitHash'  => $objectName,
                 'publishedAt' => Time::createFromFormat(DATE_ATOM, $creatorDate),
@@ -145,7 +146,54 @@ class PluginRepositoryCrawler
     }
 
     /**
-     * @return array{key:string,vendor:string,name:string,version:string,minCastopodVersion:string,hooks:list<string>,description:?string,homepage:?string,authors:list<Person>,license:string,keywords:list<string>,size:int,fileCount:int,icon:string,private:bool,submodule:bool,readme:string}
+     * Generates a ZIP archive of a version in the media path.
+     *
+     * @return string the newly created archive path
+     */
+    public function archive(string $pluginKey, string $versionTag): string
+    {
+        $folderHash = $this->pluginMetadata['checksum'];
+
+        $archiveDirPath = implode(
+            DIRECTORY_SEPARATOR,
+            [substr($folderHash, 0, 2), substr($folderHash, 2, 2), substr($folderHash, 4, 2)],
+        );
+        $archiveDirFullPath = media_path('plugins', $archiveDirPath);
+
+        $archiveFilename = str_replace('/', '_', $pluginKey) . '_' . $versionTag . '.zip';
+
+        $archivePath = DIRECTORY_SEPARATOR . $archiveDirPath . DIRECTORY_SEPARATOR . $archiveFilename;
+        $archiveFullPath = media_path('plugins', $archivePath);
+
+        // make sure archiveDirPath exists first by creating it
+        if (! is_dir($archiveDirFullPath) && ! mkdir($archiveDirFullPath, 0777, true)) {
+            throw new Exception('Could not create archive directory.');
+        }
+
+        // make zip of $this->pluginFolderPath
+        $zip = new ZipArchive();
+
+        $iterator = new RecursiveDirectoryIterator($this->pluginFolderPath, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+        if ($zip -> open($archiveFullPath, ZipArchive::CREATE) === true) {
+            /** @var SplFileInfo $file */
+            foreach ($files as $file) {
+                $filePath = $file->getPathname();
+                $filename = preg_replace('/^' . preg_quote($this->pluginFolderPath, '/') . '/', '', $filePath);
+
+                if ($file->isFile()) {
+                    $zip -> addFile($filePath, $pluginKey . DIRECTORY_SEPARATOR . $filename);
+                }
+            }
+            $zip ->close();
+        }
+
+        return $archivePath;
+    }
+
+    /**
+     * @return array{key:string,vendor:string,name:string,version:string,minCastopodVersion:string,hooks:list<string>,description:?string,homepage:?string,authors:list<Person>,license:string,keywords:list<string>,size:int,fileCount:int,checksum:string,icon:string,private:bool,submodule:bool,readme:string}
      */
     private function parseManifest(): array
     {
@@ -197,7 +245,7 @@ class PluginRepositoryCrawler
         $validatedData = $validation->getValidated();
 
         [$vendor, $name] = explode('/', $validatedData['name']);
-        [$bytesTotal, $fileCount] = $this->getDirectoryMetadata($this->pluginFolderPath);
+        [$bytesTotal, $fileCount, $checksum] = $this->getDirectoryMetadata($this->pluginFolderPath);
 
         /** @var list<string> $keywords */
         $keywords = array_filter(
@@ -231,6 +279,7 @@ class PluginRepositoryCrawler
             'keywords'           => $keywords,
             'size'               => $bytesTotal,
             'fileCount'          => $fileCount,
+            'checksum'           => $checksum,
             'icon'               => $cleanIcon,
             'submodule'          => $validatedData['submodule'] ?? false,
             'readme'             => (string) file_get_contents($this->readmeFilePath),
@@ -295,25 +344,37 @@ class PluginRepositoryCrawler
     /**
      * @link from https://stackoverflow.com/a/21409562
      *
-     * @return array{0:int,1:int}
+     * @return array{0:int,1:int,2:string}
      */
     private function getDirectoryMetadata(string $path): array
     {
-        $bytesTotal = 0;
-        $fileCount = 0;
         $path = (string) realpath($path);
-        if ($path !== '' && file_exists($path)) {
-            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
-                $path,
-                FilesystemIterator::SKIP_DOTS,
-            ));
-            /** @var \SplFileObject $object */
-            foreach ($files as $object) {
-                $bytesTotal += $object->getSize();
-                $fileCount++;
-            }
+        if ($path === '' || ! file_exists($path)) {
+            throw new Exception(sprintf('Could not get metadata of directory %s', $path));
         }
 
-        return [$bytesTotal, $fileCount];
+        $iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+        $fileList = [];
+        $bytesTotal = 0;
+        $fileCount = 0;
+        /** @var \SplFileObject $file */
+        foreach ($files as $file) {
+            $filePath = $file->getPathname();
+            $filename = preg_replace('/^' . preg_quote($path, '/') . '/', '', $filePath);
+
+            $fileList[] = $filename . ':' . hash_file('sha256', $filePath);
+
+            $bytesTotal += $file->getSize();
+            $fileCount++;
+        }
+
+        // Ensure file list order is always the same
+        sort($fileList);
+
+        $checksum = hash('sha256', implode('|', $fileList));
+
+        return [$bytesTotal, $fileCount, $checksum];
     }
 }

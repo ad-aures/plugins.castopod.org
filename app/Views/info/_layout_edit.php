@@ -10,7 +10,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 <?php $this->extend('_layout') ?>
 
 <?php $this->section(
-    'headerRight',
+    'headerLeft',
 ) ?><h1 class="font-display font-bold text-4xl">Edit <?= $plugin->key ?></h1><?php $this->endSection() ?>
 
 <?php $this->section('main') ?>

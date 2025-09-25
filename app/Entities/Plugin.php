@@ -128,7 +128,7 @@ class Plugin extends BaseEntity
 
     public function getLatestVersion(): Version
     {
-        if ($this->latest_version === null) {
+        if (! $this->latest_version instanceof Version) {
             $this->latest_version = new VersionModel()
                 ->getLatestPluginVersion($this->key);
         }
@@ -139,14 +139,14 @@ class Plugin extends BaseEntity
     public function setSelectedVersionTag(?string $tag = null): self
     {
         $this->selected_version_tag = $tag;
-        $this->selected_version = null; // @phpstan-ignore assign.propertyType
+        $this->selected_version = null;
 
         return $this;
     }
 
     public function getSelectedVersion(): Version
     {
-        if ($this->selected_version === null) {
+        if (! $this->selected_version instanceof Version) {
             $this->selected_version = $this->selected_version_tag === null ? $this->getLatestVersion() : new VersionModel()
                 ->getPluginVersion($this->key, $this->selected_version_tag);
         }
@@ -156,7 +156,7 @@ class Plugin extends BaseEntity
 
     public function getOwner(): User
     {
-        if ($this->owner === null) {
+        if (! $this->owner instanceof User) {
             $this->owner = new UserModel()
                 ->getPluginOwner($this->key);
         }

@@ -2,7 +2,7 @@
 use CodeIgniter\View\View;
 
 /**
- * @var View
+ * @var View $this
  */
 
 ?>

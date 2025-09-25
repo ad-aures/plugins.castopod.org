@@ -20,12 +20,12 @@ class MarkdownCast extends BaseCast
     }
 
     /**
-     * @param string $value
+     * @param Markdown $value
      * @param array<mixed> $params
      */
     #[\Override]
     public static function set($value, array $params = []): string // @phpstan-ignore typeCoverage.paramTypeCoverage
     {
-        return $value;
+        return (string) $value;
     }
 }

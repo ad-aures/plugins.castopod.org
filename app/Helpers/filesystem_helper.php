@@ -77,3 +77,40 @@ if (! function_exists('delete_folder')) {
         return @rmdir($folderPath);
     }
 }
+
+if (! function_exists('delete_path')) {
+    /**
+     * A recursive function that deletes a file and parent folders until one is not empty or until reaching root path.
+     */
+    function delete_path(string $path, string $rootPath): bool
+    {
+        // normalize paths using realpath
+        $path = (string) realpath($path);
+        $rootPath = (string) realpath($rootPath);
+
+        if (file_exists($path) && ! is_dir($path)) {
+            if (! unlink($path)) {
+                return false;
+            }
+
+            return delete_path(dirname($path, 1), $rootPath);
+        }
+
+        if ($path === $rootPath) {
+            // stop if $path is $rootPath
+            return true;
+        }
+
+        $isDirEmpty = ! new \FilesystemIterator($path)
+            ->valid();
+        if ($isDirEmpty) {
+            if (! delete_directory($path)) {
+                return false;
+            }
+
+            return delete_path(dirname($path, 1), $rootPath);
+        }
+
+        return true;
+    }
+}

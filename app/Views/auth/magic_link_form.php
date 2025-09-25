@@ -2,7 +2,7 @@
 use CodeIgniter\View\View;
 
 /**
- * @var View
+ * @var View $this
  */
 
 ?>
@@ -35,11 +35,9 @@ use CodeIgniter\View\View;
 
         <p class="text-center"><a href="<?= url_to(
             'login',
-        ) ?>" class="inline-flex items-center gap-x-2 decoration-2 decoration-primary underline hover:no-underline"><?= icon(
-            'arrow-left-long-line',
-        ) . lang(
-            'Auth.backToLogin',
-        ) /** @phpstan-ignore binaryOp.invalid */ ?></a></p>
+        ) ?>" class="inline-flex items-center gap-x-2 decoration-2 decoration-primary underline hover:no-underline"><?=
+        /** @phpstan-ignore-next-line binaryOp.invalid */
+        icon('arrow-left-long-line') . lang('Auth.backToLogin') ?></a></p>
     </form>
 
 <?= $this->endSection() ?>

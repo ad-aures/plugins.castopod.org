@@ -7,6 +7,7 @@ namespace App\Entities;
 use App\Entities\Enums\Hook;
 use App\Entities\Enums\License;
 use App\Libraries\Markdown;
+use CodeIgniter\HTTP\URI;
 use CodeIgniter\I18n\Time;
 
 /**
@@ -16,9 +17,12 @@ use CodeIgniter\I18n\Time;
  * @property ?Markdown $readme_markdown
  * @property License $license
  * @property string $min_castopod_version
- * @property list<Hook> $hooks
+ * @property Hook[] $hooks
  * @property int $size
  * @property int $file_count
+ * @property string $archive_path
+ * @property string $archive_checksum
+ * @property URI $archive_url
  * @property int $downloads_total
  * @property Time $published_at
  */
@@ -28,7 +32,6 @@ class Version extends BaseEntity
 
     protected $casts = [
         'id'              => 'int',
-        'plugin_id'       => 'int',
         'readme_markdown' => '?markdown',
         'size'            => 'int',
         'file_count'      => 'int',
@@ -36,10 +39,10 @@ class Version extends BaseEntity
     ];
 
     /**
-     * @return array{tag:string,commit_hash:string,readme:?string,license:value-of<License>,min_castopod_version:string,hooks:list<Hook>,size:int,file_count:int,published_at:string}
+     * @return array{tag:string,commit_hash:string,readme:?string,license:value-of<License>,min_castopod_version:string,hooks:Hook[],size:int,file_count:int,archive:array{url:string,checksum:string},published_at:string}
      */
     #[\Override]
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return [
             'tag'                  => $this->tag,
@@ -50,7 +53,16 @@ class Version extends BaseEntity
             'hooks'                => $this->hooks,
             'size'                 => $this->size,
             'file_count'           => $this->file_count,
-            'published_at'         => $this->published_at->format(DATE_ATOM),
+            'archive'              => [
+                'url'      => (string) $this->archive_url,
+                'checksum' => $this->archive_checksum,
+            ],
+            'published_at' => $this->published_at->format(DATE_ATOM),
         ];
+    }
+
+    public function getArchiveUrl(): URI
+    {
+        return new URI(media_url('plugins', $this->archive_path));
     }
 }

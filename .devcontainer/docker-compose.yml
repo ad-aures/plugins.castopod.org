@@ -10,8 +10,10 @@ services:
       APP_PORT: ${APP_PORT:-8080} # used in devcontainer.json file
       VITE_PORT: ${VITE_PORT:-5173} # used in ../vite.config.js file
       CI_ENVIRONMENT: development
+      vite_serverOrigin: http://localhost:${VITE_PORT}
       vite_environment: development
       app_baseURL: http://localhost:${APP_PORT:-8080}/
+      media_baseURL: http://localhost:${APP_PORT:-8080}/
       database_default_hostname: db
       database_default_database: plugin_repository
       database_default_username: postgres

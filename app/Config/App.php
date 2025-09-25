@@ -207,7 +207,8 @@ class App extends BaseConfig
      */
     public int $maxIconSize = 200 * 1024; // limit set to 200KiB
 
-    public string $mediaRootPath = ROOTPATH . 'public' . DIRECTORY_SEPARATOR;
-
-    public string $avatarsFolder = 'avatars';
+    /**
+     * Max plugin package size, restricted so as not to overload filesystem.
+     */
+    public int $maxPackageSize = 10 * 1024 * 1024; // limit set to 10MiB
 }

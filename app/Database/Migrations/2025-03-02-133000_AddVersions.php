@@ -51,6 +51,15 @@ class AddVersions extends Migration
                 'type'     => 'INT',
                 'unsigned' => true,
             ],
+            'archive_path' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 512,
+            ],
+            'archive_checksum' => [
+                'type'       => 'CHAR',
+                'constraint' => 64,
+                'comment'    => 'SHA256 string',
+            ],
             'downloads_total' => [
                 'type'     => 'INT',
                 'unsigned' => true,

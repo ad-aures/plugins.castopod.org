@@ -17,4 +17,10 @@ use CodeIgniter\I18n\Time;
 class Index extends BaseEntity
 {
     protected $dates = ['submitted_at'];
+
+    protected $casts = [
+        'id'             => 'int',
+        'repository_url' => 'uri',
+        'submitted_by'   => 'int',
+    ];
 }

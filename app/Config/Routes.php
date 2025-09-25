@@ -34,6 +34,9 @@ $routes->get('@(:pluginKey)', 'Plugins::info/$1', [
 $routes->get('@(:any)/v/(:segment)', 'Plugins::info/$1/$2', [
     'as' => 'plugin-version',
 ]);
+$routes->post('@(:any)/v/(:segment)/download', 'Plugins::download/$1/$2', [
+    'as' => 'plugin-version-download',
+]);
 $routes->get('my-plugins', 'Plugins::myPlugins', [
     'as' => 'my-plugins',
 ]);

@@ -7,9 +7,11 @@ namespace App\Controllers;
 use App\Entities\Index;
 use App\Entities\Plugin;
 use App\Entities\User;
+use App\Models\DownloadModel;
 use App\Models\IndexModel;
 use App\Models\PluginMaintainerModel;
 use App\Models\PluginModel;
+use App\Models\VersionModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Validation\Validation;
@@ -153,6 +155,27 @@ class Plugins extends BaseController
             'currentTab' => $currentTab,
             ...$permissions,
         ]);
+    }
+
+    public function download(string $key, string $versionTag): RedirectResponse|string
+    {
+        $version = new VersionModel()
+            ->getPluginVersion($key, $versionTag);
+
+        // increment download
+        $result = new DownloadModel()
+            ->incrementVersionDownloads($version->plugin_key, $version->tag);
+
+        if (! $result) {
+            return $this->alert('error', 'Something happened during download.');
+        }
+
+        if ($this->request->isHtmx()) {
+            /** @phpstan-ignore method.notFound */
+            return redirect()->hxLocation((string) $version->archive_url);
+        }
+
+        return redirect()->to((string) $version->archive_url);
     }
 
     public function myPlugins(): string
@@ -383,8 +406,15 @@ class Plugins extends BaseController
             return $this->alert('error', 'Could not flag plugin as updating.');
         }
 
-        if (! service('queue')->push('updates', 'plugin-update', [
-            'plugin_key' => $plugin->key,
+        $pluginIndex = new IndexModel()
+            ->getIndexRecord((string) $plugin->repository_url, $plugin->manifest_root);
+
+        if (! $pluginIndex instanceof Index) {
+            return $this->alert('error', 'Could not get plugin from index.');
+        }
+
+        if (! service('queue')->push('crawls', 'plugin-crawl', [
+            'index_id' => $pluginIndex->id,
         ])) {
             $db->transRollback();
             return $this->alert('error', 'Could not push the update to the queue.');

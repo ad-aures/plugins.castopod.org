@@ -49,6 +49,23 @@ class PluginModel extends BaseModel
      */
     protected $afterUpdate = ['clearCache'];
 
+    public function getPluginByRepository(string $repositoryUrl, string $manifestRoot): Plugin
+    {
+        // TODO: add cache?
+
+        $found = $this->where([
+            'repository_url' => $repositoryUrl,
+            'manifest_root'  => $manifestRoot,
+        ])->first();
+
+        if (! $found instanceof Plugin) {
+            throw PluginNotFoundException::forPluginByRepositoryNotFound($repositoryUrl, $manifestRoot);
+        }
+
+        /** @var Plugin $found */
+        return $found;
+    }
+
     public function getPluginByKey(string $pluginKey): Plugin
     {
         $cacheName = sprintf('plugin#%s', str_replace('/', '_', $pluginKey));

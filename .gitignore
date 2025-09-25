@@ -132,5 +132,15 @@ node_modules/
 # assets build
 public/.vite
 public/assets
-public/avatars/*
-!public/avatars/index.html
+
+# static files
+public/static/*
+!public/static/index.html
+
+!public/static/avatars
+public/static/avatars/*
+!public/static/avatars/index.html
+
+!public/static/plugins
+public/static/plugins/*
+!public/static/plugins/index.html

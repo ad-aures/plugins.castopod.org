@@ -10,7 +10,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 <?php $this->extend('_layout') ?>
 
-<?php $this->section('headerRight') ?>
+<?php $this->section('headerLeft') ?>
 <div class="flex flex-col">
     <h1 class="flex flex-col font-bold"><span><?= $plugin->vendor ?>/</span><span class="-mt-2 font-display text-4xl"><?= $plugin->name ?></span></h1>
     <div class="flex items-center text-brand-200 text-sm">
@@ -26,10 +26,11 @@ use Michalsn\CodeIgniterHtmx\View\View;
 </div>
 <?php $this->endSection() ?>
 
-<?php if ($canUpdate): ?>
-<?php $this->section('headerLeft') ?>
+<?php $this->section('headerRight') ?>
+<div class="flex items-center gap-x-2">
+    <?php if ($canUpdate): ?>
         <?php if ($plugin->is_updating): ?>
-            <div class="inline-flex items-center gap-x-2 bg-orange-800 px-4 py-2"><?= icon(
+            <div class="inline-flex items-center gap-x-2 bg-orange-700 px-4 py-2 font-bold"><?= icon(
                 'loop-left-fill',
                 [
                     'class' => 'animate-spin',
@@ -37,13 +38,23 @@ use Michalsn\CodeIgniterHtmx\View\View;
             ) ?>Updating…</div>
         <?php else: ?>
             <form action="<?= route_to('plugin-action', $plugin->key) ?>" method="POST">
-                <button class="inline-flex justify-center items-center gap-x-2 bg-brand-50 px-4 py-2 font-bold text-brand-950 cursor-pointer shrink-0" name="action" value="update" type="submit"><?= icon(
+                <button class="inline-flex justify-center items-center gap-x-2 bg-brand-50/20 px-4 py-2 ring-2 ring-orange-700 ring-inset font-bold cursor-pointer shrink-0" name="action" value="update" type="submit"><?= icon(
                     'loop-left-fill',
                 ) ?>Update plugin</button>
             </form>
         <?php endif; ?>
+    <?php endif; ?>
+    <form action="<?= route_to(
+        'plugin-version-download',
+        $plugin->key,
+        $plugin->selected_version->tag,
+    ) ?>" method="POST">
+        <button type="submit" class="inline-flex items-center gap-x-2 bg-brand-50 px-4 py-2 font-bold text-brand-950">Download (.zip)<?= icon(
+            'download-fill',
+        ) ?></button>
+    </form>
+</div>
 <?php $this->endSection(); ?>
-<?php endif; ?>
 
 <?php $this->section('main') ?>
 <div class="flex lg:flex-row flex-col pb-8 grow-1 container">
