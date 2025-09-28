@@ -1,7 +1,7 @@
 {
   "name": "plugins.castopod.org",
   "version": "0.1.0",
-  "description": "The Castopod Plugin Hub is the place to discover, install, and manage plugins for Castopod.",
+  "description": "The Castopod Plugin Hub is the place to discover, download, and manage your plugins for Castopod.",
   "type": "module",
   "license": "AGPL-3.0-only",
   "keywords": [
