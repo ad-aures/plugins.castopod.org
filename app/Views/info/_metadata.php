@@ -61,6 +61,7 @@ use App\Entities\Plugin;
         <?php endforeach; ?>
         </dd>
     </div>
+    <?php if (config('App')->displayDownloads): ?>
     <div class="col-span-2">
         <dt class="inline-flex items-center gap-x-1 font-bold text-skin-muted text-xs uppercase tracking-wider"><?= icon(
             'install-fill',
@@ -72,6 +73,7 @@ use App\Entities\Plugin;
             $plugin->downloads_total,
         ) ?></dd>
     </div>
+    <?php endif; ?>
     <div class="col-span-2">
         <dt class="font-bold text-skin-muted text-xs uppercase tracking-wider">Last publication</dt>
         <dd class="font-bold text-lg"><?= relative_time($plugin->selected_version->published_at) ?></dd>

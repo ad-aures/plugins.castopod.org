@@ -23,10 +23,12 @@ use App\Entities\Plugin;
         ) ?>" class="focus:outline-0"><span class="z-10 absolute inset-0"></span><span class="text-sm"><?= $plugin->vendor ?>/</span><span class="-mt-1 font-bold line-clamp-1"><?= $plugin->name ?></span></a></h2>
     </header>
     <p class="mt-2 text-sm line-clamp-3"><?= $plugin->description ?></p>
-    <footer class="flex justify-between items-center mt-auto pt-4">
+    <footer class="flex items-center mt-auto pt-4">
+        <?php if (config('App')->displayDownloads): ?>
         <small><?= number_abbr($plugin->downloads_total) ?> downloads</small>
+        <?php endif; ?>
         <?= icon('arrow-right-long-line', [
-            'class' => 'text-2xl',
+            'class' => 'text-2xl ml-auto',
         ]) ?>
     </footer>
 </article>

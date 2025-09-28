@@ -211,4 +211,9 @@ class App extends BaseConfig
      * Max plugin package size, restricted so as not to overload filesystem.
      */
     public int $maxPackageSize = 10 * 1024 * 1024; // limit set to 10MiB
+
+    /**
+     * Feature flag to hide/display number of downloads for plugins
+     */
+    public bool $displayDownloads = true;
 }

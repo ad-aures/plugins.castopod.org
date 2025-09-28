@@ -23,6 +23,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                         <span class="leaders" aria-hidden="true"></span>
                     </span>
                     <span class="date"><?= relative_time($version->published_at) ?></span>
+                    <?php if (config('App')->displayDownloads): ?>
                     <span class="inline-flex justify-end items-center gap-x-1 ml-4 w-[6ch] font-mono"><?= number_abbr(
                         $version->downloads_total,
                     ) . icon(
@@ -31,6 +32,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                             'class' => 'text-skin-muted',
                         ],
                     ) ?></span>
+                    <?php endif; ?>
                 </a>
             </li>
         <?php endforeach; ?>
