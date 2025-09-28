@@ -13,8 +13,7 @@ use Exception;
 class Throttle implements FilterInterface
 {
     /**
-     * This is a demo implementation of using the Throttler class
-     * to implement rate limiting for your application.
+     * Before filter to implement rate limiting.
      *
      * @param list<string>|null $arguments
      *

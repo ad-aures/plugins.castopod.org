@@ -48,6 +48,7 @@ use CodeIgniter\View\View;
         <input type="password" id="password_confirm" name="password_confirm" inputmode="text" autocomplete="new-password" required>
     </div>
 
+    <?= altcha_widget(['floating']) ?>
     <button type="submit" class="my-6 px-4 py-2 w-full btn-primary"><?= lang('Auth.register') ?></button>
 
     <p class="text-sm text-center"><?= lang('Auth.haveAccount') ?> <a href="<?= url_to(

@@ -20,6 +20,7 @@
     "league/commonmark": "^2.7.1",
     "michalsn/codeigniter-htmx": "^v2.1.0",
     "tatter/alerts": "^v3.1.0",
+    "yassinedoghri/codeigniter-altcha": "1.0.0",
     "yassinedoghri/codeigniter-vite": "2.1.0",
     "yassinedoghri/php-icons": "^v1.3.0"
   },
@@ -30,7 +31,7 @@
     "pestphp/pest": "^4.1.0",
     "pestphp/pest-plugin-type-coverage": "^4.0.2",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^2.1.28",
+    "phpstan/phpstan": "^2.1.29",
     "rector/rector": "^2.1.7",
     "symplify/coding-standard": "^12.4.3",
     "symplify/easy-coding-standard": "^12.6.0"
