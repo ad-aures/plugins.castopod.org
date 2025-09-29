@@ -17,9 +17,11 @@ use Michalsn\CodeIgniterHtmx\View\View;
                     $plugin->key,
                     $version->tag,
                 ) ?>">
-                    <span class="tag">
+                    <span class="lowercase tag">
                         <span class="font-mono font-bold decoration-2 decoration-bg-accent underline group-hover:no-underline"><?= $version->tag ?></span>
-                        <?= $version->tag === $plugin->latest_version->tag ? ' (latest)' : '' ?>
+                        <?= $version->tag === $plugin->latest_version->tag ? ' (' . lang( // @phpstan-ignore binaryOp.invalid
+                            'Plugin.latest',
+                        ) . ')' : '' ?>
                         <span class="leaders" aria-hidden="true"></span>
                     </span>
                     <span class="date"><?= relative_time($version->published_at) ?></span>

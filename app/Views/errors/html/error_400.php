@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= service('request')
+    ->getLocale() ?>">
 <head>
     <meta charset="utf-8">
     <title><?= lang('Errors.badRequest') ?></title>

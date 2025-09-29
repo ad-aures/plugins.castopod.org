@@ -18,7 +18,14 @@ use CodeIgniter\View\View;
     <?= csrf_field() ?>
 
     <!-- Code -->
-    <input type="number" class="mt-2" name="token" placeholder="000000" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" required>
+    <input type="number" class="mt-2" name="token" placeholder="000000" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" required="required">
+
+    <?= altcha_widget([
+        
+
+        'floating',
+    ],
+    ) ?>
 
     <button type="submit" class="mt-4 px-4 py-2 w-full btn-primary"><?= lang(
         'Auth.confirm',

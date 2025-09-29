@@ -13,5 +13,7 @@ $tabs = ['repository', 'maintainers'];
     $href = $currentUrl->addQuery('tab', $tab);
     $isActive = $tab === $currentTab;
     ?>
-<a href="<?= $href ?>" class="px-4 py-2 font-bold  <?= $isActive ? "relative bg-surface-base after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:bg-surface-base after:z-20 after:w-full after:h-0.5" : 'bg-surface-dim hover:bg-accent' ?>"><?= $tab ?></a>
+<a href="<?= $href ?>" class="px-4 py-2 font-bold  <?= $isActive ? "relative bg-surface-base after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:bg-surface-base after:z-20 after:w-full after:h-0.5" : 'bg-surface-dim hover:bg-accent' ?>"><?= lang(
+    'Plugin.tabs.' . $tab,
+) ?></a>
 <?php endforeach; ?>

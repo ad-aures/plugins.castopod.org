@@ -1,0 +1,76 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'totalDownloads' => '{count} downloads',
+    'published'      => 'Published {relativeTime}',
+    'update'         => 'Update',
+    'updating'       => 'Updating…',
+    'download'       => 'Download',
+    'tabs'           => [
+        'readme'      => 'Readme',
+        'versions'    => 'Versions',
+        'repository'  => 'Repository',
+        'maintainers' => 'Maintainers',
+    ],
+    'latest'         => 'Latest',
+    'readmeNotFound' => '404 - README file not found!',
+    'metadata'       => [
+        'install'         => 'Install',
+        'compatibility'   => 'Compatible with {castopodVersion} and up',
+        'repository'      => 'Repository',
+        'editRepository'  => 'Edit repository',
+        'version'         => 'Version',
+        'license'         => 'License',
+        'hooks'           => 'Hooks',
+        'totalDownloads'  => 'Total downloads',
+        'lastPublication' => 'Last publication',
+        'size'            => 'Size',
+        'totalFiles'      => 'Total files',
+        'authors'         => 'Authors',
+        'maintainers'     => 'Maintainers',
+        'editMaintainers' => 'Edit maintainers',
+    ],
+    'submitForm' => [
+        'title'         => 'Submit a plugin',
+        'repositoryUrl' => 'Repository URL',
+        'manifestRoot'  => 'Manifest root',
+        'submit'        => 'Submit plugin!',
+    ],
+    'editTitle'           => 'Edit {pluginKey}',
+    'editMaintainersForm' => [
+        'addMaintainer'   => 'Add a maintainer',
+        'usernameOrEmail' => 'Username or email',
+        'list'            => 'List of maintainers',
+    ],
+    'dangerZone' => 'Danger zone',
+    'delete'     => 'Delete plugin',
+    'info'       => [
+        'nothingChanged' => 'Nothing changed.',
+    ],
+    'errors' => [
+        'alreadySubmitted'      => 'Plugin was already submitted.',
+        'pushCrawlError'        => 'Could not push crawl to queue.',
+        'downloadError'         => 'Something wrong happened when getting the plugin archive. Please try again later.',
+        'userNotFound'          => 'User "{username}" not found!',
+        'removeMaintainerError' => 'Could not remove maintainer "{username}".',
+        'notInIndex'            => 'Could not find plugin in Index.',
+        'conflict'              => 'The repository url and manifest root conflict with another plugin\'s in the Index.',
+        'alreadyUpdating'       => 'The plugin is already updating.',
+        'updateFlagError'       => 'Could not flag plugin as updating.',
+        'deleteOwnerOnly'       => 'Only the owner can delete the plugin',
+        'deleteError'           => 'Could not delete plugin {pluginKey}',
+    ],
+    'success' => [
+        'addedToIndex'      => 'Your plugin was successfully added to the index! It will be crawled shortly.',
+        'maintainerAdded'   => 'User "{username}" was added as a maintainer!',
+        'maintainerRemoved' => '"{username}" was removed from maintainers!',
+        'repositoryUpdated' => 'Your plugin repository settings have been updated!',
+        'addedToCrawl'      => 'Your plugin has been added to the queue! It will be crawled shortly.',
+        'deleted'           => 'The plugin "{pluginKey}" has been deleted!',
+    ],
+    'exceptions' => [
+        'pluginNotFound' => 'Plugin "{pluginKey}" was not found!',
+    ],
+];

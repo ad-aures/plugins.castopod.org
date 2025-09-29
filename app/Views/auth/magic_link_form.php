@@ -31,6 +31,7 @@ use CodeIgniter\View\View;
             ) ?>" required>
         </div>
 
+        <?= altcha_widget(['floating']) ?>
         <button type="submit" class="my-6 px-4 py-2 w-full btn-primary"><?= lang('Auth.send') ?></button>
 
         <p class="text-center"><a href="<?= url_to(

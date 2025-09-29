@@ -25,7 +25,9 @@ use App\Entities\Plugin;
     <p class="mt-2 text-sm line-clamp-3"><?= $plugin->description ?></p>
     <footer class="flex items-center mt-auto pt-4">
         <?php if (config('App')->displayDownloads): ?>
-        <small><?= number_abbr($plugin->downloads_total) ?> downloads</small>
+        <small><?= lang('Plugin.totalDownloads', [
+            'count' => number_abbr($plugin->downloads_total),
+        ]) ?></small>
         <?php endif; ?>
         <?= icon('arrow-right-long-line', [
             'class' => 'text-2xl ml-auto',

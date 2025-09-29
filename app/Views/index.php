@@ -16,7 +16,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 <?php $this->section(
     'headerLeft',
-) ?><h1 class="font-display font-bold text-5xl">Castopod plugins</h1><?php $this->endSection() ?>
+) ?><h1 class="font-display font-bold text-5xl"><?= lang('Search.title') ?></h1><?php $this->endSection() ?>
 
 <?php $this->section('main') ?>
     <div class="flex flex-col container">
@@ -30,7 +30,8 @@ use Michalsn\CodeIgniterHtmx\View\View;
                 data-dropdown="button"
                 data-dropdown-target="categories-dropdown-menu"
                 aria-haspopup="true"
-                aria-expanded="false">Categories<?= icon('arrow-down-s-line', [
+                aria-expanded="false"><?= // @phpstan-ignore-next-line binaryOp.invalid
+                lang('Search.categories.title') . (string) icon('arrow-down-s-line', [
                     'class' => 'text-2xl',
                 ]) ?></button>
             <div id="categories-dropdown-menu"
@@ -43,13 +44,13 @@ use Michalsn\CodeIgniterHtmx\View\View;
                             $categories,
                             true,
                         ) ? 'checked="checked"' : '' ?>>
-                    <?= $category ?>
+                    <?= lang(sprintf('Search.categories.options.%s', $category)) ?>
                 </label>
                 <?php endforeach; ?>
-                <button type="submit" class="mt-2 px-4 py-2 btn-primary">Apply</button>
+                <button type="submit" class="mt-2 px-4 py-2 btn-primary"><?= lang('Search.applyFilters') ?></button>
             </div>
             <div class="flex items-center pl-2 border-contrast border-l-2 w-full">
-                <button class="place-items-center grid h-10 aspect-square">
+                <button class="place-items-center grid h-10 aspect-square" title="<?= lang('Search.submit') ?>">
                     <?= icon('search-line', [
                         'class' => 'text-2xl text-skin-muted',
                     ]); ?>

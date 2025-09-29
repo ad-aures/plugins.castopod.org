@@ -13,7 +13,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
     <?php if ($plugin->selected_version->readme_markdown): ?>
         <?= $plugin->selected_version->readme_markdown->renderHTML() ?>
     <?php else: ?>
-        TODO: NO README!
+        <?= lang('Plugin.readmeNotFound') ?>
     <?php endif; ?>
 </div>
 <?php $this->endSection() ?>

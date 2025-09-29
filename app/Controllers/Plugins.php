@@ -95,7 +95,8 @@ class Plugins extends BaseController
         $repositoryUrl = $validData['repository_url'];
         $manifestRoot = trim($validData['manifest_root'] ?? '', '/');
         if ($indexModel->doesPluginAlreadyExist($repositoryUrl, $manifestRoot)) {
-            return $this->alert('error', 'Plugin has already been submitted.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.alreadySubmitted'));
         }
 
         $idIndex = $indexModel
@@ -107,6 +108,7 @@ class Plugins extends BaseController
 
         if (! $idIndex) {
             $db->transRollback();
+
             return $this->alert('error', $indexModel->errors(true));
         }
 
@@ -114,12 +116,15 @@ class Plugins extends BaseController
             'index_id' => $idIndex,
         ],)) {
             $db->transRollback();
-            return $this->alert('error', 'Could not push crawl to queue.');
+
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.pushCrawlError.'));
         }
 
         $db->transComplete();
 
-        return $this->alert('success', 'Your plugin has been added to the index!');
+        // @phpstan-ignore argument.type
+        return $this->alert('success', lang('Plugin.success.addedToIndex'));
     }
 
     public function info(string $key, ?string $versionTag = null): string
@@ -167,7 +172,8 @@ class Plugins extends BaseController
             ->incrementVersionDownloads($version->plugin_key, $version->tag);
 
         if (! $result) {
-            return $this->alert('error', 'Something happened during download.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.downloadError'));
         }
 
         if ($this->request->isHtmx()) {
@@ -276,7 +282,10 @@ class Plugins extends BaseController
         }
 
         if (! $user instanceof User) {
-            return $this->alert('error', sprintf('User "%s" not found.', $validData['maintainer_username_or_email']));
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.userNotFound', [
+                'username' => $validData['maintainer_username_or_email'],
+            ]));
         }
 
         new PluginMaintainerModel()
@@ -287,7 +296,10 @@ class Plugins extends BaseController
                 'id' => $plugin->id,
             ]);
 
-        return $this->alert('success', sprintf('User "%s" was added as a maintainer!', $user->username));
+        // @phpstan-ignore argument.type
+        return $this->alert('success', lang('Plugin.success.maintainerAdded', [
+            'username' => $user->username,
+        ]));
     }
 
     private function removeMaintainer(Plugin $plugin): RedirectResponse|string
@@ -316,11 +328,17 @@ class Plugins extends BaseController
         ]);
 
         if (! $user instanceof User) {
-            return $this->alert('error', sprintf('User "%s" not found.', $validData['username']));
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.userNotFound', [
+                'username' => $validData['username'],
+            ]));
         }
 
         if (! new PluginMaintainerModel()->removeMaintainer($plugin->key, (int) $user->id)) {
-            return $this->alert('error', 'Could not remove maintainer.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.removeMaintainerError', [
+                'username' => $user->username,
+            ]));
         }
 
         new PluginModel()
@@ -328,7 +346,10 @@ class Plugins extends BaseController
                 'id' => $plugin->id,
             ]);
 
-        return $this->alert('success', sprintf('%s was removed from maintainers!', $user->username));
+        // @phpstan-ignore argument.type
+        return $this->alert('success', lang('Plugin.success.maintainerRemoved', [
+            'username' => $user->username,
+        ]));
     }
 
     private function editRepository(Plugin $plugin): RedirectResponse|string
@@ -360,7 +381,8 @@ class Plugins extends BaseController
         )->first();
 
         if (! $index instanceof Index) {
-            return $this->alert('error', 'Could not find plugin in index.', true);
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.notInIndex'), true);
         }
 
         $repositoryUrl = $validData['repository_url'];
@@ -370,11 +392,13 @@ class Plugins extends BaseController
         $index->manifest_root = $manifestRoot;
 
         if (! $index->hasChanged()) {
-            return $this->alert('info', 'Nothing changed.');
+            // @phpstan-ignore argument.type
+            return $this->alert('info', lang('Plugin.info.nothingChanged'));
         }
 
         if ($indexModel->doesPluginAlreadyExist($repositoryUrl, $manifestRoot)) {
-            return $this->alert('error', 'Plugin collides with another one.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.conflict'));
         }
 
         if (! $indexModel->save($index)) {
@@ -386,13 +410,15 @@ class Plugins extends BaseController
                 'id' => $plugin->id,
             ]);
 
-        return $this->alert('success', 'Your plugin repository settings have been updated!');
+        // @phpstan-ignore argument.type
+        return $this->alert('success', lang('Plugin.success.repositoryUpdated'));
     }
 
     private function update(Plugin $plugin): RedirectResponse|string
     {
         if ($plugin->is_updating) {
-            return $this->alert('error', 'The plugin is already updating.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.alreadyUpdating'));
         }
 
         $db = db_connect();
@@ -403,38 +429,49 @@ class Plugins extends BaseController
 
         if (! $isUpdating) {
             $db->transRollback();
-            return $this->alert('error', 'Could not flag plugin as updating.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugins.errors.updateFlagError'));
         }
 
         $pluginIndex = new IndexModel()
             ->getIndexRecord((string) $plugin->repository_url, $plugin->manifest_root);
 
         if (! $pluginIndex instanceof Index) {
-            return $this->alert('error', 'Could not get plugin from index.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.notInIndex'));
         }
 
         if (! service('queue')->push('crawls', 'plugin-crawl', [
             'index_id' => $pluginIndex->id,
         ])) {
             $db->transRollback();
-            return $this->alert('error', 'Could not push the update to the queue.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.pushCrawlError'));
         }
 
         $db->transComplete();
 
-        return $this->alert('success', 'Your plugin has been added to the update queue!');
+        // @phpstan-ignore argument.type
+        return $this->alert('success', lang('Plugin.success.addedToCrawl'));
     }
 
     private function delete(Plugin $plugin): RedirectResponse|string
     {
         if (user_id() !== $plugin->owner_id) {
-            return $this->alert('error', 'Only the owner can delete the plugin.');
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.deleteOwnerOnly'));
         }
 
         if (! new IndexModel()->deletePluginFromIndex($plugin)) {
-            return $this->alert('error', 'Could not delete plugin ' . $plugin->key);
+            // @phpstan-ignore argument.type
+            return $this->alert('error', lang('Plugin.errors.deleteError', [
+                'pluginKey' => $plugin->key,
+            ]));
         }
 
-        return $this->alert('success', 'Your plugin has been deleted!');
+        // @phpstan-ignore argument.type
+        return $this->alert('success', lang('Plugin.success.deleted', [
+            'pluginKey' => $plugin->key,
+        ]));
     }
 }

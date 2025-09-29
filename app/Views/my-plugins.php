@@ -11,7 +11,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 <?php $this->section(
     'headerLeft',
-) ?><h1 class="font-display font-bold text-5xl">My plugins</h1><?php $this->endSection() ?>
+) ?><h1 class="font-display font-bold text-5xl"><?= lang('Common.myPlugins') ?></h1><?php $this->endSection() ?>
 
 <?php $this->section('main') ?>
     <div class="items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] -mt-28 py-8 container grow">
