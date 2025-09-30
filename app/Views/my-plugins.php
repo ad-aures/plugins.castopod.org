@@ -16,11 +16,17 @@ use Michalsn\CodeIgniterHtmx\View\View;
 <?php $this->section('main') ?>
     <div class="items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] -mt-28 py-8 container grow">
         <?php
-        foreach ($plugins as $key => $plugin):
-            echo view('_plugin', [
-                'key'    => $key,
-                'plugin' => $plugin,
-            ]);
-        endforeach; ?>
+        $isFirstOfficialPlugin = true;
+foreach ($plugins as $key => $plugin) {
+    echo view('_plugin', [
+        'key'                   => $key,
+        'plugin'                => $plugin,
+        'isFirstOfficialPlugin' => $plugin->is_official && $isFirstOfficialPlugin,
+    ]);
+
+    if ($plugin->is_official) {
+        $isFirstOfficialPlugin = false;
+    }
+} ?>
     </div>
 <?php $this->endSection() ?>

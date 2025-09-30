@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'official'       => 'Official plugin',
     'totalDownloads' => '{count} downloads',
     'published'      => 'Published {relativeTime}',
     'update'         => 'Update',

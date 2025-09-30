@@ -31,7 +31,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                 data-dropdown-target="categories-dropdown-menu"
                 aria-haspopup="true"
                 aria-expanded="false"><?= // @phpstan-ignore-next-line binaryOp.invalid
-                lang('Search.categories.title') . (string) icon('arrow-down-s-line', [
+                lang('Search.categories.title') . icon('arrow-down-s-line', [
                     'class' => 'text-2xl',
                 ]) ?></button>
             <div id="categories-dropdown-menu"
@@ -69,12 +69,18 @@ use Michalsn\CodeIgniterHtmx\View\View;
             <div class="flex flex-col">
                 <div class="items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] py-8">
                     <?php
-                    foreach ($plugins as $key => $plugin):
-                        echo view('_plugin', [
-                            'key'    => $key,
-                            'plugin' => $plugin,
-                        ]);
-                    endforeach; ?>
+                    $isFirstOfficialPlugin = true;
+foreach ($plugins as $key => $plugin) {
+    echo view('_plugin', [
+        'key'                   => $key,
+        'plugin'                => $plugin,
+        'isFirstOfficialPlugin' => $plugin->is_official && $isFirstOfficialPlugin,
+    ]);
+
+    if ($plugin->is_official) {
+        $isFirstOfficialPlugin = false;
+    }
+} ?>
                 </div>
                 <?= $pager->links() ?>
             </div>

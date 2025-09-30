@@ -66,8 +66,19 @@ class CrawlPlugin extends BaseJob implements JobInterface
                 throw new Exception('Plugin is private. It has been removed from the index.');
             }
 
-            // TODO: check if is official via list of official repositories
-            $isOfficial = $prc->pluginMetadata['vendor'] === 'ad-aures'; // official plugins are published by ad-aures
+            $officialRepositoriesTxtPath = ROOTPATH . 'official-repositories.txt';
+            $officialReposList = [];
+            if (file_exists($officialRepositoriesTxtPath)) {
+                // load official-repositories.txt file
+                $officialRepos = (string) file_get_contents($officialRepositoriesTxtPath);
+                $officialReposList = preg_split("/\r\n|\n|\r/", $officialRepos);
+                if (! $officialReposList) {
+                    $officialReposList = [];
+                }
+            }
+
+            // check if is official via list of official repositories
+            $isOfficial = in_array((string) $pluginIndex->repository_url, $officialReposList, true);
 
             $keywords = $prc->pluginMetadata['keywords'];
             if ($isOfficial) {

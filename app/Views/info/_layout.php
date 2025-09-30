@@ -12,9 +12,17 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 <?php $this->section('headerLeft') ?>
 <div class="flex flex-col">
-    <h1 class="flex flex-col font-bold select-all"><span class="z-10"><?= $plugin->vendor ?>/</span><span class="-mt-2 font-display text-4xl"><?= $plugin->name ?></span></h1>
+    <h1 class="font-bold select-all"><span class="block z-10 relative -mb-2"><?= $plugin->vendor ?>/</span><span class="inline font-display text-4xl align-middle"><?= $plugin->name ?></span><?php if ($plugin->is_official): ?><span class="inline top-0.5 relative ml-2 align-middle" tabindex="0" title="<?= lang(
+        'Plugin.official',
+    ) ?>" data-tooltip="bottom"><?= icon(
+        'verified-badge-fill',
+        [
+            'class' => 'inline text-brand-50 text-2xl',
+
+        ],
+    ) ?></span><?php endif; ?></h1>
     <div class="flex items-center text-brand-200 text-sm">
-        <span class="font-mono"><?= $plugin->selected_version->tag ?></span>
+        <span class="font-mono select-all"><?= $plugin->selected_version->tag ?></span>
         <span class="mx-2">•</span>
         <span class=""><?= lang('Plugin.published', [
             'relativeTime' => relative_time($plugin->selected_version->published_at),

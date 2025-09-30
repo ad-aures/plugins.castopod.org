@@ -21,6 +21,8 @@ use CodeIgniter\I18n\Time;
  * @property string $manifest_root
  * @property ?URI $homepage_url
  * @property Category[] $categories
+ * @property bool $is_official
+ * @property bool $is_podcasting2
  * @property Person[] $authors
  * @property int $downloads_total
  * @property bool $is_updating
@@ -175,6 +177,16 @@ class Plugin extends BaseEntity
         }
 
         return $this->maintainers;
+    }
+
+    public function getIsOfficial(): bool
+    {
+        return in_array(Category::Official, $this->categories, true);
+    }
+
+    public function getIsPodcasting2(): bool
+    {
+        return in_array(Category::Podcasting2, $this->categories, true);
     }
 
     /**

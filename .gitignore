@@ -45,6 +45,7 @@ $RECYCLE.BIN/
 .vagrant
 Vagrantfile
 .devcontainer/devcontainer.env
+official-repositories.txt
 
 #-------------------------
 # Temporary Files

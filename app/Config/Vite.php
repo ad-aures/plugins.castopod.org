@@ -13,9 +13,5 @@ class Vite extends ViteConfig
             'routes' => ['*'],
             'assets' => ['styles/index.css', 'js/index.ts'],
         ],
-        [
-            'routes' => ['*'],
-            'assets' => ['js/altcha.ts'],
-        ],
     ];
 }
