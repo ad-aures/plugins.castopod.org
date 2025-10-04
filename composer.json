@@ -11,18 +11,18 @@
     }
   ],
   "require": {
-    "codeigniter4/framework": "4.6.3",
+    "php": "^8.4",
+    "codeigniter4/framework": "^4.6.3",
     "codeigniter4/queue": "dev-develop",
     "codeigniter4/settings": "^v2.2.0",
-    "codeigniter4/shield": "1.2.0",
+    "codeigniter4/shield": "^1.2.0",
     "codeigniter4/tasks": "dev-develop",
     "enshrined/svg-sanitize": "^0.22.0",
     "league/commonmark": "^2.7.1",
     "michalsn/codeigniter-htmx": "^v2.1.0",
-    "php": "^8.4",
     "tatter/alerts": "^v3.1.0",
-    "yassinedoghri/codeigniter-altcha": "1.0.0",
-    "yassinedoghri/codeigniter-vite": "2.1.0",
+    "yassinedoghri/codeigniter-altcha": "^1.0.0",
+    "yassinedoghri/codeigniter-vite": "^2.1.0",
     "yassinedoghri/php-icons": "^v1.3.0"
   },
   "require-dev": {

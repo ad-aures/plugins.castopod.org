@@ -19,12 +19,17 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "files.associations": {
-          "*.css": "tailwindcss"
-        },
         "color-highlight.markerType": "dot-before",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "files.associations": {
+          ".rsync-filter": "diff",
+          "*.css": "tailwindcss",
+          "*.xml.dist": "xml",
+          "env": "dotenv",
+          "spark": "php"
+        },
+        "markdown.extension.toc.levels": "2..3",
         "sqltools.connections": [
           {
             "previewLimit": 50,

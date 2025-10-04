@@ -1,0 +1,12 @@
+# rsync filter rules to copy required files for bundle
+
++ app/***
++ public/***
++ vendor/***
++ writable/***
++ .env.example
++ LICENSE.md
++ README.md
++ spark
++ php-icons.php
+- **
