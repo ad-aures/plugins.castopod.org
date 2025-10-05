@@ -71,6 +71,7 @@ jobs:
         with:
           name: dist
           path: dist/
+          include-hidden-files: true
 
   deploy:
     runs-on: ubuntu-latest
@@ -91,7 +92,7 @@ jobs:
       - name: 🚀 Deploy Build
         uses: burnett01/rsync-deployments@7.1.0
         with:
-          switches: -avzr --delete --include='/' --include='.' --include='*' --exclude=''
+          switches: -avzr --delete
           path: dist/
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
