@@ -65,6 +65,9 @@ jobs:
           echo "${{secrets.ENV_FILE }}" | base64 --decode > ./dist/.env
           echo "${{secrets.CUSTOM_HEAD_SCRIPTS}}" | base64 --decode > ./dist/custom-head-scripts.html
           echo "${{secrets.OFFICIAL_REPOSITORIES}}" | base64 --decode > ./dist/official-repositories.txt
+          chmod -R 550 dist/
+          chmod -R 770 dist/public/static/
+          chmod -R 770 dist/writable/
 
       - name: 📤 Upload bundle artifact
         uses: actions/upload-artifact@v4
@@ -92,7 +95,7 @@ jobs:
       - name: 🚀 Deploy Build
         uses: burnett01/rsync-deployments@7.1.0
         with:
-          switches: -avzr --delete
+          switches: -avzrog --delete --chown=${{ secrets.DEPLOY_USER }}:${{ secrets.WEBSERVER_USER }}
           path: dist/
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
