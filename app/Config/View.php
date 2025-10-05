@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Config;
 
+use App\Views\Decorators\CustomHeadScripts;
+use App\Views\Decorators\HrefLang;
 use CodeIgniter\Config\View as BaseView;
 use CodeIgniter\View\ViewDecoratorInterface;
 
@@ -60,5 +62,5 @@ class View extends BaseView
      *
      * @var list<class-string<ViewDecoratorInterface>>
      */
-    public array $decorators = [];
+    public array $decorators = [HrefLang::class, CustomHeadScripts::class];
 }

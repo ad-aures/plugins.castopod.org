@@ -62,6 +62,9 @@ jobs:
         run: |
           chmod +x ./scripts/bundle.sh
           ./scripts/bundle.sh
+          echo "${{secrets.ENV_FILE }}" | base64 --decode > ./dist/.env
+          echo "${{secrets.CUSTOM_HEAD_SCRIPTS}}" | base64 --decode > ./dist/custom-head-scripts.html
+          echo "${{secrets.OFFICIAL_REPOSITORIES}}" | base64 --decode > ./dist/official-repositories.txt
 
       - name: 📤 Upload bundle artifact
         uses: actions/upload-artifact@v4
