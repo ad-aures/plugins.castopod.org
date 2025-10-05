@@ -29,10 +29,10 @@
     "codeigniter/phpstan-codeigniter": "1.5.4",
     "fakerphp/faker": "^v1.24.1",
     "mikey179/vfsstream": "^v1.6.12",
-    "pestphp/pest": "^4.1.0",
+    "pestphp/pest": "^4.1.1",
     "pestphp/pest-plugin-type-coverage": "^4.0.2",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^2.1.29",
+    "phpstan/phpstan": "^2.1.30",
     "rector/rector": "^2.1.7",
     "symplify/coding-standard": "^12.4.3",
     "symplify/easy-coding-standard": "^12.6.0"
@@ -61,6 +61,12 @@
       "composer bump --ansi",
       "composer validate --strict --ansi",
       "composer audit --ansi"
+    ],
+    "post-install-cmd": [
+      "vendor/bin/php-icons init && vendor/bin/php-icons scan"
+    ],
+    "post-update-cmd": [
+      "vendor/bin/php-icons init && vendor/bin/php-icons scan"
     ]
   },
   "autoload": {

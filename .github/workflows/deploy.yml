@@ -91,8 +91,8 @@ jobs:
       - name: 🚀 Deploy Build
         uses: burnett01/rsync-deployments@7.1.0
         with:
-          switches: -avzr --delete
-          path: dist/.
+          switches: -avzr --delete --include='/' --include='.' --include='*' --exclude=''
+          path: dist/
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_port: ${{ secrets.DEPLOY_PORT }}

@@ -30,18 +30,17 @@
   },
   "devDependencies": {
     "@prettier/plugin-xml": "^3.4.2",
-    "@rollup/plugin-multi-entry": "^6.0.1",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.1.13",
+    "@tailwindcss/vite": "^4.1.14",
     "@types/alpinejs": "^3.13.11",
     "autoprefixer": "^10.4.21",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
-    "tailwindcss": "^4.1.13",
-    "vite": "^7.1.7",
+    "tailwindcss": "^4.1.14",
+    "vite": "^7.1.9",
     "vite-plugin-codeigniter": "^2.0.0"
   },
   "config": {
