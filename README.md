@@ -34,8 +34,8 @@ small footprint.
   - [zip](https://www.php.net/manual/en/zip.installation.php)
 
 - [**PostgreSQL**](https://www.postgresql.org/download/)
-- [**Supervisor**](https://www.supervisord.org/installing.html) to crawl plugins
-  automatically
+- [**Supervisor**](https://www.supervisord.org/installing.html) &
+  [**Git**](https://git-scm.com/downloads) to crawl plugins automatically
 - (optional) **Redis** for caching
 
 ## Bundle for production
