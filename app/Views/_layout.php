@@ -44,7 +44,7 @@ $currentUser = auth()
             <div class="flex items-center gap-2 ml-auto">
                 <a href="<?= route_to(
                     'plugin-submit',
-                ); ?>" class="bg-brand-50 px-4 py-2 font-semibold text-brand-950"><?= lang(
+                ); ?>" class="bg-brand-50 px-4 py-2 font-semibold text-brand-950 ring-2 ring-contrast focus:ring-4 hover:-translate-y-0.5 active:translate-y-0.5 transition"><?= lang(
                     'Common.header.submitPlugin',
                 ) ?></a>
                 <?php if (auth()->loggedIn()) :

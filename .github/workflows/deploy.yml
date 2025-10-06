@@ -65,9 +65,6 @@ jobs:
           echo "${{secrets.ENV_FILE }}" | base64 --decode > ./dist/.env
           echo "${{secrets.CUSTOM_HEAD_SCRIPTS}}" | base64 --decode > ./dist/custom-head-scripts.html
           echo "${{secrets.OFFICIAL_REPOSITORIES}}" | base64 --decode > ./dist/official-repositories.txt
-          chmod -R 550 dist/
-          chmod -R 770 dist/public/static/
-          chmod -R 770 dist/writable/
 
       - name: 📤 Upload bundle artifact
         uses: actions/upload-artifact@v4
@@ -92,10 +89,18 @@ jobs:
           name: dist
           path: dist/
 
+      - name: 🛡️ Set correct permissions
+        run: |
+          chmod -R 550 dist/
+          chmod -R 770 dist/public/static/
+          chmod -R 770 dist/writable/
+          chmod 750 dist/
+
       - name: 🚀 Deploy Build
         uses: burnett01/rsync-deployments@7.1.0
         with:
-          switches: -avzrog --delete --chown=${{ secrets.DEPLOY_USER }}:${{ secrets.WEBSERVER_USER }} --exclude="public/static/*"
+          # rsync all files except media files stored in public/static/avatars/ & public/static/plugins/
+          switches: -avzrog --delete --chown=${{ secrets.DEPLOY_USER }}:${{ secrets.WEBSERVER_USER }} --include='public/static/avatars/index.html' --include='public/static/plugins/index.html' --exclude='public/static/avatars/**' --exclude='public/static/plugins/**'
           path: dist/
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}

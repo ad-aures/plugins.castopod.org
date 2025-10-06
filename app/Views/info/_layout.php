@@ -53,7 +53,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                     'floating',
                     'style' => '--altcha-color-base: #003c0a;--altcha-color-border:#009486;--altcha-border-width:2px;',
                 ]) ?>
-                <button type="submit"  class="inline-flex justify-center items-center gap-x-2 bg-brand-50/20 px-4 py-2 ring-2 ring-brand-50 focus:ring-orange-700 ring-inset font-bold cursor-pointer shrink-0" name="action" value="update"><?= icon(
+                <button type="submit"  class="inline-flex justify-center items-center gap-x-2 bg-brand-50/20 px-4 py-2 ring-2 ring-brand-50 focus:ring-orange-700 ring-inset font-bold cursor-pointer shrink-0 hover:-translate-y-0.5 active:translate-y-0.5 transition" name="action" value="update"><?= icon(
                     'loop-left-fill',
                 ) ?><?= lang('Plugin.update') ?></button>
             </form>
@@ -69,7 +69,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
             'floating',
             'style' => '--altcha-color-base: #003c0a;--altcha-color-border:#009486;--altcha-border-width:2px;',
         ]) ?>
-        <button type="submit" class="inline-flex items-center gap-x-2 bg-brand-50 px-4 py-2 font-bold text-brand-950"><?= lang(
+        <button type="submit" class="inline-flex items-center gap-x-2 bg-brand-50 px-4 py-2 font-bold text-brand-950 ring-2 ring-contrast focus:ring-4 hover:-translate-y-0.5 active:translate-y-0.5 transition"><?= lang(
             'Plugin.download',
         ) ?> (.zip)<?= icon('download-fill') ?></button>
     </form>
