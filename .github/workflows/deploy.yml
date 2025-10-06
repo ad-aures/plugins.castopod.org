@@ -100,10 +100,20 @@ jobs:
         uses: burnett01/rsync-deployments@7.1.0
         with:
           # rsync all files except media files stored in public/static/avatars/ & public/static/plugins/
-          switches: -avzrog --delete --chown=${{ secrets.DEPLOY_USER }}:${{ secrets.WEBSERVER_USER }} --include='public/static/avatars/index.html' --include='public/static/plugins/index.html' --exclude='public/static/avatars/**' --exclude='public/static/plugins/**'
+          switches: -avzr --delete  --include='public/static/avatars/index.html' --include='public/static/plugins/index.html' --exclude='public/static/avatars/**' --exclude='public/static/plugins/**'
           path: dist/
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_port: ${{ secrets.DEPLOY_PORT }}
           remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: ✨ Remote housekeeping
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            sudo chown -R ${{ secrets.DEPLOY_USER }}:${{ secrets.WEBSERVER_USER }} ${{secrets.DEPLOY_PATH}}
