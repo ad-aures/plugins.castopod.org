@@ -48,7 +48,12 @@ use Michalsn\CodeIgniterHtmx\View\View;
             ) ?><?= lang('Plugin.updating') ?></div>
         <?php else: ?>
             <form action="<?= route_to('plugin-action', $plugin->key) ?>" method="POST">
-                <button class="inline-flex justify-center items-center gap-x-2 bg-brand-50/20 px-4 py-2 ring-2 ring-brand-50 focus:ring-orange-700 ring-inset font-bold cursor-pointer shrink-0" name="action" value="update" type="submit"><?= icon(
+                <?= csrf_field() ?>
+                <?= altcha_widget([
+                    'floating',
+                    'style' => '--altcha-color-base: #003c0a;--altcha-color-border:#009486;--altcha-border-width:2px;',
+                ]) ?>
+                <button type="submit"  class="inline-flex justify-center items-center gap-x-2 bg-brand-50/20 px-4 py-2 ring-2 ring-brand-50 focus:ring-orange-700 ring-inset font-bold cursor-pointer shrink-0" name="action" value="update"><?= icon(
                     'loop-left-fill',
                 ) ?><?= lang('Plugin.update') ?></button>
             </form>
@@ -59,6 +64,11 @@ use Michalsn\CodeIgniterHtmx\View\View;
         $plugin->key,
         $plugin->selected_version->tag,
     ) ?>" method="POST">
+        <?= csrf_field() ?>
+        <?= altcha_widget([
+            'floating',
+            'style' => '--altcha-color-base: #003c0a;--altcha-color-border:#009486;--altcha-border-width:2px;',
+        ]) ?>
         <button type="submit" class="inline-flex items-center gap-x-2 bg-brand-50 px-4 py-2 font-bold text-brand-950"><?= lang(
             'Plugin.download',
         ) ?> (.zip)<?= icon('download-fill') ?></button>
@@ -85,6 +95,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 <div class="pb-6 container">
     <h2 class="font-display text-2xl">⚠️ <?= lang('Plugin.dangerZone') ?></h2>
     <form action="<?= route_to('plugin-action', $plugin->key) ?>" method="POST">
+        <?= csrf_field() ?>
         <?= altcha_widget(['floating']) ?>
         <button class="mt-4 px-4 py-2 btn-danger" name="action" value="delete" type="submit"><?= icon(
             'delete-bin-fill',

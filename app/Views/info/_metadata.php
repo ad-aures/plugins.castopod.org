@@ -21,7 +21,7 @@ use App\Entities\Plugin;
     <dt class="font-bold text-skin-muted text-xs uppercase tracking-wider"><?= lang(
         'Plugin.metadata.repository',
     ) ?></dt>
-    <dd class="truncate"><a href="<?= $plugin->repository_url ?>" class="font-bold decoration-2 decoration-primary underline hover:no-underline"><?= $plugin->repository_url ?></a></dd>
+    <dd class="truncate w-full"><a href="<?= $plugin->repository_url ?>" class="font-bold decoration-2 decoration-primary underline hover:no-underline"><?= $plugin->repository_url ?></a></dd>
     <?php if ($canEdit): ?>
     <a class="mt-2 btn-secondary" href="<?= route_to(
         'plugin-edit',
@@ -37,7 +37,7 @@ use App\Entities\Plugin;
     <dt class="font-bold text-skin-muted text-xs uppercase tracking-wider"><?= lang(
         'Plugin.metadata.homepage',
     ) ?></dt>
-    <dd class="truncate"><a href="<?= $plugin->homepage_url ?>" class="font-bold decoration-2 decoration-primary underline hover:no-underline"><?= $plugin->homepage_url ?></a></dd>
+    <dd class="truncate w-full"><a href="<?= $plugin->homepage_url ?>" class="font-bold decoration-2 decoration-primary underline hover:no-underline"><?= $plugin->homepage_url ?></a></dd>
 </div>
 <?php endif; ?>
 

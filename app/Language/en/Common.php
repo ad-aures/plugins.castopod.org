@@ -32,6 +32,7 @@ return [
     'contactUs'  => 'Contact us',
     'sourceCode' => 'Source code',
     'mirror'     => 'Mirror',
+    'website'    => 'Website',
     'blog'       => 'Blog',
     'docs'       => 'Docs',
 ];

@@ -15,6 +15,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
         'plugin-action',
         $plugin->key,
     ) ?>" class="flex flex-col gap-2 mt-2 max-w-sm">
+        <?= csrf_field() ?>
         <div class="flex flex-col">
             <label for="maintainer_username_or_email" class="font-semibold"><?= lang(
                 'Plugin.editMaintainersForm.usernameOrEmail',
@@ -41,6 +42,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                             'plugin-action',
                             $plugin->key,
                         ) ?>">
+                            <?= csrf_field() ?>
                             <input type="hidden" name="username" value="<?= $maintainer->username ?>">
 
                             <?= altcha_widget(['floating']) ?>

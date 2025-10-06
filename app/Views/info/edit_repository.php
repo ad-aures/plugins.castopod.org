@@ -14,6 +14,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
         'plugin-action',
         $plugin->key,
     ) ?>" class="flex flex-col gap-4 max-w-xl">
+        <?= csrf_field() ?>
         <div class="flex flex-col">
             <label for="repository_url" class="font-semibold"><?= lang('Plugin.submitForm.repositoryUrl') ?></label>
             <input type="url" id="repository_url" name="repository_url" placeholder="https://github.com/acme/foo.git" class="border-0 ring-2 ring-contrast focus:ring-4 w-full transition" value="<?= $plugin->repository_url ?>">

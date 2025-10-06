@@ -95,7 +95,7 @@ jobs:
       - name: 🚀 Deploy Build
         uses: burnett01/rsync-deployments@7.1.0
         with:
-          switches: -avzrog --delete --chown=${{ secrets.DEPLOY_USER }}:${{ secrets.WEBSERVER_USER }}
+          switches: -avzrog --delete --chown=${{ secrets.DEPLOY_USER }}:${{ secrets.WEBSERVER_USER }} --exclude="public/static/*"
           path: dist/
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
