@@ -62,7 +62,12 @@ class PluginRepositoryCrawler
         }
 
         // get default branch
-        $defaultBranch = shell_exec(sprintf('cd %s && git branch --show-current', $this->tempRepoPath));
+        $defaultBranch = shell_exec(
+            sprintf(
+                'cd %s && LC_ALL=C git remote show origin | sed -n \'/HEAD branch/s/.*: //p\'',
+                $this->tempRepoPath,
+            ),
+        );
 
         if (! $defaultBranch) {
             throw new Exception('Could not get default branch.');
