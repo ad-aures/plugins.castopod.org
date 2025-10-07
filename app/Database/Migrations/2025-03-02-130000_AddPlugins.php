@@ -74,7 +74,7 @@ class AddPlugins extends Migration
                 'null'       => true,
             ],
             'text_searchable' => [
-                'type' => 'TSVECTOR GENERATED ALWAYS AS (to_tsvector(\'simple\', regexp_replace(key, \'[/\-]\', \' \', \'g\') || coalesce(description, \'\'))) STORED',
+                'type' => 'TSVECTOR GENERATED ALWAYS AS (to_tsvector(\'simple\', regexp_replace(key, \'[/\-]\', \' \', \'g\') || \' \' ||  coalesce(description, \'\'))) STORED',
             ],
             'icon_svg' => [
                 'type'       => 'VARCHAR',
