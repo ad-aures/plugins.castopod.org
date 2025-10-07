@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 return [
-    'siteTitle'       => 'The Castopod Plugin Hub',
-    'siteDescription' => 'The Castopod Plugin Hub is the place to discover, download, and manage your plugins for Castopod.',
+    'siteTitle'       => 'The Castopod Plugin Repository',
+    'siteDescription' => 'The Castopod Plugin Repository is the place to discover, download, and manage your plugins for Castopod.',
     'forms'           => [
         'save'   => 'Save',
         'add'    => 'Add',
