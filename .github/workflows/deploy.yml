@@ -117,3 +117,4 @@ jobs:
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
             sudo chown -R ${{ secrets.DEPLOY_USER }}:${{ secrets.WEBSERVER_USER }} ${{secrets.DEPLOY_PATH}}
+            sudo supervisorctl restart all
