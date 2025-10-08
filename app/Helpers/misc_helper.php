@@ -99,3 +99,14 @@ if (! function_exists('relative_time')) {
         HTML;
     }
 }
+
+if (! function_exists('remove_category_from_uri')) {
+    function remove_category_from_current_url(string $categoryToRemove): string
+    {
+        return (string) preg_replace(
+            '/categories%5B\d+%5D\=' . $categoryToRemove . '&?/',
+            '',
+            (string) current_url(true),
+        );
+    }
+}

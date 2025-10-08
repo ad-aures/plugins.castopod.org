@@ -29,7 +29,7 @@ class Plugins extends BaseController
         if (! in_array($q, ['', null], true)) {
             /** @var string $escapedQ */
             $escapedQ = $db->escape($q);
-            $pluginModel->where("text_searchable @@ to_tsquery({$escapedQ})");
+            $pluginModel->where("text_searchable @@ websearch_to_tsquery({$escapedQ})");
         }
 
         if ($categories !== null) {
@@ -47,18 +47,18 @@ class Plugins extends BaseController
 
         if ($this->request->isHtmx()) {
             return view_fragment('index', 'plugins', [
-                'q'          => $q ?? '',
-                'categories' => $categories ?? [],
-                'plugins'    => $plugins,
-                'pager'      => $pager,
+                'q'                  => $q ?? '',
+                'selectedCategories' => $categories ?? [],
+                'plugins'            => $plugins,
+                'pager'              => $pager,
             ]);
         }
 
         return view('index', [
-            'q'          => $q ?? '',
-            'categories' => $categories ?? [],
-            'plugins'    => $plugins,
-            'pager'      => $pager,
+            'q'                  => $q ?? '',
+            'selectedCategories' => $categories ?? [],
+            'plugins'            => $plugins,
+            'pager'              => $pager,
         ]);
     }
 

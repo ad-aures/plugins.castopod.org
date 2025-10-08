@@ -17,6 +17,9 @@ return [
             'seo'           => 'SEO',
         ],
     ],
-    'applyFilters' => 'Apply filters',
-    'submit'       => 'Search plugins!',
+    'applyFilters'         => 'Apply filters',
+    'submit'               => 'Search plugins!',
+    'removeCategoryFilter' => 'Remove “{category}” category',
+    'noResult'             => 'No plugins found.',
+    'noResultWithQuery'    => 'No plugins found for “{query}”. Try different keywords.',
 ];

@@ -7,7 +7,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
 
 /** @var View $this */
 /** @var string $q */
-/** @var list<string> $categories */
+/** @var list<string> $selectedCategories */
 /** @var Plugin[] $plugins */
 /** @var Pager $pager */
 ?>
@@ -25,14 +25,16 @@ use Michalsn\CodeIgniterHtmx\View\View;
         ) ?>" method="GET" hx-boost="true" hx-target="#plugin-list">
             <button
                 type="button"
-                class="inline-flex items-center gap-x-2 px-8 py-4 h-full text-sm"
+                class="inline-flex items-center gap-x-1 px-4 lg:px-8 py-4 h-full text-sm"
                 id="categories-dropdown"
                 data-dropdown="button"
                 data-dropdown-target="categories-dropdown-menu"
                 aria-haspopup="true"
                 aria-expanded="false"><?= // @phpstan-ignore-next-line binaryOp.invalid
-                lang('Search.categories.title') . icon('arrow-down-s-line', [
-                    'class' => 'text-2xl',
+                icon('filter-2-fill', [
+                    'class' => 'md:hidden text-xl text-skin-muted',
+                ]) . '<span class="hidden md:inline">' . lang('Search.categories.title') . '</span>' . icon('arrow-drop-down-fill', [
+                    'class' => 'text-2xl text-skin-muted',
                 ]) ?></button>
             <div id="categories-dropdown-menu"
                     class="flex flex-col bg-surface-bright px-6 pb-4 border-2 whitespace-nowrap"
@@ -41,7 +43,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                     <label class="inline-flex items-center gap-x-2 py-2">
                         <input type="checkbox" name="categories[]" value="<?= $category ?>" class="checked:bg-primary" <?= in_array(
                             $category,
-                            $categories,
+                            $selectedCategories,
                             true,
                         ) ? 'checked="checked"' : '' ?>>
                     <?= lang(sprintf('Search.categories.options.%s', $category)) ?>
@@ -66,24 +68,39 @@ use Michalsn\CodeIgniterHtmx\View\View;
         </form>
         <section id="plugin-list">
             <?php $this->fragment('plugins') ?>
+            <?php if ($selectedCategories !== []): ?>
+            <div class="flex items-center gap-x-2 mt-4">
+                <ul class="flex flex-wrap gap-2"><?php foreach ($selectedCategories as $category): ?>
+                <li class="relative bg-brand-200 py-1 pr-8 pl-2 font-bold text-brand-950 text-sm"><?= lang(sprintf('Search.categories.options.%s', $category)) ?><a class="top-0 right-0 absolute p-1 h-full aspect-square text-skin-muted hover:text-brand-950 text-xl" href="<?= remove_category_from_current_url($category) ?>" title="<?= lang('Search.removeCategoryFilter', [
+                    'category' => $category,
+                ]) ?>"><?= icon('close-fill') ?></a></li>
+                <?php endforeach; ?></ul>
+            </div>
+            <?php endif; ?>
+            <?php if ($plugins === []): ?>
+               <p class="mt-8 text-4xl"><?= $q === '' ? lang('Search.noResult') : lang('Search.noResultWithQuery', [
+                   'query' => '<strong>' . $q . '</strong>',
+               ]) ?></p>
+            <?php else: ?>
             <div class="flex flex-col">
                 <div class="items-start gap-8 grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] py-8">
                     <?php
                     $isFirstOfficialPlugin = true;
-foreach ($plugins as $key => $plugin) {
-    echo view('_plugin', [
-        'key'                   => $key,
-        'plugin'                => $plugin,
-        'isFirstOfficialPlugin' => $plugin->is_official && $isFirstOfficialPlugin,
-    ]);
+                foreach ($plugins as $key => $plugin) {
+                    echo view('_plugin', [
+                        'key'                   => $key,
+                        'plugin'                => $plugin,
+                        'isFirstOfficialPlugin' => $plugin->is_official && $isFirstOfficialPlugin,
+                    ]);
 
-    if ($plugin->is_official) {
-        $isFirstOfficialPlugin = false;
-    }
-} ?>
+                    if ($plugin->is_official) {
+                        $isFirstOfficialPlugin = false;
+                    }
+                } ?>
                 </div>
                 <?= $pager->links() ?>
             </div>
+            <?php endif; ?>
             <?php $this->endFragment() ?>
         </section>
     </div>
