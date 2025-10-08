@@ -15,9 +15,10 @@ return [
         'repository'  => 'Repository',
         'maintainers' => 'Maintainers',
     ],
-    'latest'         => 'Latest',
-    'readmeNotFound' => '404 - README file not found!',
-    'metadata'       => [
+    'latest'          => 'Latest',
+    'securityWarning' => 'This plugin is not actively reviewed for security by the Castopod team. Make sure you trust the source before installing.',
+    'readmeNotFound'  => '404 - README file not found!',
+    'metadata'        => [
         'install'         => 'Install',
         'compatibility'   => 'Compatible with {castopodVersion} and up',
         'repository'      => 'Repository',
