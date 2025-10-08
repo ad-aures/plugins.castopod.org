@@ -10,6 +10,10 @@ class CustomHeadScripts implements ViewDecoratorInterface
 {
     public static function decorate(string $html): string
     {
+        if (str_contains($html, 'viewDecoratorsEmailEnvironment')) {
+            return $html;
+        }
+
         $cacheName = 'custom-head-scripts';
 
         if (! $found = cache($cacheName)) {

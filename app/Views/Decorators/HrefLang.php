@@ -12,6 +12,10 @@ class HrefLang implements ViewDecoratorInterface
 {
     public static function decorate(string $html): string
     {
+        if (str_contains($html, 'viewDecoratorsEmailEnvironment')) {
+            return $html;
+        }
+
         $hrefLangTags = '';
 
         // add x-default tag
