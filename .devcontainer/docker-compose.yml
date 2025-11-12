@@ -32,7 +32,7 @@ services:
     image: postgres:18
     restart: unless-stopped
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/18/docker
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres

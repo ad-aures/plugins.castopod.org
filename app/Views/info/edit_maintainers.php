@@ -23,7 +23,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
             <input type="text" id="maintainer_username_or_email" name="maintainer_username_or_email" autofocus class="border-0 ring-2 ring-contrast focus:ring-4 w-full transition">
         </div>
 
-        <?= altcha_widget(['floating']) ?>
+        <?= altcha_widget('floating') ?>
         <button class="self-end px-4 py-2 btn-primary" name="action" value="add-maintainer" type="submit"><?= lang(
             'Common.forms.add',
         ) ?></button>
@@ -45,7 +45,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                             <?= csrf_field() ?>
                             <input type="hidden" name="username" value="<?= $maintainer->username ?>">
 
-                            <?= altcha_widget(['floating']) ?>
+                            <?= altcha_widget('floating') ?>
                             <button class="self-start px-1 btn-danger" name="action" value="remove-maintainer" type="submit"><?= lang(
                                 'Common.forms.remove',
                             ) ?></button>

@@ -24,7 +24,7 @@ use CodeIgniter\View\View;
         'token',
     ) ?>" required>
 
-    <?= altcha_widget(['floating']) ?>
+    <?= altcha_widget('floating') ?>
     <button type="submit" class="mt-4 px-4 py-2 w-full btn-primary"><?= lang('Auth.send') ?></button>
 </form>
 <?= $this->endSection() ?>

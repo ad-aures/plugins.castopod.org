@@ -44,7 +44,7 @@ use CodeIgniter\View\View;
             </div>
         <?php endif; ?>
 
-        <?= altcha_widget(['floating']) ?>
+        <?= altcha_widget('floating') ?>
         <button type="submit" class="my-6 px-4 py-2 w-full btn-primary"><?= lang('Auth.login') ?></button>
 
         <div class="text-sm text-center leading-loose">

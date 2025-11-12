@@ -25,7 +25,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
                 <label for="manifest_root" class="font-semibold"><?= lang('Plugin.submitForm.manifestRoot') ?></label>
                 <input type="text" id="manifest_root" name="manifest_root" placeholder="/" class="border-0 ring-2 ring-contrast focus:ring-4 w-full transition">
             </div>
-            <?= altcha_widget(['floating']) ?>
+            <?= altcha_widget('floating') ?>
             <button class="self-start mt-2 px-4 py-2 btn-primary"><?= lang('Plugin.submitForm.submit') ?></button>
         </form>
     </div>

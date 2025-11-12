@@ -18,6 +18,8 @@ if (! function_exists('format_bytes')) {
 
         $bytes /= ($is_binary ? 1024 : 1000) ** $pow;
 
+        assert(is_int($pow));
+
         return round($bytes, $precision) . $units[$pow];
     }
 }

@@ -17,7 +17,7 @@ class CustomHeadScripts implements ViewDecoratorInterface
         $cacheName = 'custom-head-scripts';
 
         if (! $found = cache($cacheName)) {
-            $found = (string) file_get_contents(ROOTPATH . 'custom-head-scripts.html');
+            $found = (string) @file_get_contents(ROOTPATH . 'custom-head-scripts.html');
 
             cache()
                 ->save($cacheName, $found, DECADE);

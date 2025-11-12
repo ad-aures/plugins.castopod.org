@@ -24,7 +24,7 @@ use Michalsn\CodeIgniterHtmx\View\View;
             <input type="text" id="manifest_root" name="manifest_root" placeholder="/" class="border-0 ring-2 ring-contrast focus:ring-4 w-full transition" value="<?= $plugin->manifest_root ?>">
         </div>
 
-        <?= altcha_widget(['floating']) ?>
+        <?= altcha_widget('floating') ?>
         <button class="self-start mt-2 px-4 py-2 btn-primary" name="action" value="edit-repository" type="submit"><?= lang(
             'Common.forms.save',
         ) ?></button>

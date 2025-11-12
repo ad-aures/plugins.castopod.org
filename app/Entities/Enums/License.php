@@ -27,7 +27,7 @@ enum License: string
         }
 
         $availableLicenses = License::values();
-        $key = array_search(strtolower($value), array_map('strtolower', $availableLicenses), true);
+        $key = array_search(strtolower($value), array_map(strtolower(...), $availableLicenses), true);
 
         if (! $key) {
             return self::Custom;
