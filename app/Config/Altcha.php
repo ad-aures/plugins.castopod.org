@@ -8,5 +8,4 @@ use CodeIgniterAltcha\Config\Altcha as AltchaConfig;
 
 class Altcha extends AltchaConfig
 {
-    public array $filterExcludedPaths = ['api/*'];
 }

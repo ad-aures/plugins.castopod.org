@@ -80,6 +80,9 @@ class Filters extends BaseFilters
             'csrf' => [
                 'except' => ['api/*'],
             ],
+            'altcha' => [
+                'except' => ['api/*'],
+            ],
             // 'honeypot',
             // 'invalidchars',
         ],

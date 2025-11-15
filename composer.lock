@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "f557bd1c79a872e90cb53b108fc802d1",
+  "content-hash": "64d1996811ceb8c61a2ac2a17f234e0d",
   "packages": [
     {
       "name": "adhocore/cli",
@@ -1349,20 +1349,20 @@
     },
     {
       "name": "yassinedoghri/codeigniter-altcha",
-      "version": "v1.1.0",
+      "version": "v1.1.1",
       "source": {
         "type": "git",
         "url": "https://github.com/yassinedoghri/codeigniter-altcha.git",
-        "reference": "00aba251c1d1ec80508a273ad64b47967c334f68"
+        "reference": "aee50036ad5555d47151c2891286f9b83ae1c7de"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/yassinedoghri/codeigniter-altcha/zipball/00aba251c1d1ec80508a273ad64b47967c334f68",
-        "reference": "00aba251c1d1ec80508a273ad64b47967c334f68",
+        "url": "https://api.github.com/repos/yassinedoghri/codeigniter-altcha/zipball/aee50036ad5555d47151c2891286f9b83ae1c7de",
+        "reference": "aee50036ad5555d47151c2891286f9b83ae1c7de",
         "shasum": ""
       },
       "require": {
-        "altcha-org/altcha": "^1.1",
+        "altcha-org/altcha": "^1.1.2",
         "php": ">=8.2"
       },
       "require-dev": {
@@ -1372,7 +1372,7 @@
         "pestphp/pest-plugin-type-coverage": "^3.6.1",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan": "^2.1.32",
-        "rector/rector": "^2.2.7",
+        "rector/rector": "^2.2.8",
         "symplify/coding-standard": "^13.0.0",
         "symplify/easy-coding-standard": "^13.0.0"
       },
@@ -1410,9 +1410,9 @@
       ],
       "support": {
         "issues": "https://github.com/yassinedoghri/codeigniter-altcha/issues",
-        "source": "https://github.com/yassinedoghri/codeigniter-altcha/tree/v1.1.0"
+        "source": "https://github.com/yassinedoghri/codeigniter-altcha/tree/v1.1.1"
       },
-      "time": "2025-11-12T11:33:07+00:00"
+      "time": "2025-11-15T21:58:07+00:00"
     },
     {
       "name": "yassinedoghri/codeigniter-vite",
@@ -4838,21 +4838,21 @@
     },
     {
       "name": "rector/rector",
-      "version": "2.2.7",
+      "version": "2.2.8",
       "source": {
         "type": "git",
         "url": "https://github.com/rectorphp/rector.git",
-        "reference": "022038537838bc8a4e526af86c2d6e38eaeff7ef"
+        "reference": "303aa811649ccd1d32e51e62d5c85949d01b5f1b"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/rectorphp/rector/zipball/022038537838bc8a4e526af86c2d6e38eaeff7ef",
-        "reference": "022038537838bc8a4e526af86c2d6e38eaeff7ef",
+        "url": "https://api.github.com/repos/rectorphp/rector/zipball/303aa811649ccd1d32e51e62d5c85949d01b5f1b",
+        "reference": "303aa811649ccd1d32e51e62d5c85949d01b5f1b",
         "shasum": ""
       },
       "require": {
         "php": "^7.4|^8.0",
-        "phpstan/phpstan": "^2.1.26"
+        "phpstan/phpstan": "^2.1.32"
       },
       "conflict": {
         "rector/rector-doctrine": "*",
@@ -4886,7 +4886,7 @@
       ],
       "support": {
         "issues": "https://github.com/rectorphp/rector/issues",
-        "source": "https://github.com/rectorphp/rector/tree/2.2.7"
+        "source": "https://github.com/rectorphp/rector/tree/2.2.8"
       },
       "funding": [
         {
@@ -4894,7 +4894,7 @@
           "type": "github"
         }
       ],
-      "time": "2025-10-29T15:46:12+00:00"
+      "time": "2025-11-12T18:38:00+00:00"
     },
     {
       "name": "sebastian/cli-parser",
@@ -7291,16 +7291,16 @@
     },
     {
       "name": "theseer/tokenizer",
-      "version": "1.2.3",
+      "version": "1.3.0",
       "source": {
         "type": "git",
         "url": "https://github.com/theseer/tokenizer.git",
-        "reference": "737eda637ed5e28c3413cb1ebe8bb52cbf1ca7a2"
+        "reference": "d74205c497bfbca49f34d4bc4c19c17e22db4ebb"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/theseer/tokenizer/zipball/737eda637ed5e28c3413cb1ebe8bb52cbf1ca7a2",
-        "reference": "737eda637ed5e28c3413cb1ebe8bb52cbf1ca7a2",
+        "url": "https://api.github.com/repos/theseer/tokenizer/zipball/d74205c497bfbca49f34d4bc4c19c17e22db4ebb",
+        "reference": "d74205c497bfbca49f34d4bc4c19c17e22db4ebb",
         "shasum": ""
       },
       "require": {
@@ -7329,7 +7329,7 @@
       "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
       "support": {
         "issues": "https://github.com/theseer/tokenizer/issues",
-        "source": "https://github.com/theseer/tokenizer/tree/1.2.3"
+        "source": "https://github.com/theseer/tokenizer/tree/1.3.0"
       },
       "funding": [
         {
@@ -7337,7 +7337,7 @@
           "type": "github"
         }
       ],
-      "time": "2024-03-03T12:36:25+00:00"
+      "time": "2025-11-13T13:44:09+00:00"
     },
     {
       "name": "tomasvotruba/type-coverage",

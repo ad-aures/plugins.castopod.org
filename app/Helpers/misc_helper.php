@@ -13,12 +13,10 @@ if (! function_exists('format_bytes')) {
         $units = $is_binary ? ['B', 'KiB', 'MiB', 'GiB', 'TiB'] : ['B', 'KB', 'MB', 'GB', 'TB'];
 
         $bytes = max($bytes, 0);
-        $pow = floor(($bytes ? log($bytes) : 0) / log($is_binary ? 1024 : 1000));
+        $pow = (int) floor(($bytes ? log($bytes) : 0) / log($is_binary ? 1024 : 1000));
         $pow = min($pow, count($units) - 1);
 
         $bytes /= ($is_binary ? 1024 : 1000) ** $pow;
-
-        assert(is_int($pow));
 
         return round($bytes, $precision) . $units[$pow];
     }
