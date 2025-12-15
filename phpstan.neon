@@ -17,7 +17,9 @@ parameters:
 			- CodeIgniter\Shield\Config\Services
 			- CodeIgniter\Queue\Config\Services
 	ignoreErrors:
-		- '#Call to an undefined method Pest\\PendingCalls\\TestCall\:\:expect\(\)#'
+		- 
+			message: '#Call to an undefined method Pest\\PendingCalls\\TestCall\:\:preset\(\)#'
+			path: tests/Arch/ArchTest.php
 		- '#^Call to an undefined method CodeIgniter\\Cache\\CacheInterface\:\:deleteMatching\(\)#'
 		- '#\$callback of static method CodeIgniter\\Events\\Events\:\:on\(\) expects callable\(mixed\)\: mixed#'
 		- identifier: missingType.generics

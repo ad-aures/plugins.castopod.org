@@ -298,7 +298,7 @@ class Plugins extends BaseController
 
         // @phpstan-ignore argument.type
         return $this->alert('success', lang('Plugin.success.maintainerAdded', [
-            'username' => $user->username,
+            'username' => (string) $user->username,
         ]));
     }
 
@@ -330,14 +330,14 @@ class Plugins extends BaseController
         if (! $user instanceof User) {
             // @phpstan-ignore argument.type
             return $this->alert('error', lang('Plugin.errors.userNotFound', [
-                'username' => $validData['username'],
+                'username' => (string) $validData['username'],
             ]));
         }
 
         if (! new PluginMaintainerModel()->removeMaintainer($plugin->key, (int) $user->id)) {
             // @phpstan-ignore argument.type
             return $this->alert('error', lang('Plugin.errors.removeMaintainerError', [
-                'username' => $user->username,
+                'username' => (string) $user->username,
             ]));
         }
 
@@ -348,7 +348,7 @@ class Plugins extends BaseController
 
         // @phpstan-ignore argument.type
         return $this->alert('success', lang('Plugin.success.maintainerRemoved', [
-            'username' => $user->username,
+            'username' => (string) $user->username,
         ]));
     }
 
