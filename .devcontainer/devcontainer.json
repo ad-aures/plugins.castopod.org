@@ -12,7 +12,7 @@
     "ghcr.io/opencodeco/devcontainers/install-php-extensions": {
       "extensions": "intl pdo pdo_pgsql pgsql zip"
     },
-    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/node:2": {},
     "ghcr.io/guiyomh/features/vim:0": {}
   },
   // Configure tool-specific properties.
